@@ -3,480 +3,257 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plumlo — Practice with AI before AI interviews you</title>
+  <title>Plumlo — AI Interview Prep</title>
   <style>
-    :root {
-      --bg: #080612;
-      --surface: #110d1f;
-      --border: #2a1a4a;
-      --purple: #9b5de5;
-      --purple-light: #c084fc;
-      --text: #f0eaff;
-      --muted: #7c6a9a;
-      --subtle: #1e1535;
-    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 48px;
-      background: rgba(8,6,18,0.85);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(42,26,74,0.5);
-    }
-    .nav-logo { font-size: 1.3rem; font-weight: 800; color: var(--purple-light); letter-spacing: -0.5px; }
-    .nav-cta {
-      background: var(--purple);
-      color: #fff;
-      border: none;
-      padding: 10px 24px;
-      border-radius: 100px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.1s;
-    }
-    .nav-cta:hover { background: #7c3aed; transform: scale(1.02); }
-
-    /* HERO */
-    .hero {
+      background: #0f0a1a;
+      color: #f0eaff;
+      font-family: 'Segoe UI', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 120px 24px 80px;
-      position: relative;
-      overflow: hidden;
+      padding: 40px 20px;
     }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -200px; left: 50%; transform: translateX(-50%);
-      width: 800px; height: 800px;
-      background: radial-gradient(circle, rgba(155,93,229,0.15) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-label {
-      display: inline-block;
-      background: rgba(155,93,229,0.15);
-      border: 1px solid rgba(155,93,229,0.3);
-      color: var(--purple-light);
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      padding: 6px 16px;
-      border-radius: 100px;
-      margin-bottom: 32px;
-    }
-    .hero h1 {
-      font-size: clamp(2.8rem, 7vw, 5.5rem);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -2px;
-      max-width: 900px;
-      margin-bottom: 24px;
-    }
-    .hero h1 span { color: var(--purple-light); }
-    .hero-sub {
-      font-size: clamp(1rem, 2.5vw, 1.25rem);
-      color: var(--muted);
-      max-width: 560px;
-      line-height: 1.6;
-      margin-bottom: 48px;
-    }
-    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-    .btn-primary {
-      background: var(--purple);
-      color: #fff;
-      border: none;
-      padding: 18px 40px;
-      border-radius: 100px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.1s;
-      display: inline-block;
-    }
-    .btn-primary:hover { background: #7c3aed; transform: translateY(-2px); }
-    .btn-secondary {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 18px 40px;
-      border-radius: 100px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: border-color 0.2s, transform 0.1s;
-      display: inline-block;
-    }
-    .btn-secondary:hover { border-color: var(--purple); transform: translateY(-2px); }
-    .hero-note { margin-top: 24px; font-size: 0.85rem; color: var(--muted); }
-
-    /* SOCIAL PROOF */
-    .proof {
-      padding: 48px 24px;
-      text-align: center;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .proof p { font-size: 0.85rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 24px; }
-    .proof-stats { display: flex; justify-content: center; gap: 64px; flex-wrap: wrap; }
-    .stat-num { font-size: 2rem; font-weight: 800; color: var(--text); }
-    .stat-label { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
-
-    /* HOW IT WORKS */
-    .section { padding: 120px 24px; max-width: 1100px; margin: 0 auto; }
-    .section-label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--purple-light);
-      margin-bottom: 16px;
-    }
-    .section h2 {
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800;
-      letter-spacing: -1px;
-      line-height: 1.1;
-      margin-bottom: 64px;
-      max-width: 600px;
-    }
-    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; }
-    .step {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 36px 32px;
-      transition: border-color 0.2s;
-    }
-    .step:hover { border-color: var(--purple); }
-    .step-num {
-      width: 40px; height: 40px;
-      background: rgba(155,93,229,0.15);
-      border: 1px solid rgba(155,93,229,0.3);
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.9rem; font-weight: 800; color: var(--purple-light);
-      margin-bottom: 20px;
-    }
-    .step h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
-    .step p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
-
-    /* DEBRIEF PREVIEW */
-    .debrief-preview {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 24px;
+    .logo { font-size: 2.4rem; font-weight: 800; color: #c084fc; letter-spacing: -1px; }
+    .tagline { font-size: 1.1rem; color: #a78bca; margin-top: 8px; margin-bottom: 48px; }
+    .card {
+      background: #1a1028;
+      border: 1px solid #3b1f6a;
+      border-radius: 16px;
       padding: 40px;
+      width: 100%;
       max-width: 600px;
     }
-    .debrief-preview .score {
-      font-size: 3.5rem; font-weight: 800; color: var(--purple-light);
-      margin-bottom: 4px;
-    }
-    .debrief-preview .score-label { font-size: 0.85rem; color: var(--muted); margin-bottom: 32px; }
-    .debrief-row { margin-bottom: 24px; }
-    .debrief-row h4 { font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--purple-light); margin-bottom: 12px; }
-    .debrief-item {
-      display: flex; align-items: flex-start; gap: 10px;
-      font-size: 0.9rem; color: var(--muted); margin-bottom: 8px; line-height: 1.5;
-    }
-    .debrief-item .dot { color: var(--purple-light); flex-shrink: 0; margin-top: 2px; }
-
-    /* PRICING */
-    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 680px; }
-    .pricing-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 40px 36px;
-      position: relative;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-    .pricing-card:hover { transform: translateY(-4px); }
-    .pricing-card.featured {
-      border-color: var(--purple);
-      background: linear-gradient(135deg, #1a0d35 0%, #110d1f 100%);
-    }
-    .featured-badge {
-      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
-      background: var(--purple);
-      color: #fff;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 4px 16px;
-      border-radius: 100px;
-    }
-    .price-tier { font-size: 0.85rem; color: var(--muted); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-    .price { font-size: 3rem; font-weight: 800; color: var(--text); line-height: 1; margin-bottom: 4px; }
-    .price-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 32px; }
-    .price-features { list-style: none; margin-bottom: 32px; }
-    .price-features li { font-size: 0.9rem; color: var(--muted); padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
-    .price-features li:last-child { border-bottom: none; }
-    .check { color: var(--purple-light); font-weight: 700; }
-    .price-btn {
-      display: block; width: 100%; text-align: center;
+    .card h2 { font-size: 1.3rem; margin-bottom: 8px; color: #e9d5ff; }
+    .card p { font-size: 0.95rem; color: #9d7ec9; margin-bottom: 24px; }
+    textarea {
+      width: 100%;
+      height: 180px;
+      background: #0f0a1a;
+      border: 1px solid #3b1f6a;
+      border-radius: 10px;
+      color: #f0eaff;
+      font-size: 0.95rem;
       padding: 14px;
-      border-radius: 100px;
-      font-size: 0.95rem; font-weight: 700;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.1s;
+      resize: vertical;
+      outline: none;
     }
-    .price-btn:hover { transform: translateY(-1px); }
-    .price-btn.primary { background: var(--purple); color: #fff; border: none; cursor: pointer; }
-    .price-btn.primary:hover { background: #7c3aed; }
-    .price-btn.secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
-    .price-btn.secondary:hover { border-color: var(--purple); }
-
-    /* STORY */
-    .story-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 56px;
-      max-width: 720px;
+    textarea:focus { border-color: #c084fc; }
+    textarea::placeholder { color: #5b4070; }
+    .btn {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 16px;
+      background: #7c3aed;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
     }
-    .story-box blockquote {
-      font-size: 1.15rem;
+    .btn:hover { background: #6d28d9; }
+    .btn:disabled { background: #3b1f6a; cursor: not-allowed; }
+    #interview-section { display: none; text-align: center; }
+    #debrief-section { display: none; }
+    #status { font-size: 0.9rem; color: #a78bca; margin-top: 12px; min-height: 24px; }
+    .pulse {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: #7c3aed;
+      margin: 0 auto 16px;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.15); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .debrief-content {
+      background: #0f0a1a;
+      border: 1px solid #3b1f6a;
+      border-radius: 10px;
+      padding: 24px;
+      margin-top: 16px;
+      font-size: 0.95rem;
       line-height: 1.7;
-      color: var(--muted);
-      font-style: italic;
-      margin-bottom: 24px;
+      color: #e9d5ff;
+      text-align: left;
     }
-    .story-box blockquote strong { color: var(--text); font-style: normal; }
-    .story-author { font-size: 0.85rem; color: var(--muted); }
-    .story-author strong { color: var(--purple-light); }
-
-    /* FAQ */
-    .faq { max-width: 680px; }
-    .faq-item { border-bottom: 1px solid var(--border); padding: 24px 0; }
-    .faq-item h4 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; }
-    .faq-item p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
-
-    /* FOOTER CTA */
-    .footer-cta {
-      text-align: center;
-      padding: 120px 24px;
-      border-top: 1px solid var(--border);
-    }
-    .footer-cta h2 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 800;
-      letter-spacing: -1.5px;
-      margin-bottom: 16px;
-    }
-    .footer-cta p { color: var(--muted); margin-bottom: 40px; font-size: 1.1rem; }
-
-    /* FOOTER */
-    footer {
-      text-align: center;
-      padding: 32px 24px;
-      border-top: 1px solid var(--border);
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    /* UTILS */
-    .centered { display: flex; flex-direction: column; align-items: center; }
-    @media (max-width: 600px) {
-      nav { padding: 16px 24px; }
-      .story-box { padding: 32px 24px; }
-    }
+    .debrief-content h2 { color: #c084fc; font-size: 1.15rem; margin: 20px 0 8px; }
+    .debrief-content h3 { color: #e9d5ff; font-size: 1rem; margin: 16px 0 6px; }
+    .debrief-content p { margin-bottom: 10px; }
+    .debrief-content ul { padding-left: 20px; margin-bottom: 10px; }
+    .debrief-content li { margin-bottom: 6px; }
+    .debrief-content strong { color: #ffffff; }
+    .debrief-content hr { border-color: #3b1f6a; margin: 16px 0; }
+    .btn-row { display: flex; gap: 12px; margin-top: 24px; }
+    .btn-row .btn { margin-top: 0; }
+    .footer { margin-top: 40px; font-size: 0.8rem; color: #4a3560; }
   </style>
 </head>
 <body>
+  <div class="logo">plumlo</div>
+  <div class="tagline">Practice with AI before AI interviews you.</div>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-logo">plumlo</div>
-    <a href="/index.html" class="nav-cta">Start Interview →</a>
-  </nav>
+  <div class="card" id="setup-card">
+    <h2>Start Your Interview Prep</h2>
+    <p>Paste the job description below. Alex, your AI recruiter, will interview you and score your answers.</p>
+    <textarea id="jd-input" placeholder="Paste the full job description here..."></textarea>
+    <button class="btn" id="start-btn" onclick="startInterview()">Begin Interview →</button>
+  </div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-label">AI Interview Prep</div>
-    <h1>Practice with AI<br><span>before AI interviews you.</span></h1>
-    <p class="hero-sub">AI recruiters are already screening candidates. Plumlo lets you practice with one — then shows you exactly what they're scoring.</p>
-    <div class="hero-btns">
-      <a href="/index.html" class="btn-primary">Start Your Interview →</a>
-      <a href="#how-it-works" class="btn-secondary">See how it works</a>
-    </div>
-    <p class="hero-note">No signup required. Results in under 10 minutes.</p>
-  </section>
+  <div class="card" id="interview-section">
+    <div class="pulse" id="pulse"></div>
+    <h3 style="color:#e9d5ff; margin-bottom:12px;">Alex is ready. Speak when prompted.</h3>
+    <p style="color:#9d7ec9; font-size:0.9rem;">Your microphone is active. Alex will ask you 5 questions.</p>
+    <div id="status">Connecting to Alex...</div>
+    <button class="btn" style="margin-top:24px; background:#3b1f6a;" onclick="endInterview()">End Interview</button>
+  </div>
 
-  <!-- PROOF -->
-  <div class="proof">
-    <p>Built for the AI-first hiring era</p>
-    <div class="proof-stats">
-      <div>
-        <div class="stat-num">5 min</div>
-        <div class="stat-label">Average interview time</div>
-      </div>
-      <div>
-        <div class="stat-num">100%</div>
-        <div class="stat-label">Tailored to your JD</div>
-      </div>
-      <div>
-        <div class="stat-num">Instant</div>
-        <div class="stat-label">Scored debrief</div>
-      </div>
+  <div class="card" id="debrief-section">
+    <h2>Your Interview Debrief</h2>
+    <p>Here's how you performed based on the job description.</p>
+    <div class="debrief-content" id="debrief-content">Generating your debrief...</div>
+    <div class="btn-row">
+      <button class="btn" onclick="downloadDebrief()">⬇ Download Debrief</button>
+      <button class="btn" style="background:#3b1f6a;" onclick="resetApp()">Start New Interview</button>
     </div>
   </div>
 
-  <!-- HOW IT WORKS -->
-  <section class="section" id="how-it-works">
-    <div class="section-label">How it works</div>
-    <h2>Three steps to interview-ready.</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <h3>Paste the job description</h3>
-        <p>Drop in any job posting. Plumlo extracts the keywords and builds a role-specific interview on the spot.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <h3>Talk to Alex</h3>
-        <p>Alex, your AI recruiter, asks you 5 targeted questions by voice — just like a real screening call.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <h3>Get your debrief</h3>
-        <p>Receive a scored report showing exactly what landed, what missed, and what to fix before the real thing.</p>
-      </div>
-    </div>
-  </section>
+  <div class="footer">© 2026 Plumlo. All rights reserved.</div>
 
-  <!-- DEBRIEF PREVIEW -->
-  <section class="section centered" id="debrief">
-    <div class="section-label">Sample debrief</div>
-    <h2 style="text-align:center; max-width:500px;">You'll know exactly where you stand.</h2>
-    <div class="debrief-preview">
-      <div class="score">72<span style="font-size:1.5rem; color:var(--muted)">/100</span></div>
-      <div class="score-label">Overall Interview Score</div>
-      <div class="debrief-row">
-        <h4>✓ What Landed Well</h4>
-        <div class="debrief-item"><span class="dot">→</span><span>Strong alignment with required 5+ years of experience in content strategy</span></div>
-        <div class="debrief-item"><span class="dot">→</span><span>Clear examples of cross-functional collaboration with product and design teams</span></div>
-        <div class="debrief-item"><span class="dot">→</span><span>Confident delivery and professional tone throughout</span></div>
-      </div>
-      <div class="debrief-row">
-        <h4>✗ What Missed</h4>
-        <div class="debrief-item"><span class="dot">→</span><span>No mention of data-driven storytelling — a core requirement in the JD</span></div>
-        <div class="debrief-item"><span class="dot">→</span><span>Failed to connect past work to the company's specific industry</span></div>
-      </div>
-      <div class="debrief-row">
-        <h4>→ What to Fix</h4>
-        <div class="debrief-item"><span class="dot">→</span><span>Prepare a specific example of using analytics to shape a content decision</span></div>
-        <div class="debrief-item"><span class="dot">→</span><span>Research the company's content approach and reference it directly</span></div>
-      </div>
-    </div>
-  </section>
+  <script type="module">
+    import { Conversation } from 'https://esm.sh/@11labs/client@0.2.0';
 
-  <!-- PRICING -->
-  <section class="section centered" id="pricing">
-    <div class="section-label">Pricing</div>
-    <h2 style="text-align:center;">Simple, one-time pricing.</h2>
-    <div class="pricing-grid">
-      <div class="pricing-card">
-        <div class="price-tier">Starter</div>
-        <div class="price">$29</div>
-        <div class="price-desc">One-time · 2 interview sessions</div>
-        <ul class="price-features">
-          <li><span class="check">✓</span> 2 full AI interviews</li>
-          <li><span class="check">✓</span> Scored debrief each session</li>
-          <li><span class="check">✓</span> Downloadable report</li>
-          <li><span class="check">✓</span> Any job description</li>
-        </ul>
-        <a href="https://buy.stripe.com/9B6dRab0f48W4Ls9HH6oo00" class="price-btn secondary">Get Started</a>
-      </div>
-      <div class="pricing-card featured">
-        <div class="featured-badge">Most Popular</div>
-        <div class="price-tier">Pro</div>
-        <div class="price">$49</div>
-        <div class="price-desc">One-time · 10 interview sessions</div>
-        <ul class="price-features">
-          <li><span class="check">✓</span> 10 full AI interviews</li>
-          <li><span class="check">✓</span> Scored debrief each session</li>
-          <li><span class="check">✓</span> Downloadable report</li>
-          <li><span class="check">✓</span> Any job description</li>
-          <li><span class="check">✓</span> Best value per session</li>
-        </ul>
-        <a href="https://buy.stripe.com/14A6ol2UbBodhY1bb6oo01" class="price-btn primary">Get Pro →</a>
-      </div>
-    </div>
-  </section>
+    const AGENT_ID = "agent_9701kn2cw9apf7hv56d2fx5fbh0z";
+    let conversation = null;
+    let transcript = [];
+    let currentJD = '';
+    let interviewEnding = false;
 
-  <!-- STORY -->
-  <section class="section centered" id="story">
-    <div class="section-label">Why we built this</div>
-    <h2 style="text-align:center; max-width:500px;">It started with a phone call.</h2>
-    <div class="story-box">
-      <blockquote>
-        "I got a screening call from a recruiter named <strong>Alex</strong>. Professional voice, great questions, perfect pacing. Halfway through, she accidentally read her own backend instructions out loud — <strong>she was an AI the whole time.</strong> I had no idea. That's when I realized: if AI is screening candidates, candidates need to practice with AI."
-      </blockquote>
-      <div class="story-author">— <strong>Jason Scott</strong>, Founder of Plumlo</div>
-    </div>
-  </section>
+    function renderMarkdown(text) {
+      return text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/^---$/gm, '<hr>')
+        .replace(/^\* (.+)$/gm, '<li>$1</li>')
+        .replace(/^• (.+)$/gm, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/^(?!<[hul]|<\/[hul]|<hr)(.+)$/gm, '<p>$1</p>')
+        .replace(/<p><\/p>/g, '');
+    }
 
-  <!-- FAQ -->
-  <section class="section centered" id="faq">
-    <div class="section-label">FAQ</div>
-    <h2 style="text-align:center;">Common questions.</h2>
-    <div class="faq">
-      <div class="faq-item">
-        <h4>Is this a real voice interview?</h4>
-        <p>Yes. Alex speaks and listens using ElevenLabs voice AI. You answer out loud, just like a real phone screen.</p>
-      </div>
-      <div class="faq-item">
-        <h4>Does it work for any job?</h4>
-        <p>Yes. Paste any job description and Plumlo builds a custom interview around it in seconds.</p>
-      </div>
-      <div class="faq-item">
-        <h4>What does the debrief include?</h4>
-        <p>An overall score, what you said that landed, what you missed, and specific things to fix — all tied directly to the job description.</p>
-      </div>
-      <div class="faq-item">
-        <h4>Do sessions expire?</h4>
-        <p>No. Your sessions are yours to use whenever you need them.</p>
-      </div>
-      <div class="faq-item">
-        <h4>What's the difference between Starter and Pro?</h4>
-        <p>Sessions. Starter gives you 2, Pro gives you 10. Both include the full interview and scored debrief. Pro works out to $4.90 per session.</p>
-      </div>
-    </div>
-  </section>
+    window.startInterview = async function() {
+      const jd = document.getElementById('jd-input').value.trim();
+      if (!jd) { alert('Please paste a job description first.'); return; }
+      currentJD = jd;
+      transcript = [];
+      interviewEnding = false;
+      document.getElementById('start-btn').disabled = true;
+      document.getElementById('start-btn').textContent = 'Starting...';
+      try {
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+        document.getElementById('setup-card').style.display = 'none';
+        document.getElementById('interview-section').style.display = 'block';
+        document.getElementById('status').textContent = 'Connecting to Alex...';
+        conversation = await Conversation.startSession({
+          agentId: AGENT_ID,
+          overrides: {
+            agent: {
+              prompt: {
+                prompt: `You are Alex, a professional AI recruiter. The candidate is interviewing for this role:\n\n${jd}\n\nAsk 5 targeted questions one at a time. Wait for each answer. Be warm and professional.`
+              },
+              firstMessage: `Hi, I'm Alex. I'll be conducting your screening interview today. Let's get started — can you tell me a little about yourself and why you're interested in this role?`
+            }
+          },
+          onStatusChange: ({ status }) => {
+            if (interviewEnding) return;
+            const el = document.getElementById('status');
+            if (status === 'connected') el.textContent = 'Connected — Alex is listening.';
+            else el.textContent = status;
+          },
+          onModeChange: ({ mode }) => {
+            document.getElementById('pulse').style.background = mode === 'speaking' ? '#c084fc' : '#7c3aed';
+          },
+          onMessage: ({ message, source }) => {
+            transcript.push(`${source === 'ai' ? 'Alex' : 'Candidate'}: ${message}`);
+          },
+          onError: (msg) => {
+            if (!interviewEnding) document.getElementById('status').textContent = 'Error: ' + msg;
+          }
+        });
+      } catch (err) {
+        console.error(err);
+        alert('Microphone access is required. Please allow access and try again.');
+        document.getElementById('start-btn').disabled = false;
+        document.getElementById('start-btn').textContent = 'Begin Interview →';
+        document.getElementById('setup-card').style.display = 'block';
+        document.getElementById('interview-section').style.display = 'none';
+      }
+    };
 
-  <!-- FOOTER CTA -->
-  <div class="footer-cta">
-    <h2>Your next interview<br>starts here.</h2>
-    <p>Practice with AI before AI interviews you.</p>
-    <a href="/index.html" class="btn-primary">Start Your Interview →</a>
-  </div>
+    window.endInterview = async function() {
+      interviewEnding = true;
+      if (conversation) {
+        await conversation.endSession();
+        conversation = null;
+      }
+      document.getElementById('interview-section').style.display = 'none';
+      document.getElementById('debrief-section').style.display = 'block';
+      document.getElementById('debrief-content').textContent = 'Generating your debrief...';
+      setTimeout(generateDebrief, 500);
+    };
 
-  <!-- FOOTER -->
-  <footer>
-    <p>© 2026 Plumlo. All rights reserved.</p>
-  </footer>
+    async function generateDebrief() {
+      try {
+        const transcriptText = transcript.length > 0
+          ? transcript.join('\n')
+          : 'No transcript captured — candidate completed a voice interview with Alex.';
+        const response = await fetch('/api/score', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transcript: transcriptText, jobDescription: currentJD })
+        });
+        const data = await response.json();
+        const debriefText = data.debrief || 'Debrief unavailable.';
+        window._lastDebrief = debriefText;
+        document.getElementById('debrief-content').innerHTML = renderMarkdown(debriefText);
+      } catch (err) {
+        console.error(err);
+        document.getElementById('debrief-content').textContent = 'Error generating debrief. Please try again.';
+      }
+    }
 
+    window.downloadDebrief = function() {
+      const text = window._lastDebrief || '';
+      if (!text) { alert('No debrief available yet.'); return; }
+      const blob = new Blob([text], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'plumlo-debrief.txt';
+      a.click();
+    };
+
+    window.resetApp = function() {
+      document.getElementById('debrief-section').style.display = 'none';
+      document.getElementById('setup-card').style.display = 'block';
+      document.getElementById('start-btn').disabled = false;
+      document.getElementById('start-btn').textContent = 'Begin Interview →';
+      document.getElementById('jd-input').value = '';
+      transcript = [];
+      currentJD = '';
+      interviewEnding = false;
+    };
+  </script>
 </body>
 </html>
