@@ -106,16 +106,13 @@
     window.startInterview = async function() {
       const jd = document.getElementById('jd-input').value.trim();
       if (!jd) { alert('Please paste a job description first.'); return; }
-
       document.getElementById('start-btn').disabled = true;
       document.getElementById('start-btn').textContent = 'Starting...';
-
       try {
         await navigator.mediaDevices.getUserMedia({ audio: true });
         document.getElementById('setup-card').style.display = 'none';
         document.getElementById('interview-section').style.display = 'block';
         document.getElementById('status').textContent = 'Connecting to Alex...';
-
         conversation = await Conversation.startSession({
           agentId: AGENT_ID,
           overrides: {
@@ -133,17 +130,15 @@
             else el.textContent = status;
           },
           onModeChange: ({ mode }) => {
-            const pulse = document.getElementById('pulse');
-            pulse.style.background = mode === 'speaking' ? '#c084fc' : '#7c3aed';
+            document.getElementById('pulse').style.background = mode === 'speaking' ? '#c084fc' : '#7c3aed';
           },
           onError: (msg) => {
             document.getElementById('status').textContent = 'Error: ' + msg;
           }
         });
-
       } catch (err) {
         console.error(err);
-        alert('Microphone access is required. Please allow microphone access and try again.');
+        alert('Microphone access is required. Please allow access and try again.');
         document.getElementById('start-btn').disabled = false;
         document.getElementById('start-btn').textContent = 'Begin Interview →';
         document.getElementById('setup-card').style.display = 'block';
