@@ -95,19 +95,100 @@
     .btn-row { display: flex; gap: 12px; margin-top: 24px; }
     .btn-row .btn { margin-top: 0; }
     .footer { margin-top: 40px; font-size: 0.8rem; color: #4a3560; }
+
+    /* PAYMENT GATE */
+    #payment-gate {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 680px;
+    }
+    .payment-heading { font-size: 1.5rem; font-weight: 800; color: #e9d5ff; margin-bottom: 8px; text-align: center; }
+    .payment-sub { font-size: 0.95rem; color: #a78bca; margin-bottom: 36px; text-align: center; }
+    .pricing-row { display: flex; gap: 20px; width: 100%; flex-wrap: wrap; justify-content: center; }
+    .price-card {
+      background: #1a1028;
+      border: 1px solid #3b1f6a;
+      border-radius: 16px;
+      padding: 32px 28px;
+      flex: 1;
+      min-width: 240px;
+      max-width: 300px;
+      position: relative;
+    }
+    .price-card.featured { border-color: #7c3aed; }
+    .featured-badge {
+      position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+      background: #7c3aed; color: #fff;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: 3px 14px; border-radius: 100px;
+    }
+    .price-tier { font-size: 0.8rem; color: #a78bca; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600; }
+    .price-amount { font-size: 2.8rem; font-weight: 800; color: #f0eaff; line-height: 1; margin-bottom: 4px; }
+    .price-desc { font-size: 0.82rem; color: #7c6a9a; margin-bottom: 20px; }
+    .price-features { list-style: none; margin-bottom: 24px; }
+    .price-features li { font-size: 0.88rem; color: #a78bca; padding: 6px 0; border-bottom: 1px solid #2a1a4a; display: flex; gap: 8px; }
+    .price-features li:last-child { border-bottom: none; }
+    .check { color: #c084fc; font-weight: 700; }
+    .pay-btn {
+      display: block; width: 100%; text-align: center;
+      padding: 13px; border-radius: 10px;
+      font-size: 0.95rem; font-weight: 700;
+      text-decoration: none; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .pay-btn.primary { background: #7c3aed; color: #fff; border: none; }
+    .pay-btn.primary:hover { background: #6d28d9; }
+    .pay-btn.secondary { background: transparent; color: #f0eaff; border: 1px solid #3b1f6a; }
+    .pay-btn.secondary:hover { border-color: #7c3aed; }
   </style>
 </head>
 <body>
   <div class="logo">plumlo</div>
   <div class="tagline">Practice with AI before AI interviews you.</div>
 
-  <div class="card" id="setup-card">
+  <!-- PAYMENT GATE -->
+  <div id="payment-gate">
+    <div class="payment-heading">Choose your plan to get started</div>
+    <div class="payment-sub">One-time payment. No subscription. Use your sessions anytime.</div>
+    <div class="pricing-row">
+      <div class="price-card">
+        <div class="price-tier">Starter</div>
+        <div class="price-amount">$29</div>
+        <div class="price-desc">One-time · 2 interview sessions</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> 2 full AI interviews</li>
+          <li><span class="check">✓</span> Scored debrief each session</li>
+          <li><span class="check">✓</span> Downloadable report</li>
+          <li><span class="check">✓</span> Any job description</li>
+        </ul>
+        <a href="https://buy.stripe.com/9B6dRab0f48W4Ls9HH6oo00?success_url=https://plumlo.com/app.html?paid=true" class="pay-btn secondary">Get Started</a>
+      </div>
+      <div class="price-card featured">
+        <div class="featured-badge">Most Popular</div>
+        <div class="price-tier">Pro</div>
+        <div class="price-amount">$49</div>
+        <div class="price-desc">One-time · 10 interview sessions</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> 10 full AI interviews</li>
+          <li><span class="check">✓</span> Scored debrief each session</li>
+          <li><span class="check">✓</span> Downloadable report</li>
+          <li><span class="check">✓</span> Any job description</li>
+          <li><span class="check">✓</span> Best value per session</li>
+        </ul>
+        <a href="https://buy.stripe.com/14A6ol2UbBodhY1bb6oo01?success_url=https://plumlo.com/app.html?paid=true" class="pay-btn primary">Get Pro →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERVIEW APP -->
+  <div class="card" id="setup-card" style="display:none;">
     <h2>Start Your Interview Prep</h2>
     <p>Paste the job description below. Alex, your AI recruiter, will interview you and score your answers.</p>
     <textarea id="jd-input" placeholder="Paste the full job description here..."></textarea>
     <button class="btn" id="start-btn" onclick="startInterview()">Begin Interview →</button>
   </div>
-
   <div class="card" id="interview-section">
     <div class="pulse" id="pulse"></div>
     <h3 style="color:#e9d5ff; margin-bottom:12px;">Alex is ready. Speak when prompted.</h3>
@@ -115,7 +196,6 @@
     <div id="status">Connecting to Alex...</div>
     <button class="btn" style="margin-top:24px; background:#3b1f6a;" onclick="endInterview()">End Interview</button>
   </div>
-
   <div class="card" id="debrief-section">
     <h2>Your Interview Debrief</h2>
     <p>Here's how you performed based on the job description.</p>
@@ -125,17 +205,26 @@
       <button class="btn" style="background:#3b1f6a;" onclick="resetApp()">Start New Interview</button>
     </div>
   </div>
-
   <div class="footer">© 2026 Plumlo. All rights reserved.</div>
 
   <script type="module">
     import { Conversation } from 'https://esm.sh/@11labs/client@0.2.0';
-
     const AGENT_ID = "agent_9701kn2cw9apf7hv56d2fx5fbh0z";
     let conversation = null;
     let transcript = [];
     let currentJD = '';
     let interviewEnding = false;
+
+    // PAYMENT GATE LOGIC
+    const params = new URLSearchParams(window.location.search);
+    const paid = params.get('paid');
+    if (paid === 'true') {
+      document.getElementById('payment-gate').style.display = 'none';
+      document.getElementById('setup-card').style.display = 'block';
+    } else {
+      document.getElementById('payment-gate').style.display = 'flex';
+      document.getElementById('setup-card').style.display = 'none';
+    }
 
     function renderMarkdown(text) {
       return text
