@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Plumlo — AI Interview Prep</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -85,12 +86,15 @@
       color: #e9d5ff;
       text-align: left;
     }
+    .debrief-content h1,
     .debrief-content h2 { color: #c084fc; font-size: 1.1rem; margin: 20px 0 8px; }
     .debrief-content h3 { color: #e9d5ff; font-size: 1rem; margin: 16px 0 6px; }
     .debrief-content p { margin-bottom: 10px; }
     .debrief-content ul { padding-left: 20px; margin-bottom: 10px; }
     .debrief-content li { margin-bottom: 6px; }
     .debrief-content strong { color: #f0eaff; }
+    .btn-row { display: flex; gap: 12px; margin-top: 24px; }
+    .btn-row .btn { margin-top: 0; }
     .footer { margin-top: 40px; font-size: 0.8rem; color: #4a3560; }
   </style>
 </head>
@@ -117,7 +121,10 @@
     <h2>Your Interview Debrief</h2>
     <p>Here's how you performed based on the job description.</p>
     <div class="debrief-content" id="debrief-content">Generating your debrief...</div>
-    <button class="btn" style="margin-top:24px;" onclick="resetApp()">Start New Interview</button>
+    <div class="btn-row">
+      <button class="btn" onclick="downloadDebrief()">⬇ Download Debrief</button>
+      <button class="btn" style="background:#3b1f6a;" onclick="resetApp()">Start New Interview</button>
+    </div>
   </div>
 
   <div class="footer">© 2026 Plumlo. All rights reserved.</div>
@@ -200,12 +207,24 @@
           body: JSON.stringify({ transcript: transcriptText, jobDescription: currentJD })
         });
         const data = await response.json();
-        document.getElementById('debrief-content').textContent = data.debrief || 'Debrief unavailable.';
+        const debriefText = data.debrief || 'Debrief unavailable.';
+        window._lastDebrief = debriefText;
+        document.getElementById('debrief-content').innerHTML = marked.parse(debriefText);
       } catch (err) {
         console.error(err);
         document.getElementById('debrief-content').textContent = 'Error generating debrief. Please try again.';
       }
     }
+
+    window.downloadDebrief = function() {
+      const text = window._lastDebrief || '';
+      if (!text) { alert('No debrief available to download.'); return; }
+      const blob = new Blob([text], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'plumlo-debrief.txt';
+      a.click();
+    };
 
     window.resetApp = function() {
       document.getElementById('debrief-section').style.display = 'none';
