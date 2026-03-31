@@ -59,9 +59,9 @@
     }
     .btn:hover { background: #6d28d9; }
     .btn:disabled { background: #3b1f6a; cursor: not-allowed; }
-    #interview-section { display: none; margin-top: 32px; text-align: center; }
+    #interview-section { display: none; margin-top: 0; text-align: center; }
     #interview-section h3 { color: #e9d5ff; margin-bottom: 12px; }
-    #status { font-size: 0.9rem; color: #a78bca; margin-top: 12px; }
+    #status { font-size: 0.9rem; color: #a78bca; margin-top: 12px; min-height: 24px; }
     .pulse {
       width: 64px; height: 64px;
       border-radius: 50%;
@@ -69,6 +69,7 @@
       margin: 0 auto 16px;
       animation: pulse 1.5s infinite;
     }
+    .pulse.speaking { background: #c084fc; }
     @keyframes pulse {
       0% { transform: scale(1); opacity: 1; }
       50% { transform: scale(1.15); opacity: 0.7; }
@@ -98,12 +99,13 @@
 
   <div class="footer">© 2026 Plumlo. All rights reserved.</div>
 
-  <script src="https://cdn.elevenlabs.io/convai-widget/index.js" async></script>
-  <script>
+  <script type="module">
+    import { Conversation } from 'https://cdn.elevenlabs.io/convai-widget/index.js';
+
     const AGENT_ID = "agent_9701kn2cw9apf7hv56d2fx5fbh0z";
     let conversation = null;
 
-    async function startInterview() {
+    window.startInterview = async function() {
       const jd = document.getElementById('jd-input').value.trim();
       if (!jd) { alert('Please paste a job description first.'); return; }
 
@@ -112,39 +114,50 @@
 
       try {
         await navigator.mediaDevices.getUserMedia({ audio: true });
-
         document.getElementById('setup-card').style.display = 'none';
         document.getElementById('interview-section').style.display = 'block';
-
-        const { Conversation } = await import('https://cdn.elevenlabs.io/convai-widget/index.js');
+        document.getElementById('status').textContent = 'Connecting to Alex...';
 
         conversation = await Conversation.startSession({
           agentId: AGENT_ID,
           overrides: {
             agent: {
-              firstMessage: `Hi, I'm Alex. I'll be conducting your screening interview today. I've reviewed the job description. Let's get started — can you tell me a little about yourself and why you're interested in this role?`,
               prompt: {
-                prompt: `You are Alex, a professional AI recruiter. The candidate is interviewing for this role:\n\n${jd}\n\nAsk 5 targeted questions one at a time based on this job description. Wait for each answer before continuing. Be warm and professional.`
-              }
+                prompt: `You are Alex, a professional AI recruiter. The candidate is interviewing for this role:\n\n${jd}\n\nAsk 5 targeted questions one at a time. Wait for each answer. Be warm and professional.`
+              },
+              firstMessage: `Hi, I'm Alex. I'll be conducting your screening interview today. Let's get started — can you tell me a little about yourself and why you're interested in this role?`
             }
           },
-          onStatusChange: (status) => {
-            document.getElementById('status').textContent = status === 'connected' ? 'Connected — Alex is listening.' : status;
+          onStatusChange: ({ status }) => {
+            const el = document.getElementById('status');
+            if (status === 'connected') el.textContent = 'Connected — Alex is listening.';
+            else if (status === 'disconnected') el.textContent = 'Interview ended.';
+            else el.textContent = status;
           },
-          onError: (error) => {
-            document.getElementById('status').textContent = 'Error: ' + error;
+          onModeChange: ({ mode }) => {
+            const pulse = document.getElementById('pulse');
+            pulse.className = mode === 'speaking' ? 'pulse speaking' : 'pulse';
+          },
+          onError: (msg) => {
+            document.getElementById('status').textContent = 'Error: ' + msg;
           }
         });
 
       } catch (err) {
-        alert('Microphone access is required for the interview. Please allow microphone access and try again.');
+        console.error(err);
+        alert('Microphone access is required. Please allow microphone access and try again.');
         document.getElementById('start-btn').disabled = false;
         document.getElementById('start-btn').textContent = 'Begin Interview →';
+        document.getElementById('setup-card').style.display = 'block';
+        document.getElementById('interview-section').style.display = 'none';
       }
     }
 
-    async function endInterview() {
-      if (conversation) await conversation.endSession();
+    window.endInterview = async function() {
+      if (conversation) {
+        await conversation.endSession();
+        conversation = null;
+      }
       document.getElementById('interview-section').style.display = 'none';
       document.getElementById('setup-card').style.display = 'block';
       document.getElementById('start-btn').disabled = false;
