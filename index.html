@@ -59,8 +59,7 @@
     }
     .btn:hover { background: #6d28d9; }
     .btn:disabled { background: #3b1f6a; cursor: not-allowed; }
-    #interview-section { display: none; margin-top: 0; text-align: center; }
-    #interview-section h3 { color: #e9d5ff; margin-bottom: 12px; }
+    #interview-section { display: none; text-align: center; }
     #status { font-size: 0.9rem; color: #a78bca; margin-top: 12px; min-height: 24px; }
     .pulse {
       width: 64px; height: 64px;
@@ -69,7 +68,6 @@
       margin: 0 auto 16px;
       animation: pulse 1.5s infinite;
     }
-    .pulse.speaking { background: #c084fc; }
     @keyframes pulse {
       0% { transform: scale(1); opacity: 1; }
       50% { transform: scale(1.15); opacity: 0.7; }
@@ -91,7 +89,7 @@
 
   <div class="card" id="interview-section">
     <div class="pulse" id="pulse"></div>
-    <h3>Alex is ready. Speak when prompted.</h3>
+    <h3 style="color:#e9d5ff; margin-bottom:12px;">Alex is ready. Speak when prompted.</h3>
     <p style="color:#9d7ec9; font-size:0.9rem;">Your microphone is active. Alex will ask you 5 questions.</p>
     <div id="status">Connecting to Alex...</div>
     <button class="btn" style="margin-top:24px; background:#3b1f6a;" onclick="endInterview()">End Interview</button>
@@ -100,7 +98,7 @@
   <div class="footer">© 2026 Plumlo. All rights reserved.</div>
 
   <script type="module">
-    import { Conversation } from 'https://cdn.elevenlabs.io/convai-widget/index.js';
+    import { Conversation } from 'https://unpkg.com/@11labs/client@latest/dist/index.esm.js';
 
     const AGENT_ID = "agent_9701kn2cw9apf7hv56d2fx5fbh0z";
     let conversation = null;
@@ -136,7 +134,7 @@
           },
           onModeChange: ({ mode }) => {
             const pulse = document.getElementById('pulse');
-            pulse.className = mode === 'speaking' ? 'pulse speaking' : 'pulse';
+            pulse.style.background = mode === 'speaking' ? '#c084fc' : '#7c3aed';
           },
           onError: (msg) => {
             document.getElementById('status').textContent = 'Error: ' + msg;
@@ -154,10 +152,7 @@
     }
 
     window.endInterview = async function() {
-      if (conversation) {
-        await conversation.endSession();
-        conversation = null;
-      }
+      if (conversation) { await conversation.endSession(); conversation = null; }
       document.getElementById('interview-section').style.display = 'none';
       document.getElementById('setup-card').style.display = 'block';
       document.getElementById('start-btn').disabled = false;
