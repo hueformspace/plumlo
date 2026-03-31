@@ -188,7 +188,8 @@
       document.getElementById('interview-section').style.display = 'none';
       document.getElementById('debrief-section').style.display = 'block';
       document.getElementById('debrief-content').textContent = 'Generating your debrief...';
-      await generateDebrief();
+      setTimeout(generateDebrief, 500);
+    }
     }
 
     async function generateDebrief() {
