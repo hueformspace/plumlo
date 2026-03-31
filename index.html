@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plumlo — AI Interview Prep</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0f0a1a;
+      color: #f0eaff;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .logo { font-size: 2.4rem; font-weight: 800; color: #c084fc; letter-spacing: -1px; }
+    .tagline { font-size: 1.1rem; color: #a78bca; margin-top: 8px; margin-bottom: 48px; }
+    .card {
+      background: #1a1028;
+      border: 1px solid #3b1f6a;
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%;
+      max-width: 560px;
+    }
+    .card h2 { font-size: 1.3rem; margin-bottom: 8px; color: #e9d5ff; }
+    .card p { font-size: 0.95rem; color: #9d7ec9; margin-bottom: 24px; }
+    textarea {
+      width: 100%;
+      height: 180px;
+      background: #0f0a1a;
+      border: 1px solid #3b1f6a;
+      border-radius: 10px;
+      color: #f0eaff;
+      font-size: 0.95rem;
+      padding: 14px;
+      resize: vertical;
+      outline: none;
+    }
+    textarea:focus { border-color: #c084fc; }
+    textarea::placeholder { color: #5b4070; }
+    .btn {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 16px;
+      background: #7c3aed;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #6d28d9; }
+    .footer { margin-top: 40px; font-size: 0.8rem; color: #4a3560; }
+  </style>
+</head>
+<body>
+  <div class="logo">plumlo</div>
+  <div class="tagline">Practice with AI before AI interviews you.</div>
+  <div class="card">
+    <h2>Start Your Interview Prep</h2>
+    <p>Paste the job description below. Alex, your AI recruiter, will interview you and score your answers.</p>
+    <textarea placeholder="Paste the full job description here..."></textarea>
+    <button class="btn">Begin Interview →</button>
+  </div>
+  <div class="footer">© 2026 Plumlo. All rights reserved.</div>
+</body>
+</html>
