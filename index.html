@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Plumlo — AI Interview Prep</title>
-  <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -86,13 +85,13 @@
       color: #e9d5ff;
       text-align: left;
     }
-    .debrief-content h1,
-    .debrief-content h2 { color: #c084fc; font-size: 1.1rem; margin: 20px 0 8px; }
+    .debrief-content h2 { color: #c084fc; font-size: 1.15rem; margin: 20px 0 8px; }
     .debrief-content h3 { color: #e9d5ff; font-size: 1rem; margin: 16px 0 6px; }
     .debrief-content p { margin-bottom: 10px; }
     .debrief-content ul { padding-left: 20px; margin-bottom: 10px; }
     .debrief-content li { margin-bottom: 6px; }
-    .debrief-content strong { color: #f0eaff; }
+    .debrief-content strong { color: #ffffff; }
+    .debrief-content hr { border-color: #3b1f6a; margin: 16px 0; }
     .btn-row { display: flex; gap: 12px; margin-top: 24px; }
     .btn-row .btn { margin-top: 0; }
     .footer { margin-top: 40px; font-size: 0.8rem; color: #4a3560; }
@@ -136,12 +135,30 @@
     let conversation = null;
     let transcript = [];
     let currentJD = '';
+    let interviewEnding = false;
+
+    function renderMarkdown(text) {
+      return text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/^---$/gm, '<hr>')
+        .replace(/^\* (.+)$/gm, '<li>$1</li>')
+        .replace(/^• (.+)$/gm, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/^(?!<[hul]|<\/[hul]|<hr)(.+)$/gm, '<p>$1</p>')
+        .replace(/<p><\/p>/g, '');
+    }
 
     window.startInterview = async function() {
       const jd = document.getElementById('jd-input').value.trim();
       if (!jd) { alert('Please paste a job description first.'); return; }
       currentJD = jd;
       transcript = [];
+      interviewEnding = false;
       document.getElementById('start-btn').disabled = true;
       document.getElementById('start-btn').textContent = 'Starting...';
       try {
@@ -160,9 +177,9 @@
             }
           },
           onStatusChange: ({ status }) => {
+            if (interviewEnding) return;
             const el = document.getElementById('status');
             if (status === 'connected') el.textContent = 'Connected — Alex is listening.';
-            else if (status === 'disconnected') el.textContent = 'Interview ended.';
             else el.textContent = status;
           },
           onModeChange: ({ mode }) => {
@@ -172,7 +189,7 @@
             transcript.push(`${source === 'ai' ? 'Alex' : 'Candidate'}: ${message}`);
           },
           onError: (msg) => {
-            document.getElementById('status').textContent = 'Error: ' + msg;
+            if (!interviewEnding) document.getElementById('status').textContent = 'Error: ' + msg;
           }
         });
       } catch (err) {
@@ -186,6 +203,7 @@
     };
 
     window.endInterview = async function() {
+      interviewEnding = true;
       if (conversation) {
         await conversation.endSession();
         conversation = null;
@@ -209,7 +227,7 @@
         const data = await response.json();
         const debriefText = data.debrief || 'Debrief unavailable.';
         window._lastDebrief = debriefText;
-        document.getElementById('debrief-content').innerHTML = marked.parse ? marked.parse(debriefText) : marked(debriefText);
+        document.getElementById('debrief-content').innerHTML = renderMarkdown(debriefText);
       } catch (err) {
         console.error(err);
         document.getElementById('debrief-content').textContent = 'Error generating debrief. Please try again.';
@@ -218,7 +236,7 @@
 
     window.downloadDebrief = function() {
       const text = window._lastDebrief || '';
-      if (!text) { alert('No debrief available to download.'); return; }
+      if (!text) { alert('No debrief available yet.'); return; }
       const blob = new Blob([text], { type: 'text/plain' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -234,6 +252,7 @@
       document.getElementById('jd-input').value = '';
       transcript = [];
       currentJD = '';
+      interviewEnding = false;
     };
   </script>
 </body>
