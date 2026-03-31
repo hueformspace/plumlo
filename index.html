@@ -209,7 +209,7 @@
         const data = await response.json();
         const debriefText = data.debrief || 'Debrief unavailable.';
         window._lastDebrief = debriefText;
-        document.getElementById('debrief-content').innerHTML = marked.parse(debriefText);
+        document.getElementById('debrief-content').innerHTML = marked.parse ? marked.parse(debriefText) : marked(debriefText);
       } catch (err) {
         console.error(err);
         document.getElementById('debrief-content').textContent = 'Error generating debrief. Please try again.';
