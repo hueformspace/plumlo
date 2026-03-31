@@ -86,12 +86,6 @@
       white-space: pre-wrap;
       text-align: left;
     }
-    .score-badge {
-      font-size: 3rem;
-      font-weight: 800;
-      color: #c084fc;
-      margin: 16px 0 8px;
-    }
     .footer { margin-top: 40px; font-size: 0.8rem; color: #4a3560; }
   </style>
 </head>
@@ -136,16 +130,13 @@
       if (!jd) { alert('Please paste a job description first.'); return; }
       currentJD = jd;
       transcript = [];
-
       document.getElementById('start-btn').disabled = true;
       document.getElementById('start-btn').textContent = 'Starting...';
-
       try {
         await navigator.mediaDevices.getUserMedia({ audio: true });
         document.getElementById('setup-card').style.display = 'none';
         document.getElementById('interview-section').style.display = 'block';
         document.getElementById('status').textContent = 'Connecting to Alex...';
-
         conversation = await Conversation.startSession({
           agentId: AGENT_ID,
           overrides: {
@@ -172,7 +163,6 @@
             document.getElementById('status').textContent = 'Error: ' + msg;
           }
         });
-
       } catch (err) {
         console.error(err);
         alert('Microphone access is required. Please allow access and try again.');
@@ -181,32 +171,33 @@
         document.getElementById('setup-card').style.display = 'block';
         document.getElementById('interview-section').style.display = 'none';
       }
-    }
+    };
 
     window.endInterview = async function() {
-      if (conversation) { await conversation.endSession(); conversation = null; }
+      if (conversation) {
+        await conversation.endSession();
+        conversation = null;
+      }
       document.getElementById('interview-section').style.display = 'none';
       document.getElementById('debrief-section').style.display = 'block';
       document.getElementById('debrief-content').textContent = 'Generating your debrief...';
       setTimeout(generateDebrief, 500);
-    }
-    }
+    };
 
     async function generateDebrief() {
       try {
         const transcriptText = transcript.length > 0
           ? transcript.join('\n')
           : 'No transcript captured — candidate completed a voice interview with Alex.';
-
         const response = await fetch('/api/score', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ transcript: transcriptText, jobDescription: currentJD })
         });
-
         const data = await response.json();
         document.getElementById('debrief-content').textContent = data.debrief || 'Debrief unavailable.';
       } catch (err) {
+        console.error(err);
         document.getElementById('debrief-content').textContent = 'Error generating debrief. Please try again.';
       }
     }
@@ -219,7 +210,7 @@
       document.getElementById('jd-input').value = '';
       transcript = [];
       currentJD = '';
-    }
+    };
   </script>
 </body>
 </html>
