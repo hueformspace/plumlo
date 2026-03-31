@@ -25,7 +25,7 @@
       border-radius: 16px;
       padding: 40px;
       width: 100%;
-      max-width: 560px;
+      max-width: 600px;
     }
     .card h2 { font-size: 1.3rem; margin-bottom: 8px; color: #e9d5ff; }
     .card p { font-size: 0.95rem; color: #9d7ec9; margin-bottom: 24px; }
@@ -60,6 +60,7 @@
     .btn:hover { background: #6d28d9; }
     .btn:disabled { background: #3b1f6a; cursor: not-allowed; }
     #interview-section { display: none; text-align: center; }
+    #debrief-section { display: none; }
     #status { font-size: 0.9rem; color: #a78bca; margin-top: 12px; min-height: 24px; }
     .pulse {
       width: 64px; height: 64px;
@@ -72,6 +73,24 @@
       0% { transform: scale(1); opacity: 1; }
       50% { transform: scale(1.15); opacity: 0.7; }
       100% { transform: scale(1); opacity: 1; }
+    }
+    .debrief-content {
+      background: #0f0a1a;
+      border: 1px solid #3b1f6a;
+      border-radius: 10px;
+      padding: 24px;
+      margin-top: 16px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #e9d5ff;
+      white-space: pre-wrap;
+      text-align: left;
+    }
+    .score-badge {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #c084fc;
+      margin: 16px 0 8px;
     }
     .footer { margin-top: 40px; font-size: 0.8rem; color: #4a3560; }
   </style>
@@ -95,6 +114,13 @@
     <button class="btn" style="margin-top:24px; background:#3b1f6a;" onclick="endInterview()">End Interview</button>
   </div>
 
+  <div class="card" id="debrief-section">
+    <h2>Your Interview Debrief</h2>
+    <p>Here's how you performed based on the job description.</p>
+    <div class="debrief-content" id="debrief-content">Generating your debrief...</div>
+    <button class="btn" style="margin-top:24px;" onclick="resetApp()">Start New Interview</button>
+  </div>
+
   <div class="footer">© 2026 Plumlo. All rights reserved.</div>
 
   <script type="module">
@@ -102,17 +128,24 @@
 
     const AGENT_ID = "agent_9701kn2cw9apf7hv56d2fx5fbh0z";
     let conversation = null;
+    let transcript = [];
+    let currentJD = '';
 
     window.startInterview = async function() {
       const jd = document.getElementById('jd-input').value.trim();
       if (!jd) { alert('Please paste a job description first.'); return; }
+      currentJD = jd;
+      transcript = [];
+
       document.getElementById('start-btn').disabled = true;
       document.getElementById('start-btn').textContent = 'Starting...';
+
       try {
         await navigator.mediaDevices.getUserMedia({ audio: true });
         document.getElementById('setup-card').style.display = 'none';
         document.getElementById('interview-section').style.display = 'block';
         document.getElementById('status').textContent = 'Connecting to Alex...';
+
         conversation = await Conversation.startSession({
           agentId: AGENT_ID,
           overrides: {
@@ -132,10 +165,14 @@
           onModeChange: ({ mode }) => {
             document.getElementById('pulse').style.background = mode === 'speaking' ? '#c084fc' : '#7c3aed';
           },
+          onMessage: ({ message, source }) => {
+            transcript.push(`${source === 'ai' ? 'Alex' : 'Candidate'}: ${message}`);
+          },
           onError: (msg) => {
             document.getElementById('status').textContent = 'Error: ' + msg;
           }
         });
+
       } catch (err) {
         console.error(err);
         alert('Microphone access is required. Please allow access and try again.');
@@ -149,9 +186,38 @@
     window.endInterview = async function() {
       if (conversation) { await conversation.endSession(); conversation = null; }
       document.getElementById('interview-section').style.display = 'none';
+      document.getElementById('debrief-section').style.display = 'block';
+      document.getElementById('debrief-content').textContent = 'Generating your debrief...';
+      await generateDebrief();
+    }
+
+    async function generateDebrief() {
+      try {
+        const transcriptText = transcript.length > 0
+          ? transcript.join('\n')
+          : 'No transcript captured — candidate completed a voice interview with Alex.';
+
+        const response = await fetch('/api/score', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transcript: transcriptText, jobDescription: currentJD })
+        });
+
+        const data = await response.json();
+        document.getElementById('debrief-content').textContent = data.debrief || 'Debrief unavailable.';
+      } catch (err) {
+        document.getElementById('debrief-content').textContent = 'Error generating debrief. Please try again.';
+      }
+    }
+
+    window.resetApp = function() {
+      document.getElementById('debrief-section').style.display = 'none';
       document.getElementById('setup-card').style.display = 'block';
       document.getElementById('start-btn').disabled = false;
       document.getElementById('start-btn').textContent = 'Begin Interview →';
+      document.getElementById('jd-input').value = '';
+      transcript = [];
+      currentJD = '';
     }
   </script>
 </body>
