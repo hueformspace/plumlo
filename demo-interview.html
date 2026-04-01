@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,43 +137,52 @@
   </style>
 </head>
 <body>
+
   <div class="logo">plumlo</div>
   <div class="tagline">Practice with AI before AI interviews you.</div>
   <div class="demo-badge">Free Demo</div>
+
   <div class="card" id="setup-card">
     <h2>Start Your Interview</h2>
     <p>Paste any job description below. Alex, your AI recruiter, will interview you live and score your answers.</p>
     <textarea id="jd-input" placeholder="Paste the full job description here..."></textarea>
-    <button class="btn" id="start-btn" onclick="startInterview()">Begin Interview →</button>
+    <button class="btn" id="start-btn">Begin Interview →</button>
   </div>
+
   <div class="card" id="interview-section">
     <div class="pulse" id="pulse"></div>
     <h3 style="color:#e9d5ff; margin-bottom:12px;">Alex is ready. Speak when prompted.</h3>
     <p style="color:#9d7ec9; font-size:0.9rem;">Your microphone is active. Alex will ask you 5 questions.</p>
     <div id="status">Connecting to Alex...</div>
-    <button class="btn" style="margin-top:24px; background:#3b1f6a;" onclick="endInterview()">End Interview</button>
+    <button class="btn" id="end-btn" style="margin-top:24px; background:#3b1f6a;">End Interview</button>
   </div>
+
   <div class="card" id="debrief-section">
     <h2>Your Interview Debrief</h2>
     <p>Here's how you performed based on the job description.</p>
     <div class="debrief-content" id="debrief-content">Generating your debrief...</div>
     <div class="btn-row">
-      <button class="btn" onclick="downloadDebrief()">⬇ Download Debrief</button>
-      <button class="btn" style="background:#3b1f6a;" onclick="resetApp()">Start New Interview</button>
+      <button class="btn" id="download-btn">⬇ Download Debrief</button>
+      <button class="btn" id="reset-btn" style="background:#3b1f6a;">Start New Interview</button>
     </div>
   </div>
+
   <div class="upsell" id="upsell" style="display:none;">
     <p>Want unlimited sessions? Get full access starting at $29.</p>
     <a href="/#pricing">See Pricing →</a>
   </div>
+
   <div class="footer">© 2026 Plumlo. All rights reserved. · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></div>
-  <script>
+
+  <script type="module">
     import { Conversation } from 'https://esm.sh/@11labs/client@0.2.0';
+
     const AGENT_ID = "agent_9701kn2cw9apf7hv56d2fx5fbh0z";
     let conversation = null;
     let transcript = [];
     let currentJD = '';
     let interviewEnding = false;
+
     function renderMarkdown(text) {
       return text
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -188,14 +198,15 @@
         .replace(/^(?!<[hul]|<\/[hul]|<hr)(.+)$/gm, '<p>$1</p>')
         .replace(/<p><\/p>/g, '');
     }
-    window.startInterview = async function() {
+
+    document.getElementById('start-btn').addEventListener('click', async function() {
       const jd = document.getElementById('jd-input').value.trim();
       if (!jd) { alert('Please paste a job description first.'); return; }
       currentJD = jd;
       transcript = [];
       interviewEnding = false;
-      document.getElementById('start-btn').disabled = true;
-      document.getElementById('start-btn').textContent = 'Starting...';
+      this.disabled = true;
+      this.textContent = 'Starting...';
       try {
         await navigator.mediaDevices.getUserMedia({ audio: true });
         document.getElementById('setup-card').style.display = 'none';
@@ -235,13 +246,57 @@
         document.getElementById('setup-card').style.display = 'block';
         document.getElementById('interview-section').style.display = 'none';
       }
-    };
-    window.endInterview = async function() {
+    });
+
+    document.getElementById('end-btn').addEventListener('click', async function() {
       interviewEnding = true;
       if (conversation) { await conversation.endSession(); conversation = null; }
       document.getElementById('interview-section').style.display = 'none';
       document.getElementById('debrief-section').style.display = 'block';
       document.getElementById('debrief-content').textContent = 'Generating your debrief...';
       setTimeout(generateDebrief, 500);
-    };
+    });
+
     async function generateDebrief() {
+      try {
+        const transcriptText = transcript.length > 0
+          ? transcript.join('\n')
+          : 'No transcript captured — candidate completed a voice interview with Alex.';
+        const response = await fetch('/api/score', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transcript: transcriptText, jobDescription: currentJD })
+        });
+        const data = await response.json();
+        const debriefText = data.debrief || 'Debrief unavailable.';
+        window._lastDebrief = debriefText;
+        document.getElementById('debrief-content').innerHTML = renderMarkdown(debriefText);
+        document.getElementById('upsell').style.display = 'block';
+      } catch (err) {
+        console.error(err);
+        document.getElementById('debrief-content').textContent = 'Error generating debrief. Please try again.';
+      }
+    }
+
+    document.getElementById('download-btn').addEventListener('click', function() {
+      const text = window._lastDebrief || '';
+      if (!text) { alert('No debrief available yet.'); return; }
+      const blob = new Blob([text], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'plumlo-debrief.txt';
+      a.click();
+    });
+
+    document.getElementById('reset-btn').addEventListener('click', function() {
+      document.getElementById('debrief-section').style.display = 'none';
+      document.getElementById('upsell').style.display = 'none';
+      document.getElementById('setup-card').style.display = 'block';
+      document.getElementById('start-btn').disabled = false;
+      document.getElementById('start-btn').textContent = 'Begin Interview →';
+      document.getElementById('jd-input').value = '';
+      transcript = []; currentJD = ''; interviewEnding = false;
+    });
+  </script>
+</body>
+</html>
