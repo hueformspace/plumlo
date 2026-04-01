@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How Plumlo Works</title>
+  <title>Plumlo — Private Demo</title>
   <style>
     :root {
       --bg: #080612;
@@ -23,6 +23,76 @@
       font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
       -webkit-font-smoothing: antialiased;
     }
+
+    /* PASSWORD GATE */
+    #gate {
+      position: fixed; inset: 0; z-index: 999;
+      background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
+    }
+    .gate-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 56px 48px;
+      max-width: 420px;
+      width: 100%;
+    }
+    .gate-logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--purple-light);
+      letter-spacing: -0.5px;
+      margin-bottom: 28px;
+    }
+    .gate-box h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+    }
+    .gate-box p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+    #pw-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 1rem;
+      color: var(--text);
+      outline: none;
+      margin-bottom: 12px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    #pw-input:focus { border-color: var(--purple); }
+    #pw-error {
+      font-size: 0.82rem;
+      color: #f87171;
+      margin-bottom: 12px;
+      min-height: 18px;
+    }
+    #pw-btn {
+      width: 100%;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, transform 0.1s;
+    }
+    #pw-btn:hover { background: #7c3aed; transform: translateY(-1px); }
 
     /* NAV */
     nav {
@@ -90,9 +160,23 @@
       font-size: clamp(1rem, 2vw, 1.2rem);
       color: var(--muted);
       max-width: 500px;
-      margin: 0 auto;
+      margin: 0 auto 40px;
       line-height: 1.7;
     }
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 18px 48px;
+      border-radius: 100px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: #7c3aed; transform: translateY(-2px); }
 
     /* STEPS */
     .steps-section {
@@ -100,7 +184,7 @@
       margin: 0 auto;
       padding: 80px 24px;
     }
-    .steps-section .section-label {
+    .section-label {
       font-size: 0.8rem;
       font-weight: 600;
       letter-spacing: 1.5px;
@@ -109,7 +193,7 @@
       margin-bottom: 16px;
       text-align: center;
     }
-    .steps-section h2 {
+    .section-h2 {
       font-size: clamp(1.8rem, 3.5vw, 2.6rem);
       font-weight: 800;
       letter-spacing: -1px;
@@ -120,13 +204,9 @@
       display: grid;
       grid-template-columns: 1fr 40px 1fr 40px 1fr;
       align-items: start;
-      gap: 0;
     }
     @media (max-width: 720px) {
-      .steps-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
+      .steps-grid { grid-template-columns: 1fr; gap: 24px; }
       .step-arrow { display: none; }
     }
     .step-arrow {
@@ -143,7 +223,6 @@
       border-radius: 20px;
       padding: 36px 28px;
       transition: border-color 0.2s;
-      height: 100%;
     }
     .step-card:hover { border-color: var(--purple); }
     .step-num {
@@ -157,7 +236,7 @@
     }
     .step-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
     .step-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
-    .step-card .step-detail {
+    .step-detail {
       margin-top: 16px;
       background: rgba(155,93,229,0.08);
       border: 1px solid rgba(155,93,229,0.2);
@@ -173,22 +252,6 @@
       max-width: 1000px;
       margin: 0 auto;
       padding: 0 24px 80px;
-    }
-    .insights-section .section-label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--purple-light);
-      margin-bottom: 16px;
-      text-align: center;
-    }
-    .insights-section h2 {
-      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-      font-weight: 800;
-      letter-spacing: -1px;
-      text-align: center;
-      margin-bottom: 48px;
     }
     .insights-grid {
       display: grid;
@@ -210,17 +273,8 @@
       line-height: 1;
       margin-bottom: 16px;
     }
-    .insight-card h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      line-height: 1.4;
-    }
-    .insight-card p {
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.65;
-    }
+    .insight-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 10px; line-height: 1.4; }
+    .insight-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
 
     /* DEBRIEF */
     .debrief-section {
@@ -230,22 +284,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-    }
-    .debrief-section .section-label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--purple-light);
-      margin-bottom: 16px;
-      text-align: center;
-    }
-    .debrief-section h2 {
-      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-      font-weight: 800;
-      letter-spacing: -1px;
-      text-align: center;
-      margin-bottom: 48px;
     }
     .debrief-preview {
       background: var(--surface);
@@ -285,30 +323,8 @@
       line-height: 1.05;
     }
     .footer-cta h2 span { color: var(--purple-light); }
-    .footer-cta p {
-      color: var(--muted);
-      font-size: 1rem;
-      margin-bottom: 40px;
-    }
-    .btn-primary {
-      background: var(--purple);
-      color: #fff;
-      border: none;
-      padding: 18px 48px;
-      border-radius: 100px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.1s;
-      display: inline-block;
-    }
-    .btn-primary:hover { background: #7c3aed; transform: translateY(-2px); }
-    .footer-trust {
-      margin-top: 20px;
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
+    .footer-cta p { color: var(--muted); font-size: 1rem; margin-bottom: 40px; }
+    .footer-trust { margin-top: 20px; font-size: 0.82rem; color: var(--muted); }
 
     /* FOOTER */
     footer {
@@ -320,61 +336,73 @@
     }
     footer a { color: var(--muted); text-decoration: none; }
     footer a:hover { color: var(--purple-light); }
+
+    @media (max-width: 600px) {
+      nav { padding: 16px 24px; }
+      .gate-box { padding: 40px 28px; }
+    }
   </style>
 </head>
 <body>
 
+  <!-- PASSWORD GATE -->
+  <div id="gate">
+    <div class="gate-box">
+      <div class="gate-logo">plumlo</div>
+      <h2>Private Demo</h2>
+      <p>You've been given access to see how Plumlo works.<br>Enter the password to continue.</p>
+      <input id="pw-input" type="password" placeholder="Enter password" />
+      <div id="pw-error"></div>
+      <button id="pw-btn" onclick="checkPassword()">Continue →</button>
+    </div>
+  </div>
+
   <!-- NAV -->
   <nav>
     <a href="/" class="nav-logo">plumlo</a>
-    <a href="/#pricing" class="nav-cta">Start for $29 →</a>
+    <a href="/app.html" class="nav-cta">Try it free →</a>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-label">How it works</div>
+    <div class="hero-label">Private Demo</div>
     <h1>Two minutes.<br><span>You'll get it.</span></h1>
-    <p class="hero-sub">A live audio interview, built from your actual job description, scored and reviewed before you close the tab.</p>
+    <p class="hero-sub">A live audio interview, built from your actual job description — scored and reviewed before you close the tab.</p>
+    <a href="/app.html" class="btn-primary">Try it yourself →</a>
   </section>
 
   <!-- STEPS -->
   <section class="steps-section">
     <div class="section-label">The process</div>
-    <h2>Three steps to interview-ready.</h2>
+    <h2 class="section-h2">Three steps to interview-ready.</h2>
     <div class="steps-grid">
-
       <div class="step-card">
         <div class="step-num">1</div>
         <h3>Paste the job description</h3>
         <p>Drop in any job posting — entry level to executive, any industry. Plumlo reads it and builds a custom interview around it in seconds.</p>
         <div class="step-detail">Works for any role, any company, any level.</div>
       </div>
-
       <div class="step-arrow">→</div>
-
       <div class="step-card">
         <div class="step-num">2</div>
         <h3>Talk to Alex</h3>
         <p>Alex, your AI recruiter, conducts a live voice interview — five targeted questions, real pacing, no scripts. You answer out loud, just like the real thing.</p>
         <div class="step-detail">Live audio. Not a chatbot. Not multiple choice.</div>
       </div>
-
       <div class="step-arrow">→</div>
-
       <div class="step-card">
         <div class="step-num">3</div>
         <h3>Get your debrief</h3>
-        <p>Immediately after, you receive a scored report — what you said that landed, what the system flagged as missing, and exactly what to fix.</p>
+        <p>Immediately after, you receive a scored report — what landed, what the system flagged as missing, and exactly what to fix.</p>
         <div class="step-detail">Specific feedback tied directly to the job description.</div>
       </div>
-
     </div>
   </section>
 
   <!-- INSIGHTS -->
   <section class="insights-section">
     <div class="section-label">Why it works</div>
-    <h2>Three things most candidates don't know.</h2>
+    <h2 class="section-h2">Three things most candidates don't know.</h2>
     <div class="insights-grid">
       <div class="insight-card">
         <div class="insight-num">01</div>
@@ -397,7 +425,7 @@
   <!-- DEBRIEF PREVIEW -->
   <section class="debrief-section">
     <div class="section-label">Sample debrief</div>
-    <h2>You'll know exactly where you stand.</h2>
+    <h2 class="section-h2">You'll know exactly where you stand.</h2>
     <div class="debrief-preview">
       <div class="score">72<span style="font-size:1.5rem; color:var(--muted)">/100</span></div>
       <div class="score-label">Overall Interview Score</div>
@@ -423,15 +451,31 @@
   <!-- FOOTER CTA -->
   <div class="footer-cta">
     <h2>The next one<br><span>goes better.</span></h2>
-    <p>Starting at $29. Any job. Any level.</p>
-    <a href="/#pricing" class="btn-primary">Start for $29 →</a>
-    <div class="footer-trust">No subscription · No account required · We don't store your data</div>
+    <p>Try it yourself — free, no account required.</p>
+    <a href="/app.html" class="btn-primary">Try Plumlo free →</a>
+    <div class="footer-trust">No account · No subscription · We don't store your data</div>
   </div>
 
   <!-- FOOTER -->
   <footer>
     <p>© 2026 Plumlo. All rights reserved. · <a href="/terms.html">Terms of Service</a> · <a href="/privacy.html">Privacy Policy</a></p>
   </footer>
+
+  <script>
+    document.getElementById('pw-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+    function checkPassword() {
+      const val = document.getElementById('pw-input').value.trim().toLowerCase();
+      if (val === 'alex') {
+        document.getElementById('gate').style.display = 'none';
+      } else {
+        document.getElementById('pw-error').textContent = 'Incorrect password. Try again.';
+        document.getElementById('pw-input').value = '';
+        document.getElementById('pw-input').focus();
+      }
+    }
+  </script>
 
 </body>
 </html>
