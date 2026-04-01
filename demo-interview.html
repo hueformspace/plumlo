@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plumlo — Try It Free</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0f0a1a;
+      color: #f0eaff;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .logo { font-size: 2.4rem; font-weight: 800; color: #c084fc; letter-spacing: -1px; }
+    .tagline { font-size: 1.1rem; color: #a78bca; margin-top: 8px; margin-bottom: 12px; }
+    .demo-badge {
+      display: inline-block;
+      background: rgba(155,93,229,0.15);
+      border: 1px solid rgba(155,93,229,0.3);
+      color: #c084fc;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 36px;
+    }
+    .card {
+      background: #1a1028;
+      border: 1px solid #3b1f6a;
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%;
+      max-width: 600px;
+    }
+    .card h2 { font-size: 1.3rem; margin-bottom: 8px; color: #e9d5ff; }
+    .card p { font-size: 0.95rem; color: #9d7ec9; margin-bottom: 24px; }
+    textarea {
+      width: 100%;
+      height: 180px;
+      background: #0f0a1a;
+      border: 1px solid #3b1f6a;
+      border-radius: 10px;
+      color: #f0eaff;
+      font-size: 0.95rem;
+      padding: 14px;
+      resize: vertical;
+      outline: none;
+    }
+    textarea:focus { border-color: #c084fc; }
+    textarea::placeholder { color: #5b4070; }
+    .btn {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 16px;
+      background: #7c3aed;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #6d28d9; }
+    .btn:disabled { background: #3b1f6a; cursor: not-allowed; }
+    #interview-section { display: none; text-align: center; }
+    #debrief-section { display: none; }
+    #status { font-size: 0.9rem; color: #a78bca; margin-top: 12px; min-height: 24px; }
+    .pulse {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: #7c3aed;
+      margin: 0 auto 16px;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.15); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .debrief-content {
+      background: #0f0a1a;
+      border: 1px solid #3b1f6a;
+      border-radius: 10px;
+      padding: 24px;
+      margin-top: 16px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #e9d5ff;
+      text-align: left;
+    }
+    .debrief-content h2 { color: #c084fc; font-size: 1.15rem; margin: 20px 0 8px; }
+    .debrief-content h3 { color: #e9d5ff; font-size: 1rem; margin: 16px 0 6px; }
+    .debrief-content p { margin-bottom: 10px; }
+    .debrief-content ul { padding-left: 20px; margin-bottom: 10px; }
+    .debrief-content li { margin-bottom: 6px; }
+    .debrief-content strong { color: #ffffff; }
+    .debrief-content hr { border-color: #3b1f6a; margin: 16px 0; }
+    .btn-row { display: flex; gap: 12px; margin-top: 24px; }
+    .btn-row .btn { margin-top: 0; }
+    .footer { margin-top: 40px; font-size: 0.8rem; color: #4a3560; text-align: center; }
+    .footer a { color: #7c6a9a; text-decoration: none; }
+    .footer a:hover { color: #c084fc; }
+    .upsell {
+      margin-top: 24px;
+      background: rgba(124,58,237,0.1);
+      border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 12px;
+      padding: 20px 24px;
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+    }
+    .upsell p { font-size: 0.9rem; color: #a78bca; margin-bottom: 12px; }
+    .upsell a {
+      display: inline-block;
+      background: #7c3aed;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .upsell a:hover { background: #6d28d9; }
+  </style>
+</head>
+<body>
+  <div class="logo">plumlo</div>
+  <div class="tagline">Practice with AI before AI interviews you.</div>
+  <div class="demo-badge">Free Demo</div>
+  <div class="card" id="setup-card">
+    <h2>Start Your Interview</h2>
+    <p>Paste any job description below. Alex, your AI recruiter, will interview you live and score your answers.</p>
+    <textarea id="jd-input" placeholder="Paste the full job description here..."></textarea>
+    <button class="btn" id="start-btn" onclick="startInterview()">Begin Interview →</button>
+  </div>
+  <div class="card" id="interview-section">
+    <div class="pulse" id="pulse"></div>
+    <h3 style="color:#e9d5ff; margin-bottom:12px;">Alex is ready. Speak when prompted.</h3>
+    <p style="color:#9d7ec9; font-size:0.9rem;">Your microphone is active. Alex will ask you 5 questions.</p>
+    <div id="status">Connecting to Alex...</div>
+    <button class="btn" style="margin-top:24px; background:#3b1f6a;" onclick="endInterview()">End Interview</button>
+  </div>
+  <div class="card" id="debrief-section">
+    <h2>Your Interview Debrief</h2>
+    <p>Here's how you performed based on the job description.</p>
+    <div class="debrief-content" id="debrief-content">Generating your debrief...</div>
+    <div class="btn-row">
+      <button class="btn" onclick="downloadDebrief()">⬇ Download Debrief</button>
+      <button class="btn" style="background:#3b1f6a;" onclick="resetApp()">Start New Interview</button>
+    </div>
+  </div>
+  <div class="upsell" id="upsell" style="display:none;">
+    <p>Want unlimited sessions? Get full access starting at $29.</p>
+    <a href="/#pricing">See Pricing →</a>
+  </div>
+  <div class="footer">© 2026 Plumlo. All rights reserved. · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></div>
+  <script type="module">
+    import { Conversation } from 'https://esm.sh/@11labs/client@0.2.0';
+    const AGENT_ID = "agent_9701kn2cw9apf7hv56d2fx5fbh0z";
+    let conversation = null;
+    let transcript = [];
+    let currentJD = '';
+    let interviewEnding = false;
+    function renderMarkdown(text) {
+      return text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/^---$/gm, '<hr>')
+        .replace(/^\* (.+)$/gm, '<li>$1</li>')
+        .replace(/^• (.+)$/gm, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/^(?!<[hul]|<\/[hul]|<hr)(.+)$/gm, '<p>$1</p>')
+        .replace(/<p><\/p>/g, '');
+    }
+    window.startInterview = async function() {
+      const jd = document.getElementById('jd-input').value.trim();
+      if (!jd) { alert('Please paste a job description first.'); return; }
+      currentJD = jd;
+      transcript = [];
+      interviewEnding = false;
+      document.getElementById('start-btn').disabled = true;
+      document.getElementById('start-btn').textContent = 'Starting...';
+      try {
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+        document.getElementById('setup-card').style.display = 'none';
+        document.getElementById('interview-section').style.display = 'block';
+        document.getElementById('status').textContent = 'Connecting to Alex...';
+        conversation = await Conversation.startSession({
+          agentId: AGENT_ID,
+          overrides: {
+            agent: {
+              prompt: {
+                prompt: `You are Alex, a professional AI recruiter. The candidate is interviewing for this role:\n\n${jd}\n\nAsk 5 targeted questions one at a time. Wait for each answer. Be warm and professional.`
+              },
+              firstMessage: `Hi, I'm Alex. I'll be conducting your screening interview today. Let's get started — can you tell me a little about yourself and why you're interested in this role?`
+            }
+          },
+          onStatusChange: ({ status }) => {
+            if (interviewEnding) return;
+            const el = document.getElementById('status');
+            if (status === 'connected') el.textContent = 'Connected — Alex is listening.';
+            else el.textContent = status;
+          },
+          onModeChange: ({ mode }) => {
+            document.getElementById('pulse').style.background = mode === 'speaking' ? '#c084fc' : '#7c3aed';
+          },
+          onMessage: ({ message, source }) => {
+            transcript.push(`${source === 'ai' ? 'Alex' : 'Candidate'}: ${message}`);
+          },
+          onError: (msg) => {
+            if (!interviewEnding) document.getElementById('status').textContent = 'Error: ' + msg;
+          }
+        });
+      } catch (err) {
+        console.error(err);
+        alert('Microphone access is required. Please allow access and try again.');
+        document.getElementById('start-btn').disabled = false;
+        document.getElementById('start-btn').textContent = 'Begin Interview →';
+        document.getElementById('setup-card').style.display = 'block';
+        document.getElementById('interview-section').style.display = 'none';
+      }
+    };
+    window.endInterview = async function() {
+      interviewEnding = true;
+      if (conversation) { await conversation.endSession(); conversation = null; }
+      document.getElementById('interview-section').style.display = 'none';
+      document.getElementById('debrief-section').style.display = 'block';
+      document.getElementById('debrief-content').textContent = 'Generating your debrief...';
+      setTimeout(generateDebrief, 500);
+    };
+    async function generateDebrief() {
