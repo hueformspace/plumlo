@@ -1,0 +1,437 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How Plumlo Works</title>
+  <style>
+    :root {
+      --bg: #080612;
+      --surface: #110d1f;
+      --border: #2a1a4a;
+      --purple: #9b5de5;
+      --purple-light: #c084fc;
+      --text: #f0eaff;
+      --muted: #7c6a9a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(8,6,18,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(42,26,74,0.5);
+    }
+    .nav-logo { font-size: 1.3rem; font-weight: 800; color: var(--purple-light); letter-spacing: -0.5px; text-decoration: none; }
+    .nav-cta {
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .nav-cta:hover { background: #7c3aed; transform: scale(1.02); }
+
+    /* HERO */
+    .hero {
+      padding: 160px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(155,93,229,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-label {
+      display: inline-block;
+      background: rgba(155,93,229,0.15);
+      border: 1px solid rgba(155,93,229,0.3);
+      color: var(--purple-light);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.05;
+      max-width: 780px;
+      margin: 0 auto 20px;
+    }
+    .hero h1 span { color: var(--purple-light); }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* STEPS */
+    .steps-section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+    .steps-section .section-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .steps-section h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr 40px 1fr 40px 1fr;
+      align-items: start;
+      gap: 0;
+    }
+    @media (max-width: 720px) {
+      .steps-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .step-arrow { display: none; }
+    }
+    .step-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 48px;
+      color: var(--border);
+      font-size: 1.4rem;
+    }
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 28px;
+      transition: border-color 0.2s;
+      height: 100%;
+    }
+    .step-card:hover { border-color: var(--purple); }
+    .step-num {
+      width: 40px; height: 40px;
+      background: rgba(155,93,229,0.15);
+      border: 1px solid rgba(155,93,229,0.3);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; font-weight: 800; color: var(--purple-light);
+      margin-bottom: 20px;
+    }
+    .step-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+    .step-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+    .step-card .step-detail {
+      margin-top: 16px;
+      background: rgba(155,93,229,0.08);
+      border: 1px solid rgba(155,93,229,0.2);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.8rem;
+      color: var(--purple-light);
+      line-height: 1.5;
+    }
+
+    /* INSIGHTS */
+    .insights-section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+    .insights-section .section-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .insights-section h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .insight-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      transition: border-color 0.2s;
+    }
+    .insight-card:hover { border-color: var(--purple); }
+    .insight-num {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: rgba(155,93,229,0.25);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .insight-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .insight-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* DEBRIEF */
+    .debrief-section {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .debrief-section .section-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .debrief-section h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .debrief-preview {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      width: 100%;
+    }
+    .debrief-preview .score { font-size: 3.5rem; font-weight: 800; color: var(--purple-light); margin-bottom: 4px; }
+    .debrief-preview .score-label { font-size: 0.85rem; color: var(--muted); margin-bottom: 32px; }
+    .debrief-row { margin-bottom: 24px; }
+    .debrief-row h4 { font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--purple-light); margin-bottom: 12px; }
+    .debrief-item { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: var(--muted); margin-bottom: 8px; line-height: 1.5; }
+    .debrief-item .dot { color: var(--purple-light); flex-shrink: 0; margin-top: 2px; }
+
+    /* FOOTER CTA */
+    .footer-cta {
+      text-align: center;
+      padding: 100px 24px;
+      border-top: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .footer-cta::before {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(155,93,229,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .footer-cta h2 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 800;
+      letter-spacing: -2px;
+      margin-bottom: 16px;
+      line-height: 1.05;
+    }
+    .footer-cta h2 span { color: var(--purple-light); }
+    .footer-cta p {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 40px;
+    }
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 18px 48px;
+      border-radius: 100px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: #7c3aed; transform: translateY(-2px); }
+    .footer-trust {
+      margin-top: 20px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--purple-light); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">plumlo</a>
+    <a href="/#pricing" class="nav-cta">Start for $29 →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-label">How it works</div>
+    <h1>Two minutes.<br><span>You'll get it.</span></h1>
+    <p class="hero-sub">A live audio interview, built from your actual job description, scored and reviewed before you close the tab.</p>
+  </section>
+
+  <!-- STEPS -->
+  <section class="steps-section">
+    <div class="section-label">The process</div>
+    <h2>Three steps to interview-ready.</h2>
+    <div class="steps-grid">
+
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Paste the job description</h3>
+        <p>Drop in any job posting — entry level to executive, any industry. Plumlo reads it and builds a custom interview around it in seconds.</p>
+        <div class="step-detail">Works for any role, any company, any level.</div>
+      </div>
+
+      <div class="step-arrow">→</div>
+
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Talk to Alex</h3>
+        <p>Alex, your AI recruiter, conducts a live voice interview — five targeted questions, real pacing, no scripts. You answer out loud, just like the real thing.</p>
+        <div class="step-detail">Live audio. Not a chatbot. Not multiple choice.</div>
+      </div>
+
+      <div class="step-arrow">→</div>
+
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>Get your debrief</h3>
+        <p>Immediately after, you receive a scored report — what you said that landed, what the system flagged as missing, and exactly what to fix.</p>
+        <div class="step-detail">Specific feedback tied directly to the job description.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INSIGHTS -->
+  <section class="insights-section">
+    <div class="section-label">Why it works</div>
+    <h2>Three things most candidates don't know.</h2>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <div class="insight-num">01</div>
+        <h3>Most people have never heard themselves answer out loud.</h3>
+        <p>Preparing in your head and performing under pressure are two different things. Plumlo closes that gap before it costs you the role.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">02</div>
+        <h3>AI screening is already happening. Most find out after.</h3>
+        <p>Many companies use AI recruiters for first-round screening. They score keyword alignment, structure, and delivery. Most candidates have no idea until they're filtered out.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">03</div>
+        <h3>Better answers for AI means better answers for everyone.</h3>
+        <p>The clarity and structure you build here carries into every interview — whether the person on the other end is an AI, a recruiter, or a hiring manager.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEBRIEF PREVIEW -->
+  <section class="debrief-section">
+    <div class="section-label">Sample debrief</div>
+    <h2>You'll know exactly where you stand.</h2>
+    <div class="debrief-preview">
+      <div class="score">72<span style="font-size:1.5rem; color:var(--muted)">/100</span></div>
+      <div class="score-label">Overall Interview Score</div>
+      <div class="debrief-row">
+        <h4>✓ What Landed Well</h4>
+        <div class="debrief-item"><span class="dot">→</span><span>Strong alignment with required 5+ years of experience in content strategy</span></div>
+        <div class="debrief-item"><span class="dot">→</span><span>Clear examples of cross-functional collaboration with product and design teams</span></div>
+        <div class="debrief-item"><span class="dot">→</span><span>Confident delivery and professional tone throughout</span></div>
+      </div>
+      <div class="debrief-row">
+        <h4>✗ What Missed</h4>
+        <div class="debrief-item"><span class="dot">→</span><span>No mention of data-driven storytelling — a core requirement in the JD</span></div>
+        <div class="debrief-item"><span class="dot">→</span><span>Failed to connect past work to the company's specific industry</span></div>
+      </div>
+      <div class="debrief-row">
+        <h4>→ What to Fix</h4>
+        <div class="debrief-item"><span class="dot">→</span><span>Prepare a specific example of using analytics to shape a content decision</span></div>
+        <div class="debrief-item"><span class="dot">→</span><span>Research the company's content approach and reference it directly</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER CTA -->
+  <div class="footer-cta">
+    <h2>The next one<br><span>goes better.</span></h2>
+    <p>Starting at $29. Any job. Any level.</p>
+    <a href="/#pricing" class="btn-primary">Start for $29 →</a>
+    <div class="footer-trust">No subscription · No account required · We don't store your data</div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Plumlo. All rights reserved. · <a href="/terms.html">Terms of Service</a> · <a href="/privacy.html">Privacy Policy</a></p>
+  </footer>
+
+</body>
+</html>
