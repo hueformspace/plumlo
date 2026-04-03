@@ -142,6 +142,27 @@
     .pay-btn.primary:hover { background: #6d28d9; }
     .pay-btn.secondary { background: transparent; color: #f0eaff; border: 1px solid #3b1f6a; }
     .pay-btn.secondary:hover { border-color: #7c3aed; }
+
+    /* CODE GATE */
+    #code-gate { display: none; }
+    #code-input {
+      width: 100%;
+      padding: 14px;
+      background: #0f0a1a;
+      border: 1px solid #3b1f6a;
+      border-radius: 10px;
+      color: #f0eaff;
+      font-size: 1.1rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      outline: none;
+      text-align: center;
+    }
+    #code-input:focus { border-color: #c084fc; }
+    #code-input::placeholder { letter-spacing: 1px; color: #5b4070; text-transform: none; }
+    #code-error { color: #ff6b6b; margin-top: 12px; font-size: 0.9rem; min-height: 20px; }
+    .code-hint { font-size: 0.82rem; color: #5b4070; margin-bottom: 20px; }
   </style>
 </head>
 <body>
@@ -182,6 +203,16 @@
     </div>
   </div>
 
+  <!-- CODE GATE -->
+  <div class="card" id="code-gate">
+    <h2>Enter Your Access Code</h2>
+    <p>Check your email for the code sent after your purchase.</p>
+    <input type="text" id="code-input" placeholder="e.g. A1B2C3" maxlength="10" />
+    <div class="code-hint">Codes are not case-sensitive.</div>
+    <button class="btn" id="redeem-btn">Enter →</button>
+    <div id="code-error"></div>
+  </div>
+
   <!-- INTERVIEW APP -->
   <div class="card" id="setup-card" style="display:none;">
     <h2>Start Your Interview Prep</h2>
@@ -218,13 +249,55 @@
     // PAYMENT GATE LOGIC
     const params = new URLSearchParams(window.location.search);
     const paid = params.get('paid');
-    if (paid === 'true') {
-      document.getElementById('payment-gate').style.display = 'none';
-      document.getElementById('setup-card').style.display = 'block';
-    } else {
-      document.getElementById('payment-gate').style.display = 'flex';
-      document.getElementById('setup-card').style.display = 'none';
+
+    function showSection(id) {
+      ['payment-gate', 'code-gate', 'setup-card', 'interview-section', 'debrief-section'].forEach(s => {
+        const el = document.getElementById(s);
+        if (!el) return;
+        el.style.display = 'none';
+      });
+      const target = document.getElementById(id);
+      if (!target) return;
+      target.style.display = (id === 'payment-gate') ? 'flex' : 'block';
     }
+
+    if (paid === 'true') {
+      showSection('code-gate');
+    } else {
+      showSection('payment-gate');
+    }
+
+    document.getElementById('redeem-btn').addEventListener('click', async () => {
+      const code = document.getElementById('code-input').value.trim();
+      if (!code) return;
+      const btn = document.getElementById('redeem-btn');
+      const errorEl = document.getElementById('code-error');
+      btn.textContent = 'Checking...';
+      btn.disabled = true;
+      errorEl.textContent = '';
+      try {
+        const res = await fetch('/api/redeem', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          sessionStorage.setItem('plumlo_code', code);
+          sessionStorage.setItem('plumlo_remaining', data.remaining);
+          showSection('setup-card');
+        } else {
+          const data = await res.json();
+          errorEl.textContent = data.error || 'Invalid code. Please try again.';
+          btn.textContent = 'Enter →';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        errorEl.textContent = 'Something went wrong. Please try again.';
+        btn.textContent = 'Enter →';
+        btn.disabled = false;
+      }
+    });
 
     function renderMarkdown(text) {
       return text
@@ -252,8 +325,7 @@
       document.getElementById('start-btn').textContent = 'Starting...';
       try {
         await navigator.mediaDevices.getUserMedia({ audio: true });
-        document.getElementById('setup-card').style.display = 'none';
-        document.getElementById('interview-section').style.display = 'block';
+        showSection('interview-section');
         document.getElementById('status').textContent = 'Connecting to Alex...';
         conversation = await Conversation.startSession({
           agentId: AGENT_ID,
@@ -286,8 +358,7 @@
         alert('Microphone access is required. Please allow access and try again.');
         document.getElementById('start-btn').disabled = false;
         document.getElementById('start-btn').textContent = 'Begin Interview →';
-        document.getElementById('setup-card').style.display = 'block';
-        document.getElementById('interview-section').style.display = 'none';
+        showSection('setup-card');
       }
     };
 
@@ -297,8 +368,7 @@
         await conversation.endSession();
         conversation = null;
       }
-      document.getElementById('interview-section').style.display = 'none';
-      document.getElementById('debrief-section').style.display = 'block';
+      showSection('debrief-section');
       document.getElementById('debrief-content').textContent = 'Generating your debrief...';
       setTimeout(generateDebrief, 500);
     };
@@ -334,8 +404,7 @@
     };
 
     window.resetApp = function() {
-      document.getElementById('debrief-section').style.display = 'none';
-      document.getElementById('setup-card').style.display = 'block';
+      showSection('setup-card');
       document.getElementById('start-btn').disabled = false;
       document.getElementById('start-btn').textContent = 'Begin Interview →';
       document.getElementById('jd-input').value = '';
