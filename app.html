@@ -330,13 +330,23 @@
     };
 
     window.resetApp = function() {
-      showSection('setup-card');
-      document.getElementById('start-btn').disabled = false;
-      document.getElementById('start-btn').textContent = 'Begin Interview →';
-      document.getElementById('jd-input').value = '';
+      const isFreeTrial = sessionStorage.getItem('plumlo_free_trial') === 'true';
       transcript = [];
       currentJD = '';
       interviewEnding = false;
+      document.getElementById('jd-input').value = '';
+      document.getElementById('start-btn').disabled = false;
+      document.getElementById('start-btn').textContent = 'Begin Interview →';
+      if (isFreeTrial) {
+        sessionStorage.clear();
+        showSection('code-gate');
+        document.getElementById('code-input').value = '';
+        document.getElementById('code-error').textContent = '';
+        document.getElementById('redeem-btn').textContent = 'Enter →';
+        document.getElementById('redeem-btn').disabled = false;
+      } else {
+        showSection('setup-card');
+      }
     };
   </script>
 </body>
