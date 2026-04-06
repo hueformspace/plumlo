@@ -23,5 +23,5 @@ export default async function handler(req, res) {
     .update({ sessions_used: data.sessions_used + 1 })
     .eq('code', code.trim().toUpperCase());
 
-  return res.status(200).json({ success: true, remaining: data.sessions_total - data.sessions_used - 1 });
+  return res.status(200).json({ success: true, remaining: data.sessions_total - data.sessions_used - 1, is_free_trial: data.is_free_trial || false });
 }
