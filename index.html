@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -207,7 +206,7 @@
     .debrief-item .dot { color: var(--purple-light); flex-shrink: 0; margin-top: 2px; }
 
     /* PRICING */
-    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 680px; width: 100%; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; max-width: 1000px; width: 100%; }
     @media (max-width: 640px) { .pricing-grid { grid-template-columns: 1fr; } }
     .pricing-card {
       background: var(--surface);
@@ -278,7 +277,6 @@
     .story-box blockquote strong { color: var(--text); font-style: normal; }
     .story-author { font-size: 0.85rem; color: var(--muted); }
     .story-author strong { color: var(--purple-light); }
-
 
     /* FAQ */
     .faq { max-width: 680px; width: 100%; }
@@ -393,6 +391,7 @@
   <section class="section centered" id="debrief">
     <div class="section-label">Sample debrief</div>
     <h2 style="text-align:center; max-width:500px;">You'll know exactly where you stand.</h2>
+    <p style="color:var(--muted); font-size:0.9rem; margin-bottom:32px;">Included with every paid session.</p>
     <div class="debrief-preview">
       <div class="score">72<span style="font-size:1.5rem; color:var(--muted)">/100</span></div>
       <div class="score-label">Overall Interview Score</div>
@@ -420,6 +419,17 @@
     <div class="section-label">Pricing</div>
     <h2 style="text-align:center;">Simple, one-time pricing.</h2>
     <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="price-tier">Free Trial</div>
+        <div class="price" style="font-size:2.2rem;">$0</div>
+        <div class="price-desc">No card required · 1 interview session</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> 1 full AI interview with Alex</li>
+          <li><span class="check">✓</span> Any job description</li>
+          <li style="opacity:0.4;"><span style="color:var(--muted)">✗</span> Debrief not included</li>
+        </ul>
+        <a href="/free-trial.html" class="price-btn secondary">Try Free — No Card Required →</a>
+      </div>
       <div class="pricing-card">
         <div class="price-tier">Starter</div>
         <div class="price">$29</div>
@@ -455,11 +465,11 @@
     <h2 style="text-align:center; max-width:500px;">It started with a phone call.</h2>
     <div class="story-box">
       <blockquote>
-  <p>Her name was Alex. She said she was a virtual AI recruiter — I thought she was setting up the call. She was the call.</p>
-  <p>A few questions in, I realized I had prepared for the wrong thing. I was trying to have a conversation. That's not what was happening. I didn't know what it was listening for, or how I was being judged.</p>
-  <p>So I built the other side of that call.</p>
-  <p><strong>Practice the conversation until the conversation is yours.</strong></p>
-</blockquote>
+        <p>Her name was Alex. She said she was a virtual AI recruiter — I thought she was setting up the call. She was the call.</p>
+        <p>A few questions in, I realized I had prepared for the wrong thing. I was trying to have a conversation. That's not what was happening. I didn't know what it was listening for, or how I was being judged.</p>
+        <p>So I built the other side of that call.</p>
+        <p><strong>Practice the conversation until the conversation is yours.</strong></p>
+      </blockquote>
       <div class="story-author">— <strong>Founder, Plumlo</strong></div>
     </div>
   </section>
