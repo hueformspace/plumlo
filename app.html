@@ -259,13 +259,7 @@
       const target = document.getElementById(id);
       if (!target) return;
       target.style.display = (id === 'payment-gate') ? 'flex' : 'block';
-    }
-
-    if (paid === 'true') {
-      showSection('code-gate');
-    } else {
-      showSection('payment-gate');
-    }
+    showSection('code-gate');
 
     document.getElementById('redeem-btn').addEventListener('click', async () => {
       const code = document.getElementById('code-input').value.trim();
