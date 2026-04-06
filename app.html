@@ -259,6 +259,8 @@
       const target = document.getElementById(id);
       if (!target) return;
       target.style.display = (id === 'payment-gate') ? 'flex' : 'block';
+    }
+
     showSection('code-gate');
 
     document.getElementById('redeem-btn').addEventListener('click', async () => {
