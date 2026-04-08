@@ -16,7 +16,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 1024,
+        max_tokens: 2000,
         messages: [{
           role: 'user',
           content: `You are an expert interview coach. Score this interview based on the job description.
