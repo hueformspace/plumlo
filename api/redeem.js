@@ -1,6 +1,5 @@
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
-
   const { code } = req.body;
   if (!code) return res.status(400).json({ error: 'No code provided' });
 
@@ -9,10 +8,12 @@ export default async function handler(req, res) {
     process.env.SUPABASE_ANON_KEY
   );
 
+  const cleanCode = code.trim();
+
   const { data, error } = await supabase
     .from('sessions')
     .select('*')
-    .eq('code', code.trim().toUpperCase())
+    .ilike('code', cleanCode)
     .single();
 
   if (error || !data) return res.status(404).json({ error: 'Invalid code' });
@@ -21,7 +22,11 @@ export default async function handler(req, res) {
   await supabase
     .from('sessions')
     .update({ sessions_used: data.sessions_used + 1 })
-    .eq('code', code.trim().toUpperCase());
+    .eq('code', data.code);
 
-  return res.status(200).json({ success: true, remaining: data.sessions_total - data.sessions_used - 1, is_free_trial: data.is_free_trial || false });
+  return res.status(200).json({
+    success: true,
+    remaining: data.sessions_total - data.sessions_used - 1,
+    is_free_trial: data.is_free_trial || false
+  });
 }
