@@ -1,0 +1,392 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://plumlo.com/blog/i-didnt-know-it-was-the-interview.html" />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LGXF831M68"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LGXF831M68');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I Didn't Know It Was the Interview. Here's What I'd Do Differently. | Plumlo</title>
+  <meta name="description" content="I got a text scheduling a call. I jumped on thinking it was a warmup. It wasn't. This is what happened, what I missed, and why I built something about it." />
+  <meta name="keywords" content="didn't know it was an AI interview, AI interview caught off guard, AI recruiter screening call, unprepared for AI interview, AI interview experience, how AI interviews work" />
+  <meta property="og:title" content="I Didn't Know It Was the Interview. Here's What I'd Do Differently. | Plumlo" />
+  <meta property="og:description" content="I got a text scheduling a call. I jumped on thinking it was a warmup. It wasn't. This is what happened, what I missed, and why I built something about it." />
+  <meta property="og:url" content="https://plumlo.com/blog/i-didnt-know-it-was-the-interview.html" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="I Didn't Know It Was the Interview. Here's What I'd Do Differently. | Plumlo" />
+  <meta name="twitter:description" content="I got a text scheduling a call. I jumped on thinking it was a warmup. It wasn't. This is what happened, what I missed, and why I built something about it." />
+
+  <!-- PP Neue Montreal via Fontshare -->
+  <link href="https://api.fontshare.com/v2/css?f[]=neue-montreal@400,500,700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #080612;
+      --surface: #110d1f;
+      --border: #2a1a4a;
+      --purple: #9b5de5;
+      --purple-light: #c084fc;
+      --text: #f0eaff;
+      --muted: #7c6a9a;
+      --subtle: #1e1535;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Neue Montreal', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.7;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(8,6,18,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(42,26,74,0.5);
+    }
+    .nav-logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--purple-light);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .nav-cta {
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      display: inline-block;
+      font-family: inherit;
+    }
+    .nav-cta:hover { background: #7c3aed; transform: scale(1.02); }
+
+    .article-hero {
+      padding: 140px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .article-hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 600px;
+      background: radial-gradient(circle, rgba(155,93,229,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .article-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      border: 1px solid rgba(192,132,252,0.3);
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+    .article-hero h1 {
+      font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      max-width: 820px;
+      margin: 0 auto 20px;
+    }
+    .article-hero h1 span { color: var(--purple-light); }
+    .article-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 20px;
+    }
+
+    .article-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 72px 24px 120px;
+    }
+
+    .article-wrap h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      margin-top: 56px;
+      margin-bottom: 16px;
+    }
+    .article-wrap p {
+      font-size: 1rem;
+      color: #c9bfdf;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+    .article-wrap ul {
+      list-style: none;
+      margin-bottom: 24px;
+      padding: 0;
+    }
+    .article-wrap ul li {
+      font-size: 1rem;
+      color: #c9bfdf;
+      line-height: 1.75;
+      padding: 10px 0 10px 24px;
+      border-bottom: 1px solid rgba(42,26,74,0.5);
+      position: relative;
+    }
+    .article-wrap ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--purple);
+      font-weight: 700;
+    }
+    .article-wrap ul li:last-child { border-bottom: none; }
+
+    .pull-quote {
+      border-left: 3px solid var(--purple);
+      padding: 24px 32px;
+      margin: 40px 0;
+      background: var(--surface);
+      border-radius: 0 16px 16px 0;
+    }
+    .pull-quote p {
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--text);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .related-link {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      text-decoration: none;
+      margin: 40px 0;
+      transition: border-color 0.2s;
+    }
+    .related-link:hover { border-color: var(--purple); }
+    .related-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 8px;
+    }
+    .related-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .cta-block {
+      margin-top: 72px;
+      background: linear-gradient(135deg, rgba(155,93,229,0.15) 0%, rgba(192,132,252,0.08) 100%);
+      border: 1px solid rgba(155,93,229,0.3);
+      border-radius: 16px;
+      padding: 48px 40px;
+      text-align: center;
+    }
+    .cta-block h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin: 0 0 12px 0;
+    }
+    .cta-block p {
+      font-size: 1rem;
+      color: var(--muted);
+      margin: 0 0 32px 0;
+    }
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 100px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      display: inline-block;
+      font-family: inherit;
+    }
+    .btn-primary:hover { background: #7c3aed; transform: translateY(-2px); }
+    .cta-trust {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-logo {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--purple-light);
+      text-decoration: none;
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy {
+      font-size: 0.8rem;
+      color: var(--muted);
+      width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .article-hero { padding: 120px 20px 56px; }
+      .article-wrap { padding: 48px 20px 80px; }
+      .pull-quote { padding: 20px 24px; }
+      .cta-block { padding: 36px 24px; }
+      footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">Plumlo™</a>
+    <a href="/#pricing" class="nav-cta">Get Started</a>
+  </nav>
+
+  <header class="article-hero">
+    <div class="article-tag">Founder's Story</div>
+    <h1>I Didn't Know It Was <span>the Interview.</span><br>Here's What I'd Do Differently.</h1>
+    <div class="article-meta">5 min read &nbsp;·&nbsp; Jason Scott, Founder of Plumlo</div>
+  </header>
+
+  <main class="article-wrap">
+
+    <p>It started with a text. A scheduling message letting me know a call had been set up. Nothing unusual about that. I'd applied for a Creative Director role, my resume had made it through, and someone wanted to connect. I confirmed the time and moved on.</p>
+
+    <p>I didn't overthink it. It felt like the kind of call that happens before the actual interview. A quick intro, someone checking availability, asking a few surface-level questions before routing me to the real conversation.</p>
+
+    <p>So I jumped on relaxed. Ready to talk. Not ready to be evaluated.</p>
+
+    <h2>The moment I realized</h2>
+
+    <p>About one question in, something felt off. The responses were too fast. Too clean. No small talk, no pause to look something up, no ambient noise on the other end. Just a name and a voice moving through a structured sequence.</p>
+
+    <p>That's when it clicked. This wasn't someone setting up the call. This was the call.</p>
+
+    <p>The recruiter was an AI. And I was already mid-interview.</p>
+
+    <div class="pull-quote">
+      <p>"I had prepared for a conversation about my experience. What I actually needed to prepare for was a scored evaluation of how I communicated it."</p>
+    </div>
+
+    <p>The problem wasn't that I was caught off guard emotionally. It was that I was operating in the wrong mode entirely. I came in ready to have a discussion, the kind where you read the room, build rapport, let the story unfold. That's not what an AI interview is. It's structured. It's scored. It cares about specificity, not warmth.</p>
+
+    <p>Had I known it was AI, I would have treated it completely differently. More like an ATS application than a human conversation. Tighter answers. More deliberate word choice. STAR format from the first sentence. I would have prepared for something that's listening for signals, not feeling out a connection.</p>
+
+    <p>Instead I talked like I was in a coffee meeting. And when the call ended, I knew it hadn't gone the way it should have.</p>
+
+    <h2>What I did after I hung up</h2>
+
+    <p>I sat with it for a minute. Bummed, honestly. Not because I'd failed. I didn't know the outcome yet. But because I'd walked into something unprepared and I hadn't seen it coming.</p>
+
+    <p>Then the wheels started turning.</p>
+
+    <p>If this happened to me, someone who's spent 15 years in creative leadership and been through hundreds of interviews on both sides of the table, it was happening to everyone. This wasn't a one-off. AI recruiters were already in the pipeline, doing real screening, making real decisions about who moves forward and who doesn't. Most candidates had no idea.</p>
+
+    <p>I started building Plumlo that week. At first just for myself, a way to practice the other side of that call before it happened again. It became clear pretty fast that this wasn't a personal problem. It was an industry-wide blind spot nobody was addressing.</p>
+
+    <h2>What I know now that I didn't know then</h2>
+
+    <p>AI interviews aren't trying to trick you. They're running a structured evaluation against criteria pulled from the job description. The AI isn't reading your energy or your passion. It's listening for whether your answer maps to what the role requires.</p>
+
+    <p>A few things I would have done differently on that call:</p>
+
+    <ul>
+      <li>Opened every answer with clear context before getting into the story</li>
+      <li>Used the job description's language in my answers, not my own shorthand</li>
+      <li>Kept each answer under 90 seconds instead of letting it breathe the way a human conversation allows</li>
+      <li>Cut the filler words. "You know," "kind of," "basically." AI systems flag them.</li>
+      <li>Treated silence as a problem, not a beat. AI doesn't do comfortable pauses.</li>
+    </ul>
+
+    <p>None of that is complicated. It's just a different game than the one I thought I was playing.</p>
+
+    <div class="pull-quote">
+      <p>"The AI wasn't the problem. Not knowing what it was listening for was the problem."</p>
+    </div>
+
+    <h2>Why this matters more now than it did then</h2>
+
+    <p>At the time I thought it was an edge case. It wasn't. AI recruiters are now embedded in hiring pipelines at hundreds of companies, from Fortune 500s to fast-growing startups. The platforms are different: HireVue, Paradox, Modern Hire, custom-built systems. But the dynamic is the same. An AI is making the first cut, and most candidates are walking in the way I did. Prepared for the wrong thing.</p>
+
+    <p>The shift isn't coming. It's here. And the gap between candidates who know how to navigate it and candidates who don't is only going to widen.</p>
+
+    <p>That's what Plumlo is built to close. You paste the job description, our AI voice agent runs the interview, and you get a scored debrief showing exactly what landed and what didn't. Not so you can memorize answers. So you know what game you're actually playing before it counts.</p>
+
+    <p>The next one goes better.</p>
+
+    <a class="related-link" href="https://plumlo.com/blog/how-to-prepare-for-an-ai-interview.html">
+      <div class="related-label">Related</div>
+      <div class="related-title">How to Prepare for an AI Interview →</div>
+    </a>
+
+    <div class="cta-block">
+      <h2>The first interview happens here.</h2>
+      <p>Practice with AI before AI interviews you.</p>
+      <a class="btn-primary" href="/#pricing">Start Practicing →</a>
+      <div class="cta-trust">No account required &nbsp;·&nbsp; Debrief included &nbsp;·&nbsp; 15 minutes</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <a href="/" class="footer-logo">Plumlo™</a>
+    <div class="footer-links">
+      <a href="/terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/app.html">Practice</a>
+    </div>
+    <div class="footer-copy">© 2026 Plumlo. All rights reserved.</div>
+  </footer>
+
+</body>
+</html>
