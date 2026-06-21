@@ -307,6 +307,7 @@
         });
         const data = await response.json();
         const debriefText = data.debrief || 'Debrief unavailable.';
+        if (!data.debrief) console.error('Score API returned no debrief:', data);
         window._lastDebrief = debriefText;
 
         const isFreeTrial = sessionStorage.getItem('plumlo_free_trial') === 'true';
