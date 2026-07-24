@@ -310,20 +310,8 @@
         if (!data.debrief) console.error('Score API returned no debrief:', data);
         window._lastDebrief = debriefText;
 
-        const isFreeTrial = sessionStorage.getItem('plumlo_free_trial') === 'true';
-        if (isFreeTrial) {
-          document.getElementById('debrief-content').innerHTML = `
-            <div style="text-align:center; padding:32px 0;">
-              <div style="font-size:1.2rem; font-weight:700; color:#e9d5ff; margin-bottom:12px;">Your debrief is ready.</div>
-              <p style="color:#a78bca; font-size:0.95rem; line-height:1.6; margin-bottom:28px;">Unlock your full scored debrief — and up to 10 more interviews — with a paid plan.</p>
-              <a href="https://www.plumlo.com/#pricing" style="display:inline-block;background:#7c3aed;color:#fff;font-weight:700;font-size:1rem;padding:14px 32px;border-radius:10px;text-decoration:none;">See Plans →</a>
-            </div>
-          `;
-          document.getElementById('download-btn').style.display = 'none';
-        } else {
-          document.getElementById('debrief-content').innerHTML = renderMarkdown(debriefText);
-          document.getElementById('download-btn').style.display = 'block';
-        }
+      document.getElementById('debrief-content').innerHTML = renderMarkdown(debriefText);
+document.getElementById('download-btn').style.display = 'block';
       } catch (err) {
         console.error(err);
         document.getElementById('debrief-content').textContent = 'Error generating debrief. Please try again.';
