@@ -273,8 +273,7 @@
             agent: {
               prompt: {
 prompt: `You are Alex, a professional AI recruiter.${document.getElementById('lang-select').value ? ' IMPORTANT: You must conduct this entire interview in ' + document.getElementById('lang-select').value + ' only. Do not speak any English. All questions and responses must be in ' + document.getElementById('lang-select').value + '.' : ''} The candidate is interviewing for this role:\n\n${jd}\n\nAsk 5 targeted questions one at a time. Wait for each answer. Be warm and professional.`              },
-firstMessage: document.getElementById('lang-select').value ? `Please conduct this interview in ${document.getElementById('lang-select').value}. Start by greeting the candidate and asking them to introduce themselves.` : `Hi, I'm Alex. I'll be conducting your screening interview today. Let's get started — can you tell me a little about yourself and why you're interested in this role?`            }
-          },
+firstMessage: `Hi, I'm Alex. I'll be conducting your screening interview today. Let's get started — can you tell me a little about yourself and why you're interested in this role?`          },
           onStatusChange: ({ status }) => {
             if (interviewEnding) return;
             const el = document.getElementById('status');
