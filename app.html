@@ -255,26 +255,11 @@
         .replace(/<p><\/p>/g, '');
     }
 
-    window.startInterview = async function() {
-      const jd = document.getElementById('jd-input').value.trim();
-      if (!jd) { alert('Please paste a job description first.'); return; }
-      currentJD = jd;
-      transcript = [];
-      interviewEnding = false;
-      document.getElementById('start-btn').disabled = true;
-      document.getElementById('start-btn').textContent = 'Starting...';
-      try {
-        await navigator.mediaDevices.getUserMedia({ audio: true });
-        showSection('interview-section');
-        document.getElementById('status').textContent = 'Connecting to Alex...';
-        conversation = await Conversation.startSession({
-          agentId: AGENT_ID,
-          overrides: {
-            agent: {
-              prompt: {
-prompt: `You are Alex, a professional AI recruiter.${document.getElementById('lang-select').value ? ' IMPORTANT: You must conduct this entire interview in ' + document.getElementById('lang-select').value + ' only. Do not speak any English. All questions and responses must be in ' + document.getElementById('lang-select').value + '.' : ''} The candidate is interviewing for this role:\n\n${jd}\n\nAsk 5 targeted questions one at a time. Wait for each answer. Be warm and professional.`              },
-firstMessage: (() => {
-  const lang = document.getElementById('lang-select').value;
+   window.startInterview = async function() {
+  const jd = document.getElementById('jd-input').value.trim();
+  if (!jd) { alert('Please paste a job description first.'); return; }
+  currentJD = jd;
+  const selectedLang = document.getElementById('lang-select').value;
   const greetings = {
     'Arabic': 'مرحباً، أنا أليكس. سأجري معك مقابلة التوظيف اليوم. هل يمكنك أن تخبرني قليلاً عن نفسك ولماذا أنت مهتم بهذا الدور؟',
     'Dutch': 'Hallo, ik ben Alex. Ik zal vandaag je sollicitatiegesprek afnemen. Kun je me iets over jezelf vertellen en waarom je geïnteresseerd bent in deze functie?',
@@ -282,7 +267,7 @@ firstMessage: (() => {
     'German': 'Hallo, ich bin Alex. Ich führe heute Ihr Vorstellungsgespräch durch. Können Sie mir etwas über sich erzählen und warum Sie an dieser Stelle interessiert sind?',
     'Hindi': 'नमस्ते, मैं एलेक्स हूं। आज मैं आपका साक्षात्कार लूंगी। क्या आप मुझे अपने बारे में थोड़ा बताएंगे और इस भूमिका में आपकी रुचि क्यों है?',
     'Indonesian': 'Halo, saya Alex. Saya akan melakukan wawancara Anda hari ini. Bisakah Anda ceritakan sedikit tentang diri Anda dan mengapa Anda tertarik dengan posisi ini?',
-    'Italian': 'Ciao, sono Alex. Condurrò il tuo colloquio oggi. Puoi parlarmi un po\' di te e del perché sei interessato a questo ruolo?',
+    'Italian': 'Ciao, sono Alex. Condurrò il tuo colloquio oggi. Puoi parlarmi un po\'di te e del perché sei interessato a questo ruolo?',
     'Japanese': 'こんにちは、私はアレックスです。本日はスクリーニング面接を担当いたします。自己紹介と、このポジションに興味を持った理由を教えていただけますか？',
     'Korean': '안녕하세요, 저는 알렉스입니다. 오늘 면접을 진행하겠습니다. 자기소개와 이 직무에 관심을 갖게 된 이유를 말씀해 주시겠어요?',
     'Mandarin': '你好，我是Alex。我将主持您今天的面试。请问您能介绍一下自己，以及为什么对这个职位感兴趣吗？',
@@ -292,33 +277,49 @@ firstMessage: (() => {
     'Spanish': 'Hola, soy Alex. Hoy voy a conducir tu entrevista. ¿Puedes contarme un poco sobre ti y por qué estás interesado en este puesto?',
     'Turkish': 'Merhaba, ben Alex. Bugün mülakatınızı yapacağım. Kendinizden ve bu pozisyona neden ilgi duyduğunuzdan bahseder misiniz?'
   };
-  return greetings[lang] || `Hi, I'm Alex. I'll be conducting your screening interview today. Let's get started — can you tell me a little about yourself and why you're interested in this role?`;
-})()          onStatusChange: ({ status }) => {
-            if (interviewEnding) return;
-            const el = document.getElementById('status');
-            if (status === 'connected') el.textContent = 'Connected — Alex is listening.';
-            else el.textContent = status;
+  const firstMessage = greetings[selectedLang] || `Hi, I'm Alex. I'll be conducting your screening interview today. Let's get started — can you tell me a little about yourself and why you're interested in this role?`;
+  transcript = [];
+  interviewEnding = false;
+  document.getElementById('start-btn').disabled = true;
+  document.getElementById('start-btn').textContent = 'Starting...';
+  try {
+    await navigator.mediaDevices.getUserMedia({ audio: true });
+    showSection('interview-section');
+    document.getElementById('status').textContent = 'Connecting to Alex...';
+    conversation = await Conversation.startSession({
+      agentId: AGENT_ID,
+      overrides: {
+        agent: {
+          prompt: {
+            prompt: `You are Alex, a professional AI recruiter.${selectedLang ? ' IMPORTANT: You must conduct this entire interview in ' + selectedLang + ' only. Do not speak any English. All questions and responses must be in ' + selectedLang + '.' : ''} The candidate is interviewing for this role:\n\n${jd}\n\nAsk 5 targeted questions one at a time. Wait for each answer. Be warm and professional.`
           },
-          onModeChange: ({ mode }) => {
-            document.getElementById('pulse').style.background = mode === 'speaking' ? '#c084fc' : '#7c3aed';
-          },
-          onMessage: ({ message, source }) => {
-            transcript.push(`${source === 'ai' ? 'Alex' : 'Candidate'}: ${message}`);
-          },
-          onError: (msg) => {
-            if (!interviewEnding) document.getElementById('status').textContent = 'Error: ' + msg;
-          }
-        });
-      } catch (err) {
-        console.error(err);
-        alert('Microphone access is required. Please allow access and try again.');
-        document.getElementById('start-btn').disabled = false;
-        document.getElementById('start-btn').textContent = 'Begin Interview →';
-        showSection('setup-card');
+          firstMessage: firstMessage
+        }
+      },
+      onStatusChange: ({ status }) => {
+        if (interviewEnding) return;
+        const el = document.getElementById('status');
+        if (status === 'connected') el.textContent = 'Connected — Alex is listening.';
+        else el.textContent = status;
+      },
+      onModeChange: ({ mode }) => {
+        document.getElementById('pulse').style.background = mode === 'speaking' ? '#c084fc' : '#7c3aed';
+      },
+      onMessage: ({ message, source }) => {
+        transcript.push(`${source === 'ai' ? 'Alex' : 'Candidate'}: ${message}`);
+      },
+      onError: (msg) => {
+        if (!interviewEnding) document.getElementById('status').textContent = 'Error: ' + msg;
       }
-    };
-
-    window.endInterview = async function() {
+    });
+  } catch (err) {
+    console.error(err);
+    alert('Microphone access is required. Please allow access and try again.');
+    document.getElementById('start-btn').disabled = false;
+    document.getElementById('start-btn').textContent = 'Begin Interview →';
+    showSection('setup-card');
+  }
+};
       interviewEnding = true;
       if (conversation) {
         await conversation.endSession();
