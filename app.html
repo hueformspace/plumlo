@@ -320,6 +320,8 @@
     showSection('setup-card');
   }
 };
+      };
+  window.endInterview = async function() {
       interviewEnding = true;
       if (conversation) {
         await conversation.endSession();
