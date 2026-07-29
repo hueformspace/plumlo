@@ -147,7 +147,25 @@
     <h2>Start Your Interview Prep</h2>
     <p>Paste the job description below. Alex, your AI recruiter, will interview you and score your answers.</p>
     <textarea id="jd-input" placeholder="Paste the full job description here..."></textarea>
-    <button class="btn" id="start-btn" onclick="startInterview()">Begin Interview →</button>
+    <select id="lang-select" style="width:100%;margin-top:16px;padding:12px 14px;background:#0f0a1a;border:1px solid #3b1f6a;border-radius:10px;color:#f0eaff;font-size:0.95rem;outline:none;cursor:pointer;">
+  <option value="">English (default)</option>
+  <option value="Arabic">Arabic</option>
+  <option value="Dutch">Dutch</option>
+  <option value="French">French</option>
+  <option value="German">German</option>
+  <option value="Hindi">Hindi</option>
+  <option value="Indonesian">Indonesian</option>
+  <option value="Italian">Italian</option>
+  <option value="Japanese">Japanese</option>
+  <option value="Korean">Korean</option>
+  <option value="Mandarin">Mandarin</option>
+  <option value="Polish">Polish</option>
+  <option value="Portuguese">Portuguese</option>
+  <option value="Russian">Russian</option>
+  <option value="Spanish">Spanish</option>
+  <option value="Turkish">Turkish</option>
+</select>
+<button class="btn" id="start-btn" onclick="startInterview()">Begin Interview →</button>
   </div>
   <div class="card" id="interview-section">
     <div class="pulse" id="pulse"></div>
