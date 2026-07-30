@@ -214,6 +214,8 @@
     }
 
     window.startInterview = async function() {
+      const email = document.getElementById('email-input').value.trim();
+      if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
       const jd = document.getElementById('jd-input').value.trim();
       if (!jd) { alert('Please paste a job description first.'); return; }
       currentJD = jd;
