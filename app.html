@@ -119,6 +119,43 @@
     .btn-row { display: flex; gap: 12px; margin-top: 24px; }
     .btn-row .btn { margin-top: 0; }
     .footer { margin-top: 40px; font-size: 0.8rem; color: #4a3560; }
+    .code-toggle-row { margin-bottom: 16px; }
+    .code-toggle-row a { color: #9d7ec9; font-size: 0.85rem; text-decoration: underline; cursor: pointer; }
+    #code-row { display: none; margin-bottom: 16px; }
+    #code-row .code-fields { display: flex; gap: 8px; }
+    #code-input {
+      flex: 1;
+      padding: 12px 14px;
+      background: #0f0a1a;
+      border: 1px solid #3b1f6a;
+      border-radius: 10px;
+      color: #f0eaff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    #code-input:focus { border-color: #c084fc; }
+    #apply-code-btn {
+      padding: 12px 18px;
+      background: #3b1f6a;
+      color: #f0eaff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    #apply-code-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    #code-status { font-size: 0.82rem; color: #9d7ec9; margin-top: 6px; }
+    #trial-block-msg {
+      display: none;
+      margin-bottom: 16px;
+      padding: 14px 16px;
+      background: #0f0a1a;
+      border: 1px solid #3b1f6a;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: #e9d5ff;
+    }
+    #trial-block-msg a { color: #c084fc; }
   </style>
 </head>
 <body>
@@ -130,6 +167,19 @@
     <h2>Start Your Interview Prep</h2>
     <p>Paste the job description below. Alex, your AI recruiter, will interview you and score your answers.</p>
     <input type="email" id="email-input" placeholder="your@email.com" />
+    <div class="code-toggle-row">
+      <a id="code-toggle-link" onclick="toggleCodeField(event)">Have a code?</a>
+    </div>
+    <div id="code-row">
+      <div class="code-fields">
+        <input type="text" id="code-input" placeholder="Enter your code" />
+        <button type="button" id="apply-code-btn" onclick="applyCode()">Apply</button>
+      </div>
+      <div id="code-status"></div>
+    </div>
+    <div id="trial-block-msg">
+      Looks like this email or connection already used a free session. <a href="https://www.plumlo.com/#pricing">Get started for $19 →</a>
+    </div>
     <textarea id="jd-input" placeholder="Paste the full job description here..."></textarea>
     <select id="lang-select" style="width:100%;margin-top:16px;padding:12px 14px;background:#0f0a1a;border:1px solid #3b1f6a;border-radius:10px;color:#f0eaff;font-size:0.95rem;outline:none;cursor:pointer;">
   <option value="">English (default)</option>
@@ -176,6 +226,7 @@
     let transcript = [];
     let currentJD = '';
     let interviewEnding = false;
+    let hasValidCode = false;
 
     function showSection(id) {
       ['setup-card', 'interview-section', 'debrief-section'].forEach(s => {
@@ -189,6 +240,10 @@
     }
 
     showSection('setup-card');
+
+    if (window.location.hash === '#code') {
+      document.getElementById('code-row').style.display = 'block';
+    }
 
     function renderMarkdown(text) {
       const escaped = text
@@ -212,6 +267,39 @@
       html = html.replace(/(<li>[\s\S]*?<\/li>)+/g, (match) => '<ul>' + match + '</ul>');
       return html;
     }
+
+    window.toggleCodeField = function(e) {
+      e.preventDefault();
+      const row = document.getElementById('code-row');
+      row.style.display = row.style.display === 'none' ? 'block' : 'none';
+    };
+
+    window.applyCode = async function() {
+      const codeInput = document.getElementById('code-input');
+      const code = codeInput.value.trim();
+      const statusEl = document.getElementById('code-status');
+      if (!code) { statusEl.textContent = 'Enter a code.'; return; }
+      statusEl.textContent = 'Checking...';
+      try {
+        const res = await fetch('/api/redeem', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          hasValidCode = true;
+          statusEl.textContent = 'Code applied. ' + data.remaining + ' session' + (data.remaining === 1 ? '' : 's') + ' remaining.';
+          codeInput.disabled = true;
+          document.getElementById('apply-code-btn').disabled = true;
+          document.getElementById('trial-block-msg').style.display = 'none';
+        } else {
+          statusEl.textContent = data.error || 'Invalid code.';
+        }
+      } catch (e) {
+        statusEl.textContent = 'Something went wrong, try again.';
+      }
+    };
 
     window.startInterview = async function() {
       const email = document.getElementById('email-input').value.trim();
@@ -244,7 +332,21 @@
       document.getElementById('start-btn').textContent = 'Starting...';
       try {
         await navigator.mediaDevices.getUserMedia({ audio: true });
-        if (email) {
+
+        if (!hasValidCode) {
+          document.getElementById('trial-block-msg').style.display = 'none';
+          const checkRes = await fetch('/api/check-ip', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+          const checkData = await checkRes.json();
+          if (!checkData.allowed) {
+            document.getElementById('start-btn').disabled = false;
+            document.getElementById('start-btn').textContent = 'Begin Interview →';
+            document.getElementById('trial-block-msg').style.display = 'block';
+            return;
+          }
           try {
             await fetch('/api/save-trial', {
               method: 'POST',
@@ -253,6 +355,7 @@
             });
           } catch(e) { console.error('Email save failed', e); }
         }
+
         showSection('interview-section');
         document.getElementById('status').textContent = 'Connecting to Alex...';
         conversation = await Conversation.startSession({
@@ -337,8 +440,15 @@
       transcript = [];
       currentJD = '';
       interviewEnding = false;
+      hasValidCode = false;
       document.getElementById('jd-input').value = '';
       document.getElementById('email-input').value = '';
+      document.getElementById('code-input').value = '';
+      document.getElementById('code-input').disabled = false;
+      document.getElementById('apply-code-btn').disabled = false;
+      document.getElementById('code-status').textContent = '';
+      document.getElementById('code-row').style.display = 'none';
+      document.getElementById('trial-block-msg').style.display = 'none';
       document.getElementById('start-btn').disabled = false;
       document.getElementById('start-btn').textContent = 'Begin Interview →';
       showSection('setup-card');
