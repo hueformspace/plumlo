@@ -178,41 +178,12 @@
       target.style.display = 'block';
     }
 
-    showSection('code-gate');
-
-    document.getElementById('redeem-btn').addEventListener('click', async () => {
-      const code = document.getElementById('code-input').value.trim();
-      if (!code) return;
-      const btn = document.getElementById('redeem-btn');
-      const errorEl = document.getElementById('code-error');
-      btn.textContent = 'Checking...';
-      btn.disabled = true;
-      errorEl.textContent = '';
-      try {
-        const res = await fetch('/api/redeem', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code })
-        });
-        if (res.ok) {
-          const data = await res.json();
-          sessionStorage.setItem('plumlo_code', code);
-          sessionStorage.setItem('plumlo_remaining', data.remaining);
-          sessionStorage.setItem('plumlo_free_trial', data.is_free_trial ? 'true' : 'false');
-          showSection('setup-card');
-        } else {
-          const data = await res.json();
-          errorEl.textContent = data.error || 'Invalid code. Please try again.';
-          btn.textContent = 'Enter →';
-          btn.disabled = false;
-        }
-      } catch (err) {
-        errorEl.textContent = 'Something went wrong. Please try again.';
-        btn.textContent = 'Enter →';
-        btn.disabled = false;
-      }
-    });
-
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('trial') === 'true') {
+      showSection('setup-card');
+    } else {
+      showSection('code-gate');
+    }
     function renderMarkdown(text) {
       return text
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
