@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,6 +40,19 @@
     }
     .card h2 { font-size: 1.3rem; margin-bottom: 8px; color: #e9d5ff; }
     .card p { font-size: 0.95rem; color: #9d7ec9; margin-bottom: 24px; }
+    input[type="email"] {
+      width: 100%;
+      padding: 14px;
+      background: #0f0a1a;
+      border: 1px solid #3b1f6a;
+      border-radius: 10px;
+      color: #f0eaff;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      outline: none;
+    }
+    input[type="email"]:focus { border-color: #c084fc; }
+    input[type="email"]::placeholder { color: #5b4070; }
     textarea {
       width: 100%;
       height: 180px;
@@ -105,21 +119,17 @@
     .btn-row { display: flex; gap: 12px; margin-top: 24px; }
     .btn-row .btn { margin-top: 0; }
     .footer { margin-top: 40px; font-size: 0.8rem; color: #4a3560; }
-
- 
   </style>
 </head>
 <body>
   <div class="logo">plumlo</div>
   <div class="tagline">Practice with AI before AI interviews you.</div>
 
-  
-
   <!-- INTERVIEW APP -->
-  <div class="card" id="setup-card" style="display:none;">
+  <div class="card" id="setup-card">
     <h2>Start Your Interview Prep</h2>
     <p>Paste the job description below. Alex, your AI recruiter, will interview you and score your answers.</p>
-    <input type="email" id="email-input" placeholder="your@email.com" style="width:100%;padding:14px;background:#0f0a1a;border:1px solid #3b1f6a;border-radius:10px;color:#f0eaff;font-size:0.95rem;margin-bottom:16px;outline:none;" />
+    <input type="email" id="email-input" placeholder="your@email.com" />
     <textarea id="jd-input" placeholder="Paste the full job description here..."></textarea>
     <select id="lang-select" style="width:100%;margin-top:16px;padding:12px 14px;background:#0f0a1a;border:1px solid #3b1f6a;border-radius:10px;color:#f0eaff;font-size:0.95rem;outline:none;cursor:pointer;">
   <option value="">English (default)</option>
@@ -168,7 +178,7 @@
     let interviewEnding = false;
 
     function showSection(id) {
-      ['code-gate', 'setup-card', 'interview-section', 'debrief-section'].forEach(s => {
+      ['setup-card', 'interview-section', 'debrief-section'].forEach(s => {
         const el = document.getElementById(s);
         if (!el) return;
         el.style.display = 'none';
@@ -178,12 +188,8 @@
       target.style.display = 'block';
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('trial') === 'true') {
-      showSection('setup-card');
-    } else {
-      showSection('setup-card');
-    }
+    showSection('setup-card');
+
     function renderMarkdown(text) {
       return text
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -196,77 +202,87 @@
         .replace(/^• (.+)$/gm, '<li>$1</li>')
         .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
         .replace(/\n\n/g, '</p><p>')
-        .replace(/^(?!<[hul]|<\/[hul]|<hr)(.+)$/gm, '<p>$1</p>')
+        .replace(/^(?!<[hul]|<\/[hul]|<hr).+$/gm, '<p>$1</p>')
         .replace(/<p><\/p>/g, '');
     }
 
-   window.startInterview = async function() {
-  const jd = document.getElementById('jd-input').value.trim();
-  if (!jd) { alert('Please paste a job description first.'); return; }
-  currentJD = jd;
-  const selectedLang = document.getElementById('lang-select').value;
-  const greetings = {
-    'Arabic': 'مرحباً، أنا أليكس. سأجري معك مقابلة التوظيف اليوم. هل يمكنك أن تخبرني قليلاً عن نفسك ولماذا أنت مهتم بهذا الدور؟',
-    'Dutch': 'Hallo, ik ben Alex. Ik zal vandaag je sollicitatiegesprek afnemen. Kun je me iets over jezelf vertellen en waarom je geïnteresseerd bent in deze functie?',
-    'French': 'Bonjour, je suis Alex. Je vais conduire votre entretien aujourd\'hui. Pouvez-vous me parler un peu de vous et de votre intérêt pour ce poste?',
-    'German': 'Hallo, ich bin Alex. Ich führe heute Ihr Vorstellungsgespräch durch. Können Sie mir etwas über sich erzählen und warum Sie an dieser Stelle interessiert sind?',
-    'Hindi': 'नमस्ते, मैं एलेक्स हूं। आज मैं आपका साक्षात्कार लूंगी। क्या आप मुझे अपने बारे में थोड़ा बताएंगे और इस भूमिका में आपकी रुचि क्यों है?',
-    'Indonesian': 'Halo, saya Alex. Saya akan melakukan wawancara Anda hari ini. Bisakah Anda ceritakan sedikit tentang diri Anda dan mengapa Anda tertarik dengan posisi ini?',
-    'Italian': 'Ciao, sono Alex. Condurrò il tuo colloquio oggi. Puoi parlarmi un po\'di te e del perché sei interessato a questo ruolo?',
-    'Japanese': 'こんにちは、私はアレックスです。本日はスクリーニング面接を担当いたします。自己紹介と、このポジションに興味を持った理由を教えていただけますか？',
-    'Korean': '안녕하세요, 저는 알렉스입니다. 오늘 면접을 진행하겠습니다. 자기소개와 이 직무에 관심을 갖게 된 이유를 말씀해 주시겠어요?',
-    'Mandarin': '你好，我是Alex。我将主持您今天的面试。请问您能介绍一下自己，以及为什么对这个职位感兴趣吗？',
-    'Polish': 'Cześć, jestem Alex. Przeprowadzę dziś Twój wywiad. Czy możesz mi powiedzieć coś o sobie i dlaczego jesteś zainteresowany tą rolą?',
-    'Portuguese': 'Olá, sou Alex. Vou conduzir sua entrevista hoje. Você pode me contar um pouco sobre você e por que está interessado nessa vaga?',
-    'Russian': 'Здравствуйте, я Алекс. Сегодня я проведу ваше собеседование. Расскажите немного о себе и почему вас интересует эта должность?',
-    'Spanish': 'Hola, soy Alex. Hoy voy a conducir tu entrevista. ¿Puedes contarme un poco sobre ti y por qué estás interesado en este puesto?',
-    'Turkish': 'Merhaba, ben Alex. Bugün mülakatınızı yapacağım. Kendinizden ve bu pozisyona neden ilgi duyduğunuzdan bahseder misiniz?'
-  };
-  const firstMessage = greetings[selectedLang] || `Hi, I'm Alex. I'll be conducting your screening interview today. Let's get started — can you tell me a little about yourself and why you're interested in this role?`;
-  transcript = [];
-  interviewEnding = false;
-  document.getElementById('start-btn').disabled = true;
-  document.getElementById('start-btn').textContent = 'Starting...';
-  try {
-    await navigator.mediaDevices.getUserMedia({ audio: true });
-    showSection('interview-section');
-    document.getElementById('status').textContent = 'Connecting to Alex...';
-    conversation = await Conversation.startSession({
-      agentId: AGENT_ID,
-      overrides: {
-        agent: {
-          prompt: {
-            prompt: `You are Alex, a professional AI recruiter.${selectedLang ? ' IMPORTANT: You must conduct this entire interview in ' + selectedLang + ' only. Do not speak any English. All questions and responses must be in ' + selectedLang + '.' : ''} The candidate is interviewing for this role:\n\n${jd}\n\nAsk 5 targeted questions one at a time. Wait for each answer. Be warm and professional.`
-          },
-          firstMessage: firstMessage
+    window.startInterview = async function() {
+      const jd = document.getElementById('jd-input').value.trim();
+      if (!jd) { alert('Please paste a job description first.'); return; }
+      currentJD = jd;
+      const email = document.getElementById('email-input') ? document.getElementById('email-input').value.trim() : '';
+      const selectedLang = document.getElementById('lang-select').value;
+      const greetings = {
+        'Arabic': 'مرحباً، أنا أليكس. سأجري معك مقابلة التوظيف اليوم. هل يمكنك أن تخبرني قليلاً عن نفسك ولماذا أنت مهتم بهذا الدور؟',
+        'Dutch': 'Hallo, ik ben Alex. Ik zal vandaag je sollicitatiegesprek afnemen. Kun je me iets over jezelf vertellen en waarom je geïnteresseerd bent in deze functie?',
+        'French': 'Bonjour, je suis Alex. Je vais conduire votre entretien aujourd\'hui. Pouvez-vous me parler un peu de vous et de votre intérêt pour ce poste?',
+        'German': 'Hallo, ich bin Alex. Ich führe heute Ihr Vorstellungsgespräch durch. Können Sie mir etwas über sich erzählen und warum Sie an dieser Stelle interessiert sind?',
+        'Hindi': 'नमस्ते, मैं एलेक्स हूं। आज मैं आपका साक्षात्कार लूंगी। क्या आप मुझे अपने बारे में थोड़ा बताएंगे और इस भूमिका में आपकी रुचि क्यों है?',
+        'Indonesian': 'Halo, saya Alex. Saya akan melakukan wawancara Anda hari ini. Bisakah Anda ceritakan sedikit tentang diri Anda dan mengapa Anda tertarik dengan posisi ini?',
+        'Italian': 'Ciao, sono Alex. Condurrò il tuo colloquio oggi. Puoi parlarmi un po\'di te e del perché sei interessato a questo ruolo?',
+        'Japanese': 'こんにちは、私はアレックスです。本日はスクリーニング面接を担当いたします。自己紹介と、このポジションに興味を持った理由を教えていただけますか？',
+        'Korean': '안녕하세요, 저는 알렉스입니다. 오늘 면접을 진행하겠습니다. 자기소개와 이 직무에 관심을 갖게 된 이유를 말씀해 주시겠어요?',
+        'Mandarin': '你好，我是Alex。我将主持您今天的面试。请问您能介绍一下自己，以及为什么对这个职位感兴趣吗？',
+        'Polish': 'Cześć, jestem Alex. Przeprowadzę dziś Twój wywiad. Czy możesz mi powiedzieć coś o sobie i dlaczego jesteś zainteresowany tą rolą?',
+        'Portuguese': 'Olá, sou Alex. Vou conduzir sua entrevista hoje. Você pode me contar um pouco sobre você e por que está interessado nessa vaga?',
+        'Russian': 'Здравствуйте, я Алекс. Сегодня я проведу ваше собеседование. Расскажите немного о себе и почему вас интересует эта должность?',
+        'Spanish': 'Hola, soy Alex. Hoy voy a conducir tu entrevista. ¿Puedes contarme un poco sobre ti y por qué estás interesado en este puesto?',
+        'Turkish': 'Merhaba, ben Alex. Bugün mülakatınızı yapacağım. Kendinizden ve bu pozisyona neden ilgi duyduğunuzdan bahseder misiniz?'
+      };
+      const firstMessage = greetings[selectedLang] || `Hi, I'm Alex. I'll be conducting your screening interview today. Let's get started — can you tell me a little about yourself and why you're interested in this role?`;
+      transcript = [];
+      interviewEnding = false;
+      document.getElementById('start-btn').disabled = true;
+      document.getElementById('start-btn').textContent = 'Starting...';
+      try {
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+        if (email) {
+          try {
+            await fetch('/api/save-trial', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email })
+            });
+          } catch(e) { console.error('Email save failed', e); }
         }
-      },
-      onStatusChange: ({ status }) => {
-        if (interviewEnding) return;
-        const el = document.getElementById('status');
-        if (status === 'connected') el.textContent = 'Connected — Alex is listening.';
-        else el.textContent = status;
-      },
-      onModeChange: ({ mode }) => {
-        document.getElementById('pulse').style.background = mode === 'speaking' ? '#c084fc' : '#7c3aed';
-      },
-      onMessage: ({ message, source }) => {
-        transcript.push(`${source === 'ai' ? 'Alex' : 'Candidate'}: ${message}`);
-      },
-      onError: (msg) => {
-        if (!interviewEnding) document.getElementById('status').textContent = 'Error: ' + msg;
+        showSection('interview-section');
+        document.getElementById('status').textContent = 'Connecting to Alex...';
+        conversation = await Conversation.startSession({
+          agentId: AGENT_ID,
+          overrides: {
+            agent: {
+              prompt: {
+                prompt: `You are Alex, a professional AI recruiter.${selectedLang ? ' IMPORTANT: You must conduct this entire interview in ' + selectedLang + ' only. Do not speak any English. All questions and responses must be in ' + selectedLang + '.' : ''} The candidate is interviewing for this role:\n\n${jd}\n\nAsk 5 targeted questions one at a time. Wait for each answer. Be warm and professional.`
+              },
+              firstMessage: firstMessage
+            }
+          },
+          onStatusChange: ({ status }) => {
+            if (interviewEnding) return;
+            const el = document.getElementById('status');
+            if (status === 'connected') el.textContent = 'Connected — Alex is listening.';
+            else el.textContent = status;
+          },
+          onModeChange: ({ mode }) => {
+            document.getElementById('pulse').style.background = mode === 'speaking' ? '#c084fc' : '#7c3aed';
+          },
+          onMessage: ({ message, source }) => {
+            transcript.push(`${source === 'ai' ? 'Alex' : 'Candidate'}: ${message}`);
+          },
+          onError: (msg) => {
+            if (!interviewEnding) document.getElementById('status').textContent = 'Error: ' + msg;
+          }
+        });
+      } catch (err) {
+        console.error(err);
+        alert('Microphone access is required. Please allow access and try again.');
+        document.getElementById('start-btn').disabled = false;
+        document.getElementById('start-btn').textContent = 'Begin Interview →';
+        showSection('setup-card');
       }
-    });
-  } catch (err) {
-    console.error(err);
-    alert('Microphone access is required. Please allow access and try again.');
-    document.getElementById('start-btn').disabled = false;
-    document.getElementById('start-btn').textContent = 'Begin Interview →';
-    showSection('setup-card');
-  }
-};
-     
-  window.endInterview = async function() {
+    };
+
+    window.endInterview = async function() {
       interviewEnding = true;
       if (conversation) {
         await conversation.endSession();
@@ -291,9 +307,8 @@
         const debriefText = data.debrief || 'Debrief unavailable.';
         if (!data.debrief) console.error('Score API returned no debrief:', data);
         window._lastDebrief = debriefText;
-
-      document.getElementById('debrief-content').innerHTML = renderMarkdown(debriefText);
-document.getElementById('download-btn').style.display = 'block';
+        document.getElementById('debrief-content').innerHTML = renderMarkdown(debriefText);
+        document.getElementById('download-btn').style.display = 'block';
       } catch (err) {
         console.error(err);
         document.getElementById('debrief-content').textContent = 'Error generating debrief. Please try again.';
@@ -311,23 +326,14 @@ document.getElementById('download-btn').style.display = 'block';
     };
 
     window.resetApp = function() {
-      const isFreeTrial = sessionStorage.getItem('plumlo_free_trial') === 'true';
       transcript = [];
       currentJD = '';
       interviewEnding = false;
       document.getElementById('jd-input').value = '';
+      document.getElementById('email-input').value = '';
       document.getElementById('start-btn').disabled = false;
       document.getElementById('start-btn').textContent = 'Begin Interview →';
-      if (isFreeTrial) {
-        sessionStorage.clear();
-        showSection('code-gate');
-        document.getElementById('code-input').value = '';
-        document.getElementById('code-error').textContent = '';
-        document.getElementById('redeem-btn').textContent = 'Enter →';
-        document.getElementById('redeem-btn').disabled = false;
-      } else {
-        showSection('setup-card');
-      }
+      showSection('setup-card');
     };
   </script>
 </body>
