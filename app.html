@@ -340,7 +340,7 @@
         const response = await fetch('/api/score', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ transcript: transcriptText, jobDescription: currentJD })
+          body: JSON.stringify({ transcript: transcriptText, jobDescription: currentJD, language: document.getElementById('lang-select').value || 'English' })
         });
         const data = await response.json();
         const debriefText = data.debrief || 'Debrief unavailable.';
