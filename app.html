@@ -191,19 +191,26 @@
     showSection('setup-card');
 
     function renderMarkdown(text) {
-      return text
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-        .replace(/^# (.+)$/gm, '<h2>$1</h2>')
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/^---$/gm, '<hr>')
-        .replace(/^\* (.+)$/gm, '<li>$1</li>')
-        .replace(/^• (.+)$/gm, '<li>$1</li>')
-        .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
-        .replace(/\n\n/g, '</p><p>')
-        .replace(/^(?!<[hul]|<\/[hul]|<hr).+$/gm, '<p>$1</p>')
-        .replace(/<p><\/p>/g, '');
+      const escaped = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      const lines = escaped.split('\n');
+      let html = '';
+      for (const line of lines) {
+        if (/^### (.+)$/.test(line)) html += line.replace(/^### (.+)$/, '<h3>$1</h3>');
+        else if (/^## (.+)$/.test(line)) html += line.replace(/^## (.+)$/, '<h2>$1</h2>');
+        else if (/^# (.+)$/.test(line)) html += line.replace(/^# (.+)$/, '<h2>$1</h2>');
+        else if (/^---$/.test(line)) html += '<hr>';
+        else if (/^\* (.+)$/.test(line)) html += '<li>' + line.replace(/^\* /, '') + '</li>';
+        else if (/^• (.+)$/.test(line)) html += '<li>' + line.replace(/^• /, '') + '</li>';
+        else if (/^- (.+)$/.test(line)) html += '<li>' + line.replace(/^- /, '') + '</li>';
+        else if (line.trim() === '') html += '';
+        else html += '<p>' + line + '</p>';
+      }
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/(<li>[\s\S]*?<\/li>)+/g, (match) => '<ul>' + match + '</ul>');
+      return html;
     }
 
     window.startInterview = async function() {
