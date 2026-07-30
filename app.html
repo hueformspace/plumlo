@@ -293,6 +293,7 @@
           codeInput.disabled = true;
           document.getElementById('apply-code-btn').disabled = true;
           document.getElementById('trial-block-msg').style.display = 'none';
+          document.getElementById('email-input').style.display = 'none';
         } else {
           statusEl.textContent = data.error || 'Invalid code.';
         }
@@ -302,8 +303,11 @@
     };
 
     window.startInterview = async function() {
-      const email = document.getElementById('email-input').value.trim();
-      if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+      let email = '';
+      if (!hasValidCode) {
+        email = document.getElementById('email-input').value.trim();
+        if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+      }
       const jd = document.getElementById('jd-input').value.trim();
       if (!jd) { alert('Please paste a job description first.'); return; }
       currentJD = jd;
@@ -443,6 +447,7 @@
       hasValidCode = false;
       document.getElementById('jd-input').value = '';
       document.getElementById('email-input').value = '';
+      document.getElementById('email-input').style.display = '';
       document.getElementById('code-input').value = '';
       document.getElementById('code-input').disabled = false;
       document.getElementById('apply-code-btn').disabled = false;
