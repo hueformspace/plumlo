@@ -274,11 +274,9 @@
       row.style.display = row.style.display === 'none' ? 'block' : 'none';
     };
 
-    window.applyCode = async function() {
+    async function tryApplyCode(code) {
       const codeInput = document.getElementById('code-input');
-      const code = codeInput.value.trim();
       const statusEl = document.getElementById('code-status');
-      if (!code) { statusEl.textContent = 'Enter a code.'; return; }
       statusEl.textContent = 'Checking...';
       try {
         const res = await fetch('/api/redeem', {
@@ -294,15 +292,36 @@
           document.getElementById('apply-code-btn').disabled = true;
           document.getElementById('trial-block-msg').style.display = 'none';
           document.getElementById('email-input').style.display = 'none';
+          return true;
         } else {
           statusEl.textContent = data.error || 'Invalid code.';
+          return false;
         }
       } catch (e) {
         statusEl.textContent = 'Something went wrong, try again.';
+        return false;
       }
+    }
+
+    window.applyCode = async function() {
+      const code = document.getElementById('code-input').value.trim();
+      const statusEl = document.getElementById('code-status');
+      if (!code) { statusEl.textContent = 'Enter a code.'; return; }
+      await tryApplyCode(code);
     };
 
+    document.getElementById('code-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); window.applyCode(); }
+    });
+
     window.startInterview = async function() {
+      if (!hasValidCode) {
+        const pendingCode = document.getElementById('code-input').value.trim();
+        if (pendingCode) {
+          const applied = await tryApplyCode(pendingCode);
+          if (!applied) return;
+        }
+      }
       let email = '';
       if (!hasValidCode) {
         email = document.getElementById('email-input').value.trim();
