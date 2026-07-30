@@ -241,7 +241,7 @@
 
     showSection('setup-card');
 
-    if (window.location.hash === '#code') {
+    if (window.location.hash === '#code' || new URLSearchParams(window.location.search).get('paid') === 'true') {
       document.getElementById('code-row').style.display = 'block';
     }
 
