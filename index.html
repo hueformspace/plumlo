@@ -526,7 +526,29 @@
           <li><span class="check">✓</span> Any job description</li>
           <li><span class="check">✓</span> Scored debrief included</li>
         </ul>
-        <a href="/free-trial.html" class="price-btn secondary">Try Free →</a>
+        <a href="#" class="price-btn secondary" id="free-trial-btn">Try Free →</a>
+<div id="ip-block-msg" style="display:none; margin-top:16px; padding:16px 20px; background:#110d1f; border:1px solid #2a1a4a; border-radius:12px; text-align:center;">
+  <p style="color:#f0eaff; font-size:0.9rem; margin-bottom:8px;">looks like this connection already used a free session.</p>
+  <p style="color:#7c6a9a; font-size:0.82rem;">have a code? <a href="/app.html" style="color:#c084fc;">enter it here</a></p>
+</div>
+<script>
+  document.getElementById('free-trial-btn').addEventListener('click', async function(e) {
+    e.preventDefault();
+    this.textContent = 'Checking...';
+    try {
+      const res = await fetch('/api/check-ip', { method: 'POST' });
+      const data = await res.json();
+      if (data.allowed) {
+        window.location.href = '/app.html?trial=true';
+      } else {
+        document.getElementById('ip-block-msg').style.display = 'block';
+        this.textContent = 'Try Free →';
+      }
+    } catch {
+      window.location.href = '/app.html?trial=true';
+    }
+  });
+</script>
       </div>
       <div class="pricing-card">
         <div class="price-tier">Starter</div>
