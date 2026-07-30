@@ -2,7 +2,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
-  const { transcript, jobDescription } = req.body;
+  const { transcript, jobDescription, language } = req.body;
   if (!transcript || !jobDescription) {
     return res.status(400).json({ error: 'Missing transcript or jobDescription' });
   }
@@ -39,7 +39,7 @@ Provide a debrief with:
 3. What missed (3 bullet points)
 4. What to fix for next time (3 bullet points)
 
-Be specific, honest, and actionable. Format clearly.`
+Be specific, honest, and actionable. Format clearly.${language && language !== 'English' ? ' Respond entirely in ' + language + '.' : ''}`
         }]
       })
     });
