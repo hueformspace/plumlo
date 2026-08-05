@@ -13,13 +13,16 @@ export default async function handler(req, res) {
       process.env.SUPABASE_URL,
       process.env.SUPABASE_ANON_KEY
     );
+    const sendAfter = new Date(Date.now() + 20 * 60 * 1000).toISOString();
     await supabase.from('sessions').insert({
       email: email,
       code: null,
       sessions_total: 1,
       sessions_used: 1,
       is_free_trial: true,
-      ip_address: ip
+      ip_address: ip,
+      send_after: sendAfter,
+      sent_followup: false
     });
     return res.status(200).json({ ok: true });
   } catch (err) {
