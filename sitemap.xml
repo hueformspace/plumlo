@@ -115,4 +115,14 @@
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-nova-peoplebox-interview.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-heymilo-interview.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
 </urlset>
