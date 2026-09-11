@@ -130,4 +130,24 @@
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-an-imocha-tara-interview.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-sapia-ai-interview.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-purplefish-interview.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-an-eightfold-ai-interviewer.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
 </urlset>
