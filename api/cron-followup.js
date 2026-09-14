@@ -51,6 +51,11 @@ export default async function handler(req, res) {
   .sig-band .tagline { font-size: 0.72rem; color: #f0eaff; margin-top: 8px; font-style: italic; opacity: 0.5; }
   .footer { background: #7c6a9a; padding: 14px 36px; text-align: center; border-top: 1px solid rgba(240,234,255,0.1); }
   .footer p { font-size: 0.68rem; color: #f0eaff; opacity: 0.4; }
+  .reaction-band { background: #150c26; padding: 22px 36px 26px; text-align: center; border-top: 1px solid rgba(124,106,154,0.3); }
+  .reaction-label { font-size: 0.82rem; color: #c084fc; margin-bottom: 14px; font-weight: 700; }
+  .reaction-row { width: 100%; }
+  .reaction-link { display: inline-block; text-decoration: none; font-size: 1.5rem; line-height: 1.3; text-align: center; }
+  .reaction-word { display: block; font-size: 0.62rem; color: #9d7ec9; font-family: -apple-system, sans-serif; margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -62,6 +67,18 @@ export default async function handler(req, res) {
     <p>Hope the debrief actually helped and showed you what landed and what to fix. That's the whole point. No more guessing.</p>
     <p>We're still building this out. Adding languages, tightening the scoring, making it better every week.</p>
     <p>If you want more practice before a real interview, Starter and Pro are both one-time, no subscription. We're around.</p>
+  </div>
+  <div class="reaction-band">
+    <p class="reaction-label">How did that feel?</p>
+    <table class="reaction-row" role="presentation" cellpadding="0" cellspacing="0">
+      <tr>
+        <td><a href="https://www.plumlo.com/api/rate?id=${row.id}&r=didnt_help" class="reaction-link">&#128542;<span class="reaction-word">Didn't help</span></a></td>
+        <td><a href="https://www.plumlo.com/api/rate?id=${row.id}&r=not_great" class="reaction-link">&#128533;<span class="reaction-word">Not great</span></a></td>
+        <td><a href="https://www.plumlo.com/api/rate?id=${row.id}&r=okay" class="reaction-link">&#128528;<span class="reaction-word">Okay</span></a></td>
+        <td><a href="https://www.plumlo.com/api/rate?id=${row.id}&r=liked" class="reaction-link">&#128578;<span class="reaction-word">Liked it</span></a></td>
+        <td><a href="https://www.plumlo.com/api/rate?id=${row.id}&r=loved" class="reaction-link">&#128525;<span class="reaction-word">Loved it</span></a></td>
+      </tr>
+    </table>
   </div>
   <div class="sig-band">
     <div class="name">Jason</div>
