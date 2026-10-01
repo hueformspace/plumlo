@@ -436,7 +436,26 @@
         conversation = null;
       }
       showSection('debrief-section');
-      document.getElementById('debrief-content').textContent = 'Generating your debrief...';
+      const waitMessages = {
+        'Arabic': 'جارٍ إنشاء تقرير مقابلتك... سيستغرق هذا حوالي 15 ثانية.',
+        'Dutch': 'Je debriefing wordt gegenereerd... Dit duurt ongeveer 15 seconden.',
+        'French': 'Génération de votre compte-rendu... Cela prend environ 15 secondes.',
+        'German': 'Ihr Debrief wird erstellt... Das dauert etwa 15 Sekunden.',
+        'Hindi': 'आपका डीब्रीफ तैयार हो रहा है... इसमें लगभग 15 सेकंड लगेंगे।',
+        'Indonesian': 'Membuat laporan wawancara Anda... Ini membutuhkan sekitar 15 detik.',
+        'Italian': 'Generazione del tuo debriefing... Ci vorranno circa 15 secondi.',
+        'Japanese': 'デブリーフを生成中です... 約15秒かかります。',
+        'Korean': '면접 피드백을 생성하는 중입니다... 약 15초 정도 걸립니다.',
+        'Mandarin': '正在生成您的面试报告... 大约需要15秒。',
+        'Polish': 'Generowanie podsumowania... To zajmie około 15 sekund.',
+        'Portuguese': 'Gerando seu relatório... Isso leva cerca de 15 segundos.',
+        'Russian': 'Создание вашего отчёта... Это займёт около 15 секунд.',
+        'Spanish': 'Generando tu informe... Esto tarda unos 15 segundos.',
+        'Turkish': 'Değerlendirmeniz oluşturuluyor... Bu yaklaşık 15 saniye sürer.'
+      };
+      const selectedLang = document.getElementById('lang-select').value;
+      const waitMsg = waitMessages[selectedLang] || 'Generating your debrief... This takes about 15 seconds.';
+      document.getElementById('debrief-content').textContent = waitMsg;
       setTimeout(generateDebrief, 500);
     };
 
