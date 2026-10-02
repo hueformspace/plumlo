@@ -12,8 +12,9 @@ export default async function handler(req, res) {
     const { data: rows, error } = await supabase
       .from('sessions')
       .select('id, email')
-      .eq('is_free_trial', true)
+            .eq('is_free_trial', true)
       .eq('sent_followup', false)
+      .eq('debrief_shown', true)
       .lte('send_after', now)
       .not('email', 'is', null);
     if (error) throw error;
