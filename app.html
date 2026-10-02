@@ -473,8 +473,9 @@
         const debriefText = data.debrief || 'Debrief unavailable.';
         if (!data.debrief) console.error('Score API returned no debrief:', data);
         window._lastDebrief = debriefText;
-        document.getElementById('debrief-content').innerHTML = renderMarkdown(debriefText);
+               document.getElementById('debrief-content').innerHTML = renderMarkdown(debriefText);
         document.getElementById('download-btn').style.display = 'block';
+        fetch('/api/mark-debrief-shown', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ code: codeInput.value }) }).catch(()=>{});
       } catch (err) {
         console.error(err);
         document.getElementById('debrief-content').textContent = 'Error generating debrief. Please try again.';
