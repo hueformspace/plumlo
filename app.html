@@ -480,7 +480,7 @@
         window._lastDebrief = debriefText;
                document.getElementById('debrief-content').innerHTML = renderMarkdown(debriefText);
         document.getElementById('download-btn').style.display = 'block';
-        fetch('/api/mark-debrief-shown', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ code: codeInput.value }) }).catch(()=>{});
+        fetch('/api/mark-debrief-shown', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(redeemedCode ? { code: redeemedCode } : { id: trialSessionId }) }).catch(()=>{});
       } catch (err) {
         console.error(err);
         document.getElementById('debrief-content').textContent = 'Error generating debrief. Please try again.';
