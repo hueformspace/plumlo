@@ -3,9 +3,10 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANO
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-  const { code } = req.body;
-  if (!code) return res.status(400).json({ error: 'Missing code' });
-  const { error } = await supabase.from('sessions').update({ debrief_shown: true }).ilike('code', code);
+  const { code, id } = req.body;
+  if (!code && !id) return res.status(400).json({ error: 'Missing code or id' });
+  const query = supabase.from('sessions').update({ debrief_shown: true });
+  const { error } = id ? await query.eq('id', id) : await query.ilike('code', code);
   if (error) return res.status(500).json({ error: error.message });
   return res.status(200).json({ ok: true });
 }
