@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       process.env.SUPABASE_ANON_KEY
     );
     const sendAfter = new Date(Date.now() + 20 * 60 * 1000).toISOString();
-    await supabase.from('sessions').insert({
+        const { data, error } = await supabase.from('sessions').insert({
       email: email,
       code: null,
       sessions_total: 1,
@@ -23,8 +23,9 @@ export default async function handler(req, res) {
       ip_address: ip,
       send_after: sendAfter,
       sent_followup: false
-    });
-    return res.status(200).json({ ok: true });
+    }).select('id').single();
+    if (error) throw error;
+    return res.status(200).json({ ok: true, id: data.id });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: 'Failed to save' });
