@@ -302,6 +302,7 @@
         const data = await res.json();
         if (res.ok && data.success) {
           hasValidCode = true;
+          redeemedCode = code;
           statusEl.textContent = 'Code applied. ' + data.remaining + ' session' + (data.remaining === 1 ? '' : 's') + ' remaining.';
           codeInput.disabled = true;
           document.getElementById('apply-code-btn').disabled = true;
