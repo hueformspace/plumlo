@@ -239,7 +239,9 @@
     let transcript = [];
     let currentJD = '';
     let interviewEnding = false;
-    let hasValidCode = false;
+        let hasValidCode = false;
+    let redeemedCode = null;
+    let trialSessionId = null;
 
     function showSection(id) {
       ['setup-card', 'interview-section', 'debrief-section'].forEach(s => {
