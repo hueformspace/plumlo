@@ -387,11 +387,13 @@
             return;
           }
           try {
-            await fetch('/api/save-trial', {
+            const trialRes = await fetch('/api/save-trial', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ email })
             });
+            const trialData = await trialRes.json();
+            trialSessionId = trialData.id || null;
           } catch(e) { console.error('Email save failed', e); }
         }
 
