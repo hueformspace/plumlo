@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -239,6 +240,7 @@
     let transcript = [];
     let currentJD = '';
     let interviewEnding = false;
+    let closingHeard = false;
         let hasValidCode = false;
     let redeemedCode = null;
     let trialSessionId = null;
@@ -367,6 +369,7 @@
       const firstMessage = greetings[selectedLang] || `Hi, I'm Alex. I'll be conducting your screening interview today. Let's get started — can you tell me a little about yourself and why you're interested in this role?`;
       transcript = [];
       interviewEnding = false;
+      closingHeard = false;
       document.getElementById('start-btn').disabled = true;
       document.getElementById('start-btn').textContent = 'Starting...';
       try {
@@ -415,11 +418,23 @@
             if (status === 'connected') el.textContent = 'Connected — Alex is listening.';
             else el.textContent = status;
           },
+          onDisconnect: (details) => {
+            if (details && details.reason === 'agent' && !interviewEnding) window.endInterview();
+          },
           onModeChange: ({ mode }) => {
             document.getElementById('pulse').style.background = mode === 'speaking' ? '#c084fc' : '#7c3aed';
+            // Alex has finished saying the closing line: end the call and load the debrief.
+            if (closingHeard && mode === 'listening' && !interviewEnding) {
+              setTimeout(function() { if (!interviewEnding) window.endInterview(); }, 1200);
+            }
           },
           onMessage: ({ message, source }) => {
             transcript.push(`${source === 'ai' ? 'Alex' : 'Candidate'}: ${message}`);
+            if (source === 'ai' && !closingHeard && /that.s everything i need/i.test(message)) {
+              closingHeard = true;
+              // Fallback in case the listening signal never arrives.
+              setTimeout(function() { if (!interviewEnding) window.endInterview(); }, 15000);
+            }
           },
           onError: (msg) => {
             if (!interviewEnding) document.getElementById('status').textContent = 'Error: ' + msg;
@@ -435,9 +450,10 @@
     };
 
     window.endInterview = async function() {
+      if (interviewEnding) return;
       interviewEnding = true;
       if (conversation) {
-        await conversation.endSession();
+        try { await conversation.endSession(); } catch (e) { console.error('endSession failed', e); }
         conversation = null;
       }
       showSection('debrief-section');
@@ -501,6 +517,7 @@
       transcript = [];
       currentJD = '';
       interviewEnding = false;
+      closingHeard = false;
       hasValidCode = false;
       document.getElementById('jd-input').value = '';
       document.getElementById('email-input').value = '';
