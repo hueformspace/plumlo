@@ -236,6 +236,25 @@
   <script type="module">
     import { Conversation } from 'https://esm.sh/@11labs/client@0.2.0';
     const AGENT_ID = "agent_9701kn2cw9apf7hv56d2fx5fbh0z";
+    const BUILD = 'app-v4-2026-10-08';
+    const DEBUG = new URLSearchParams(window.location.search).get('debug') === '1';
+    const traceLines = [];
+    const traceT0 = performance.now();
+    function trace(msg) {
+      const line = ((performance.now() - traceT0) / 1000).toFixed(1) + 's  ' + msg;
+      traceLines.push(line);
+      console.log('[plumlo]', line);
+      const el = document.getElementById('debug-trace');
+      if (el) { el.textContent = traceLines.join('\n'); el.scrollTop = el.scrollHeight; }
+    }
+    if (DEBUG) {
+      const box = document.createElement('div');
+      box.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:9999;background:#000c;border:1px solid #7c3aed;border-radius:8px;padding:8px;font:11px/1.4 monospace;color:#e9d5ff';
+      box.innerHTML = '<button id="debug-copy" style="float:right;margin-left:8px">Copy</button><pre id="debug-trace" style="margin:0;max-height:28vh;overflow:auto;white-space:pre-wrap"></pre>';
+      document.body.appendChild(box);
+      document.getElementById('debug-copy').onclick = function() { navigator.clipboard.writeText(traceLines.join('\n')).catch(function(){}); };
+    }
+    trace('page loaded, build ' + BUILD);
     let conversation = null;
     let transcript = [];
     let currentJD = '';
@@ -423,32 +442,41 @@
             else el.textContent = status;
           },
           onDisconnect: (details) => {
-            if (details && details.reason === 'agent' && !interviewEnding) window.endInterview();
+            trace('disconnect ' + JSON.stringify(details || {}) + ' closingHeard=' + closingHeard + ' ending=' + interviewEnding);
+            if (interviewEnding) return;
+            // Any drop after the closing line, or the agent ending the call, loads the debrief right away.
+            if (closingHeard || (details && details.reason === 'agent')) window.endInterview('disconnect');
           },
           onModeChange: ({ mode }) => {
             currentMode = mode;
+            trace('mode ' + mode + (closingHeard ? ' (after closing)' : ''));
             document.getElementById('pulse').style.background = mode === 'speaking' ? '#c084fc' : '#7c3aed';
             // After the closing line, wait until Alex has been quiet for 3 seconds, then load the debrief.
             if (closingHeard && !interviewEnding) {
               clearTimeout(closingTimer);
               if (mode === 'listening') {
-                closingTimer = setTimeout(function() { if (!interviewEnding) window.endInterview(); }, 3000);
+                trace('quiet timer started (3s)');
+                closingTimer = setTimeout(function() { if (!interviewEnding) window.endInterview('quiet-timer'); }, 3000);
               }
             }
           },
           onMessage: ({ message, source }) => {
             transcript.push(`${source === 'ai' ? 'Alex' : 'Candidate'}: ${message}`);
+            trace('message ' + source + ': ' + String(message).slice(0, 48).replace(/\s+/g, ' ') + ' (' + String(message).length + ' chars)');
             if (source === 'ai' && !closingHeard && /that.s everything i need/i.test(message)) {
               closingHeard = true;
+              trace('closing line detected, mode=' + currentMode + ', fallback 45s');
               // Last resort if no speaking signal ever arrives. Long enough to never cut off the closing line.
-              closingFallback = setTimeout(function() { if (!interviewEnding) window.endInterview(); }, 45000);
+              closingFallback = setTimeout(function() { if (!interviewEnding) window.endInterview('fallback-45s'); }, 45000);
               // If Alex is already quiet when this arrives, the quiet timer starts now (a new speaking signal cancels it).
               if (currentMode === 'listening') {
-                closingTimer = setTimeout(function() { if (!interviewEnding) window.endInterview(); }, 3000);
+                trace('quiet timer started on arrival (3s)');
+                closingTimer = setTimeout(function() { if (!interviewEnding) window.endInterview('quiet-on-arrival'); }, 3000);
               }
             }
           },
           onError: (msg) => {
+            trace('error ' + JSON.stringify(msg));
             if (!interviewEnding) document.getElementById('status').textContent = 'Error: ' + msg;
           }
         });
@@ -461,8 +489,9 @@
       }
     };
 
-    window.endInterview = async function() {
+    window.endInterview = async function(source) {
       if (interviewEnding) return;
+      trace('endInterview called by ' + (typeof source === 'string' ? source : 'button'));
       interviewEnding = true;
       clearTimeout(closingTimer); clearTimeout(closingFallback);
       if (conversation) {
