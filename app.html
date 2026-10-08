@@ -241,6 +241,9 @@
     let currentJD = '';
     let interviewEnding = false;
     let closingHeard = false;
+    let currentMode = 'listening';
+    let closingTimer = null;
+    let closingFallback = null;
         let hasValidCode = false;
     let redeemedCode = null;
     let trialSessionId = null;
@@ -370,6 +373,7 @@
       transcript = [];
       interviewEnding = false;
       closingHeard = false;
+      clearTimeout(closingTimer); clearTimeout(closingFallback);
       document.getElementById('start-btn').disabled = true;
       document.getElementById('start-btn').textContent = 'Starting...';
       try {
@@ -422,18 +426,26 @@
             if (details && details.reason === 'agent' && !interviewEnding) window.endInterview();
           },
           onModeChange: ({ mode }) => {
+            currentMode = mode;
             document.getElementById('pulse').style.background = mode === 'speaking' ? '#c084fc' : '#7c3aed';
-            // Alex has finished saying the closing line: end the call and load the debrief.
-            if (closingHeard && mode === 'listening' && !interviewEnding) {
-              setTimeout(function() { if (!interviewEnding) window.endInterview(); }, 1200);
+            // After the closing line, wait until Alex has been quiet for 3 seconds, then load the debrief.
+            if (closingHeard && !interviewEnding) {
+              clearTimeout(closingTimer);
+              if (mode === 'listening') {
+                closingTimer = setTimeout(function() { if (!interviewEnding) window.endInterview(); }, 3000);
+              }
             }
           },
           onMessage: ({ message, source }) => {
             transcript.push(`${source === 'ai' ? 'Alex' : 'Candidate'}: ${message}`);
             if (source === 'ai' && !closingHeard && /that.s everything i need/i.test(message)) {
               closingHeard = true;
-              // Fallback in case the listening signal never arrives.
-              setTimeout(function() { if (!interviewEnding) window.endInterview(); }, 15000);
+              // Last resort if no speaking signal ever arrives. Long enough to never cut off the closing line.
+              closingFallback = setTimeout(function() { if (!interviewEnding) window.endInterview(); }, 45000);
+              // If Alex is already quiet when this arrives, the quiet timer starts now (a new speaking signal cancels it).
+              if (currentMode === 'listening') {
+                closingTimer = setTimeout(function() { if (!interviewEnding) window.endInterview(); }, 3000);
+              }
             }
           },
           onError: (msg) => {
@@ -452,6 +464,7 @@
     window.endInterview = async function() {
       if (interviewEnding) return;
       interviewEnding = true;
+      clearTimeout(closingTimer); clearTimeout(closingFallback);
       if (conversation) {
         try { await conversation.endSession(); } catch (e) { console.error('endSession failed', e); }
         conversation = null;
@@ -518,6 +531,7 @@
       currentJD = '';
       interviewEnding = false;
       closingHeard = false;
+      clearTimeout(closingTimer); clearTimeout(closingFallback);
       hasValidCode = false;
       document.getElementById('jd-input').value = '';
       document.getElementById('email-input').value = '';
