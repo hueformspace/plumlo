@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -224,6 +225,9 @@
     .debrief-item .dot { color: var(--purple-light); flex-shrink: 0; margin-top: 2px; }
 
     /* PRICING */
+    .pricing-assure { margin: 32px auto 0; max-width: 640px; width: 100%; background: var(--subtle); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px; text-align: center; }
+    .pricing-assure strong { display: block; font-size: 1rem; color: var(--text); margin-bottom: 4px; }
+    .pricing-assure span { font-size: 0.9rem; color: var(--muted); }
     .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; max-width: 1000px; width: 100%; }
     @media (max-width: 640px) { .pricing-grid { grid-template-columns: 1fr; } }
     .pricing-card {
@@ -577,6 +581,10 @@
         <a href="https://buy.stripe.com/14A6oI2tJbBodhY1bb6oo01" class="price-btn primary">Get Pro →</a>
       </div>
     </div>
+    <div class="pricing-assure">
+      <strong>Pay once. Nothing renews.</strong>
+      <span>There's no subscription, so there's nothing to cancel and no second charge later. When your sessions run out, that's it. Buy more only if you want to.</span>
+    </div>
   </section>
 
   <!-- STORY -->
@@ -628,7 +636,7 @@
 
   <!-- FOOTER CTA -->
   <div class="footer-cta">
-    <h2>The next one<br><span>goes better.</span></h2>
+    <h2>Embarrass yourself in front of Alex.<br><span>Not the hiring manager.</span></h2>
     <a href="#pricing" class="btn-primary">Start for $19 →</a>
   </div>
 
