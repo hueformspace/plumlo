@@ -647,5 +647,21 @@
   </footer>
 </parameter>
 
+<script>
+  // Buy-intent tracking: fires when someone clicks a Stripe checkout link
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href*="buy.stripe.com"]') : null;
+    if (!a || typeof gtag !== 'function') return;
+    var pro = a.className.indexOf('primary') !== -1;
+    gtag('event', 'begin_checkout', {
+      currency: 'USD',
+      value: pro ? 49 : 19,
+      items: [{ item_name: pro ? 'Pro' : 'Starter' }],
+      source: 'homepage',
+      transport_type: 'beacon'
+    });
+  });
+</script>
+</body>
 </body>
 </html>
