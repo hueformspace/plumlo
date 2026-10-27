@@ -1,0 +1,575 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://www.plumlo.com/blog/" />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LGXF831M68"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LGXF831M68');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Got an AI Interview Invite? Find Your Guide | Plumlo</title>
+  <meta name="description" content="Plumlo guides to the AI interviewers employers use, from HireVue to Paradox Olivia, with what each one publishes about how it works and how to practice first." />
+  <meta property="og:title" content="Got an AI Interview Invite? Find Your Guide | Plumlo" />
+  <meta property="og:description" content="Plumlo guides to the AI interviewers employers use, from HireVue to Paradox Olivia, with what each one publishes about how it works and how to practice first." />
+  <meta property="og:url" content="https://www.plumlo.com/blog/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Got an AI Interview Invite? Find Your Guide | Plumlo" />
+  <meta name="twitter:description" content="Plumlo guides to the AI interviewers employers use, from HireVue to Paradox Olivia, with what each one publishes about how it works and how to practice first." />
+
+  <!-- PP Neue Montreal via Fontshare -->
+  <link href="https://api.fontshare.com/v2/css?f[]=neue-montreal@400,500,700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #080612;
+      --surface: #110d1f;
+      --border: #2a1a4a;
+      --purple: #9b5de5;
+      --purple-light: #c084fc;
+      --text: #f0eaff;
+      --muted: #7c6a9a;
+      --subtle: #1e1535;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Neue Montreal', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.7;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(8,6,18,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(42,26,74,0.5);
+    }
+    .nav-logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--purple-light);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .nav-cta {
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      display: inline-block;
+      font-family: inherit;
+    }
+    .nav-cta:hover { background: #7c3aed; transform: scale(1.02); }
+
+    .article-hero {
+      padding: 140px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .article-hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 600px;
+      background: radial-gradient(circle, rgba(155,93,229,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .article-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      border: 1px solid rgba(192,132,252,0.3);
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+    .article-hero h1 {
+      font-size: clamp(2.6rem, 6.5vw, 5.2rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      max-width: 900px;
+      margin: 0 auto 20px;
+    }
+    .article-hero h1 span { color: var(--purple-light); }
+    .article-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 20px;
+    }
+
+    .article-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 72px 24px 120px;
+    }
+
+    .story-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 56px;
+      margin-bottom: 56px;
+      max-width: 720px;
+    }
+    .story-block blockquote {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+    .story-block blockquote p + p { margin-top: 16px; }
+    .story-block blockquote strong { color: var(--text); font-style: normal; }
+    .story-author { font-size: 0.85rem; color: var(--muted); }
+    .story-author strong { color: var(--purple-light); }
+
+    .article-wrap h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      margin-top: 56px;
+      margin-bottom: 16px;
+    }
+    .article-wrap h3 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--purple-light);
+      margin-top: 32px;
+      margin-bottom: 10px;
+    }
+    .article-wrap p {
+      font-size: 1rem;
+      color: #c9bfdf;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+    .article-wrap ul {
+      list-style: none;
+      margin-bottom: 24px;
+      padding: 0;
+    }
+    .article-wrap ul li {
+      font-size: 1rem;
+      color: #c9bfdf;
+      line-height: 1.75;
+      padding: 10px 0 10px 24px;
+      border-bottom: 1px solid rgba(42,26,74,0.5);
+      position: relative;
+    }
+    .article-wrap ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--purple);
+      font-weight: 700;
+    }
+    .article-wrap ul li:last-child { border-bottom: none; }
+
+    .score-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      margin: 32px 0;
+    }
+    .score-box-title {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 20px;
+    }
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(42,26,74,0.5);
+      font-size: 0.95rem;
+    }
+    .score-row:last-child { border-bottom: none; }
+    .score-label { color: #c9bfdf; }
+    .score-value { color: var(--purple-light); font-weight: 500; }
+
+    .related-link {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      text-decoration: none;
+      margin: 40px 0;
+      transition: border-color 0.2s;
+    }
+    .related-link:hover { border-color: var(--purple); }
+    .related-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 8px;
+    }
+    .related-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .faq-section {
+      margin-top: 64px;
+    }
+    .faq-section h2 {
+      margin-bottom: 32px;
+    }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      margin-bottom: 16px;
+      background: var(--surface);
+      transition: border-color 0.2s;
+    }
+    .faq-item:hover { border-color: var(--purple); }
+    .faq-item h3 {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      margin: 0 0 12px 0;
+    }
+    .faq-item p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .cta-block {
+      margin-top: 72px;
+      background: linear-gradient(135deg, rgba(155,93,229,0.15) 0%, rgba(192,132,252,0.08) 100%);
+      border: 1px solid rgba(155,93,229,0.3);
+      border-radius: 16px;
+      padding: 48px 40px;
+      text-align: center;
+    }
+    .cta-block h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin: 0 0 12px 0;
+    }
+    .cta-block p {
+      font-size: 1rem;
+      color: var(--muted);
+      margin: 0 0 32px 0;
+    }
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 100px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      display: inline-block;
+      font-family: inherit;
+    }
+    .btn-primary:hover { background: #7c3aed; transform: translateY(-2px); }
+    .cta-trust {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-logo {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--purple-light);
+      text-decoration: none;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy {
+      font-size: 0.8rem;
+      color: var(--muted);
+      width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .article-hero { padding: 120px 20px 56px; }
+      .article-wrap { padding: 48px 20px 80px; }
+      .story-block { padding: 24px 20px; }
+      .faq-item { padding: 22px 20px; }
+      .cta-block { padding: 36px 24px; }
+      footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; }
+    }
+  
+    .hub-wrap { max-width: 860px; margin: 0 auto; padding: 24px 24px 120px; }
+    .hub-wrap h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; margin: 64px 0 8px; }
+    .hub-intro { font-size: 1rem; color: var(--muted); margin: 0 0 24px; line-height: 1.7; }
+    .hub-lead { font-size: 1.1rem; color: #c9bfdf; max-width: 640px; margin: 0 auto; line-height: 1.7; }
+    .guide-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .guide { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px 24px 20px; transition: border-color 0.2s; }
+    .guide:hover { border-color: var(--purple); }
+    .guide-link { display: block; text-decoration: none; }
+    .guide-name { font-size: 1.05rem; font-weight: 700; color: var(--text); line-height: 1.35; margin-bottom: 8px; }
+    .guide-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+    .guide-langs { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .guide-langs span { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+    .guide-langs a { font-size: 0.8rem; color: var(--purple-light); text-decoration: none; border: 1px solid rgba(192,132,252,0.3); padding: 3px 12px; border-radius: 100px; transition: background 0.2s; }
+    .guide-langs a:hover { background: rgba(155,93,229,0.18); }
+    .guide-single { grid-column: 1 / -1; }
+    @media (max-width: 640px) {
+      .hub-wrap { padding: 8px 20px 80px; }
+      .guide-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Got an AI Interview Invite? Find Your Guide",
+  "url": "https://www.plumlo.com/blog/",
+  "description": "Plumlo guides to the AI interviewers employers use, with what each one publishes about how it works and how to practice first.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Plumlo",
+    "url": "https://www.plumlo.com/"
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-an-ai-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-a-hirevue-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-a-paradox-olivia-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-a-sapia-ai-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-a-heymilo-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-a-ribbon-ai-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 7,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-an-eightfold-ai-interviewer.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 8,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-an-imocha-tara-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 9,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-an-apriora-alex-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 10,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-a-tenzo-ai-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 11,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-a-converzai-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 12,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-a-nova-peoplebox-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 13,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-a-purplefish-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 14,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-a-greenhouse-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 15,
+        "url": "https://www.plumlo.com/blog/how-to-prepare-for-a-phone-screen-with-ai.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 16,
+        "url": "https://www.plumlo.com/blog/behavioral-interview-prep-with-ai.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 17,
+        "url": "https://www.plumlo.com/blog/salary-negotiation-with-ai-screening.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 18,
+        "url": "https://www.plumlo.com/blog/career-pivot-interview-prep.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 19,
+        "url": "https://www.plumlo.com/blog/i-didnt-know-it-was-the-interview.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 20,
+        "url": "https://www.plumlo.com/blog/what-happens-when-you-actually-use-it.html"
+      }
+    ]
+  }
+}
+  </script>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">Plumlo™</a>
+    <a href="/#pricing" class="nav-cta">Get Started</a>
+  </nav>
+
+  <header class="article-hero">
+    <div class="article-tag">Interview Guides</div>
+    <h1>Got an AI interview invite? <span>Find your guide.</span></h1>
+    <p class="hub-lead">Pick the platform named in your invite. If you are not sure which one it is, start with the general guide below.</p>
+  </header>
+
+  <main class="hub-wrap">
+
+    <h2>Start here</h2>
+    <p class="hub-intro">Not sure which platform it is? Begin with the guide that covers any of them.</p>
+    <div class="guide-grid">
+<div class="guide guide-single"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-an-ai-interview.html"><div class="guide-name">How to Prepare for an AI Interview</div><div class="guide-desc">Most AI interviews do not announce themselves. Run a live voice mock built from the real job description and know what to fix.</div></a></div>
+    </div>
+
+    <h2>By platform</h2>
+    <p class="hub-intro">One guide per AI interviewer. HireVue and Paradox Olivia are also available in six more languages.</p>
+    <div class="guide-grid">
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-a-hirevue-interview.html"><div class="guide-name">HireVue</div><div class="guide-desc">HireVue says its AI scores only what you say, not your face or tone of voice. What it scores, what it does not, and how to practice first.</div></a><div class="guide-langs"><span>Also in</span><a href="https://www.plumlo.com/blog/how-to-prepare-for-a-hirevue-interview-spanish.html" hreflang="es" lang="es">Español</a><a href="https://www.plumlo.com/blog/how-to-prepare-for-a-hirevue-interview-portuguese.html" hreflang="pt" lang="pt">Português</a><a href="https://www.plumlo.com/blog/how-to-prepare-for-a-hirevue-interview-arabic.html" hreflang="ar" lang="ar">العربية</a><a href="https://www.plumlo.com/blog/how-to-prepare-for-a-hirevue-interview-hindi.html" hreflang="hi" lang="hi">हिन्दी</a><a href="https://www.plumlo.com/blog/how-to-prepare-for-a-hirevue-interview-indonesian.html" hreflang="id" lang="id">Bahasa Indonesia</a><a href="https://www.plumlo.com/blog/how-to-prepare-for-a-hirevue-interview-french.html" hreflang="fr" lang="fr">Français</a></div></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-a-paradox-olivia-interview.html"><div class="guide-name">Paradox Olivia</div><div class="guide-desc">Paradox says Olivia screens candidates against the job&#x27;s requirements over text and chat. What Paradox publishes, what it does not, and how to prepare.</div></a><div class="guide-langs"><span>Also in</span><a href="https://www.plumlo.com/blog/how-to-prepare-for-a-paradox-olivia-interview-spanish.html" hreflang="es" lang="es">Español</a><a href="https://www.plumlo.com/blog/how-to-prepare-for-a-paradox-olivia-interview-portuguese.html" hreflang="pt" lang="pt">Português</a><a href="https://www.plumlo.com/blog/how-to-prepare-for-a-paradox-olivia-interview-arabic.html" hreflang="ar" lang="ar">العربية</a><a href="https://www.plumlo.com/blog/how-to-prepare-for-a-paradox-olivia-interview-hindi.html" hreflang="hi" lang="hi">हिन्दी</a><a href="https://www.plumlo.com/blog/how-to-prepare-for-a-paradox-olivia-interview-indonesian.html" hreflang="id" lang="id">Bahasa Indonesia</a><a href="https://www.plumlo.com/blog/how-to-prepare-for-a-paradox-olivia-interview-french.html" hreflang="fr" lang="fr">Français</a></div></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-a-sapia-ai-interview.html"><div class="guide-name">Sapia.ai</div><div class="guide-desc">A text based Chat Interview: 5 to 7 written questions, about 20 to 30 minutes, not timed.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-a-heymilo-interview.html"><div class="guide-name">HeyMilo</div><div class="guide-desc">Records and scores every AI interview, and adds a trust score that checks for outside help.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-a-ribbon-ai-interview.html"><div class="guide-name">Ribbon AI</div><div class="guide-desc">Roughly 15 to 25 minutes, recorded and scored, with a single use link.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-an-eightfold-ai-interviewer.html"><div class="guide-name">Eightfold AI Interviewer</div><div class="guide-desc">Scores the content of your answers, not your accent, tone or facial expressions, but it needs your camera and microphone.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-an-imocha-tara-interview.html"><div class="guide-name">iMocha Tara</div><div class="guide-desc">Live, adaptive voice or chat interviews in 30 languages, inside iMocha&#x27;s skills platform.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-an-apriora-alex-interview.html"><div class="guide-name">Alex (formerly Apriora)</div><div class="guide-desc">Interviews candidates by phone, video, SMS and WhatsApp. This is the employer product, not the practice interviewer on this site.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-a-tenzo-ai-interview.html"><div class="guide-name">Tenzo AI</div><div class="guide-desc">Live voice screens by phone and video, scored against a rubric the employer sets for the role.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-a-converzai-interview.html"><div class="guide-name">ConverzAI (Recruiter Jamie)</div><div class="guide-desc">Calls, texts or emails within minutes of applying through a staffing agency.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-a-nova-peoplebox-interview.html"><div class="guide-name">Nova (Peoplebox)</div><div class="guide-desc">Starts the interview the instant you apply, and checks for deepfakes to verify you are really you.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-a-purplefish-interview.html"><div class="guide-name">Purplefish</div><div class="guide-desc">Fast, high volume phone screens built for basic qualification questions.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-a-greenhouse-interview.html"><div class="guide-name">Greenhouse</div><div class="guide-desc">How structured hiring works at thousands of companies and what interviewers score.</div></a></div>
+    </div>
+
+    <h2>By situation</h2>
+    <p class="hub-intro">For when the question is about the format, not the platform.</p>
+    <div class="guide-grid">
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/how-to-prepare-for-a-phone-screen-with-ai.html"><div class="guide-name">How to Prepare for a Phone Screen with AI</div><div class="guide-desc">How AI phone screens work, what they score, and how to prepare before yours.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/behavioral-interview-prep-with-ai.html"><div class="guide-name">Behavioral Interview Prep with AI</div><div class="guide-desc">How to prepare behavioral answers with AI so they land every time.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/salary-negotiation-with-ai-screening.html"><div class="guide-name">Salary Negotiation With AI Screening</div><div class="guide-desc">How salary questions work when AI is the one asking, and how to answer without locking in a bad number.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/career-pivot-interview-prep.html"><div class="guide-name">Changing Careers? Does Your Story Land?</div><div class="guide-desc">Find the gaps in a career pivot story before an interviewer does.</div></a></div>
+    </div>
+
+    <h2>From the founder</h2>
+    <p class="hub-intro">Why Plumlo exists, and what using it is like.</p>
+    <div class="guide-grid">
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/i-didnt-know-it-was-the-interview.html"><div class="guide-name">I Didn&#x27;t Know It Was the Interview</div><div class="guide-desc">A scheduling text, a call that was supposed to be a warmup, and why this site exists.</div></a></div>
+<div class="guide"><a class="guide-link" href="https://www.plumlo.com/blog/what-happens-when-you-actually-use-it.html"><div class="guide-name">What Happens When You Actually Use It</div><div class="guide-desc">Two people, two sessions, and what changed going into the next interview.</div></a></div>
+    </div>
+
+    <div class="cta-block">
+      <h2>The first interview happens here.</h2>
+      <p>Practice with AI before AI interviews you.</p>
+      <a class="btn-primary" href="/#pricing">Start Practicing →</a>
+      <div class="cta-trust">No account required &nbsp;·&nbsp; Debrief included &nbsp;·&nbsp; 15 minutes</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <a href="/" class="footer-logo">Plumlo™</a>
+    <div class="footer-links">
+      <a href="/blog/">Guides</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/app.html">Practice</a>
+    </div>
+    <div class="footer-copy">© 2026 Plumlo. All rights reserved.</div>
+  </footer>
+
+</body>
+</html>
