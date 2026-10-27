@@ -140,6 +140,11 @@
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
+    <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-mercor-ai-interview.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
   <url>
     <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-purplefish-interview.html</loc>
     <priority>0.8</priority>
