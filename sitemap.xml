@@ -145,6 +145,11 @@
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
+    <url>
+    <loc>https://www.plumlo.com/blog/the-ai-interviewer-keeps-interrupting-me.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
   <url>
     <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-purplefish-interview.html</loc>
     <priority>0.8</priority>
