@@ -1,0 +1,525 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://www.plumlo.com/blog/which-ai-interviewer-is-this.html" />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LGXF831M68"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LGXF831M68');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Which AI Interviewer Is This? Invite Email Checker | Plumlo</title>
+  <meta name="description" content="Got an AI interview invite and not sure which platform it is? Paste the sender, subject or link and get matched to the right prep guide. Runs in your browser, nothing is sent." />
+  <meta name="keywords" content="which AI interviewer is this, AI interview invite email, how to tell which AI interview platform, AI interview invitation checker, identify AI interviewer" />
+  <meta property="og:title" content="Which AI Interviewer Is This? Invite Email Checker | Plumlo" />
+  <meta property="og:description" content="Got an AI interview invite and not sure which platform it is? Paste the sender, subject or link and get matched to the right prep guide. Runs in your browser, nothing is sent." />
+  <meta property="og:url" content="https://www.plumlo.com/blog/which-ai-interviewer-is-this.html" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Which AI Interviewer Is This? Invite Email Checker | Plumlo" />
+  <meta name="twitter:description" content="Got an AI interview invite and not sure which platform it is? Paste the sender, subject or link and get matched to the right prep guide. Runs in your browser, nothing is sent." />
+
+  <!-- PP Neue Montreal via Fontshare -->
+  <link href="https://api.fontshare.com/v2/css?f[]=neue-montreal@400,500,700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #080612;
+      --surface: #110d1f;
+      --border: #2a1a4a;
+      --purple: #9b5de5;
+      --purple-light: #c084fc;
+      --text: #f0eaff;
+      --muted: #7c6a9a;
+      --subtle: #1e1535;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Neue Montreal', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.7;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(8,6,18,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(42,26,74,0.5);
+    }
+    .nav-logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--purple-light);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .nav-cta {
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      display: inline-block;
+      font-family: inherit;
+    }
+    .nav-cta:hover { background: #7c3aed; transform: scale(1.02); }
+
+    .article-hero {
+      padding: 140px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .article-hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 600px;
+      background: radial-gradient(circle, rgba(155,93,229,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .article-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      border: 1px solid rgba(192,132,252,0.3);
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+    .article-hero h1 {
+      font-size: clamp(2.6rem, 6.5vw, 5.2rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      max-width: 900px;
+      margin: 0 auto 20px;
+    }
+    .article-hero h1 span { color: var(--purple-light); }
+    .article-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 20px;
+    }
+
+    .article-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 72px 24px 120px;
+    }
+
+    .story-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 56px;
+      margin-bottom: 56px;
+      max-width: 720px;
+    }
+    .story-block blockquote {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+    .story-block blockquote p + p { margin-top: 16px; }
+    .story-block blockquote strong { color: var(--text); font-style: normal; }
+    .story-author { font-size: 0.85rem; color: var(--muted); }
+    .story-author strong { color: var(--purple-light); }
+
+    .article-wrap h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      margin-top: 56px;
+      margin-bottom: 16px;
+    }
+    .article-wrap h3 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--purple-light);
+      margin-top: 32px;
+      margin-bottom: 10px;
+    }
+    .article-wrap p {
+      font-size: 1rem;
+      color: #c9bfdf;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+    .article-wrap ul {
+      list-style: none;
+      margin-bottom: 24px;
+      padding: 0;
+    }
+    .article-wrap ul li {
+      font-size: 1rem;
+      color: #c9bfdf;
+      line-height: 1.75;
+      padding: 10px 0 10px 24px;
+      border-bottom: 1px solid rgba(42,26,74,0.5);
+      position: relative;
+    }
+    .article-wrap ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--purple);
+      font-weight: 700;
+    }
+    .article-wrap ul li:last-child { border-bottom: none; }
+
+    .score-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      margin: 32px 0;
+    }
+    .score-box-title {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 20px;
+    }
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(42,26,74,0.5);
+      font-size: 0.95rem;
+    }
+    .score-row:last-child { border-bottom: none; }
+    .score-label { color: #c9bfdf; }
+    .score-value { color: var(--purple-light); font-weight: 500; }
+
+    .related-link {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      text-decoration: none;
+      margin: 40px 0;
+      transition: border-color 0.2s;
+    }
+    .related-link:hover { border-color: var(--purple); }
+    .related-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 8px;
+    }
+    .related-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .faq-section {
+      margin-top: 64px;
+    }
+    .faq-section h2 {
+      margin-bottom: 32px;
+    }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      margin-bottom: 16px;
+      background: var(--surface);
+      transition: border-color 0.2s;
+    }
+    .faq-item:hover { border-color: var(--purple); }
+    .faq-item h3 {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      margin: 0 0 12px 0;
+    }
+    .faq-item p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .cta-block {
+      margin-top: 72px;
+      background: linear-gradient(135deg, rgba(155,93,229,0.15) 0%, rgba(192,132,252,0.08) 100%);
+      border: 1px solid rgba(155,93,229,0.3);
+      border-radius: 16px;
+      padding: 48px 40px;
+      text-align: center;
+    }
+    .cta-block h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin: 0 0 12px 0;
+    }
+    .cta-block p {
+      font-size: 1rem;
+      color: var(--muted);
+      margin: 0 0 32px 0;
+    }
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 100px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      display: inline-block;
+      font-family: inherit;
+    }
+    .btn-primary:hover { background: #7c3aed; transform: translateY(-2px); }
+    .cta-trust {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-logo {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--purple-light);
+      text-decoration: none;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy {
+      font-size: 0.8rem;
+      color: var(--muted);
+      width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .article-hero { padding: 120px 20px 56px; }
+      .article-wrap { padding: 48px 20px 80px; }
+      .story-block { padding: 24px 20px; }
+      .faq-item { padding: 22px 20px; }
+      .cta-block { padding: 36px 24px; }
+      footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; }
+    }
+  
+    .decoder { margin: 8px 0 40px; }
+    .decoder label { display: block; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 10px; }
+    .decoder textarea { width: 100%; min-height: 150px; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; font-family: inherit; font-size: 1rem; line-height: 1.6; resize: vertical; }
+    .decoder textarea:focus { outline: none; border-color: var(--purple); }
+    .decoder .row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 16px; }
+    .decoder button { font-family: inherit; font-size: 1rem; font-weight: 700; color: #fff; background: var(--purple); border: 0; border-radius: 100px; padding: 14px 28px; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+    .decoder button:hover { background: #7c3aed; transform: translateY(-2px); }
+    .decoder button.ghost { background: transparent; color: var(--purple-light); border: 1px solid var(--border); }
+    .decoder button.ghost:hover { border-color: var(--purple); transform: none; background: transparent; }
+    .privacy-note { font-size: 0.85rem; color: var(--muted); margin-top: 14px; }
+    #result { margin-top: 28px; }
+    .result-head { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple-light); margin-bottom: 10px; }
+    .result-card { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px 26px; text-decoration: none; margin: 0 0 16px; transition: border-color 0.2s; }
+    .result-card:hover { border-color: var(--purple); }
+    .result-card .rc-name { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .result-card .rc-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+    .result-card .rc-go { font-size: 0.9rem; font-weight: 500; color: var(--purple-light); }
+    .result-msg { color: var(--muted); line-height: 1.7; }
+    .result-msg strong { color: var(--text); }
+  </style>
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Which AI Interviewer Is This?",
+  "url": "https://www.plumlo.com/blog/which-ai-interviewer-is-this.html",
+  "description": "Got an AI interview invite and not sure which platform it is? Paste the sender, subject or link and get matched to the right prep guide. Runs in your browser, nothing is sent.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Jason Scott",
+    "url": "https://www.plumlo.com/about.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Plumlo",
+    "url": "https://www.plumlo.com"
+  }
+}
+  </script>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">Plumlo™</a>
+    <a href="/#pricing" class="nav-cta">Get Started</a>
+  </nav>
+
+  <header class="article-hero">
+    <div class="article-tag">Free Tool</div>
+    <h1>Which AI Interviewer <span>Is This</span>?</h1>
+    <div class="article-meta">Takes 10 seconds &nbsp;·&nbsp; Plumlo</div>
+  </header>
+
+  <main class="article-wrap">
+
+    <p>Many candidates are not told clearly that AI will be involved, so the invite email is often the only clue. Paste the sender address, the subject line and any links from your invite, and this checks them against the platforms we have written verified guides for.</p>
+
+    <div class="decoder">
+      <label for="invite">Paste your invite here</label>
+      <textarea id="invite" placeholder="Sender, subject line, and any links. For example: the 'from' address, the subject, and the interview link."></textarea>
+      <div class="row">
+        <button type="button" id="go">Find my interviewer</button>
+        <button type="button" id="clear" class="ghost">Clear</button>
+      </div>
+      <p class="privacy-note">This runs in your browser. Nothing you paste is sent anywhere or saved. You only need the sender, subject and links, not your name or anything personal.</p>
+      <div id="result" aria-live="polite"></div>
+    </div>
+
+    <h2>How the match works</h2>
+    <p>The checker looks for the name or web address of a platform in what you paste. If it finds one, it shows our guide for that platform. It does not guess from the wording of the email, and it only knows the platforms listed in our guides. A name that is not recognized does not mean there is no AI involved.</p>
+    <p>Seeing Greenhouse is a special case. It is hiring software that many companies use to run applications, so its name alone does not mean an AI is interviewing you.</p>
+
+    <h2>If nothing matches</h2>
+    <p>Check three places in the email: the full sender address, the domain of the interview link, and any small "powered by" line in the footer. Platforms often show up there. If you are still unsure, it is reasonable to ask the recruiter whether AI will be part of the interview. Our <a href="/blog/how-to-prepare-for-an-ai-interview.html">general guide</a> works for any of them.</p>
+
+    <a class="related-link" href="https://www.plumlo.com/blog/">
+      <div class="related-label">Related</div>
+      <div class="related-title">All AI interview guides →</div>
+    </a>
+    <a class="related-link" href="https://www.plumlo.com/blog/ai-interview-statistics-2026.html">
+      <div class="related-label">Related</div>
+      <div class="related-title">AI Interview Statistics 2026 →</div>
+    </a>
+
+    <div class="cta-block">
+      <h2>The first interview happens here.</h2>
+      <p>Practice with AI before AI interviews you.</p>
+      <a class="btn-primary" href="/#pricing">Start Practicing →</a>
+      <div class="cta-trust">No account required &nbsp;·&nbsp; Debrief included &nbsp;·&nbsp; 15 minutes</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <a href="/" class="footer-logo">Plumlo™</a>
+    <div class="footer-links">
+      <a href="/terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/app.html">Practice</a>
+    </div>
+    <div class="footer-copy">© 2026 Plumlo. All rights reserved.</div>
+  </footer>
+
+
+  <script>
+  (function () {
+    var VENDORS = [{"id": "hirevue", "name": "HireVue", "rx": "hirevue", "url": "/blog/how-to-prepare-for-a-hirevue-interview.html", "desc": "HireVue says its AI scores only what you say, not your face or tone of voice. What it scores, what it does not, and how to practice first."}, {"id": "paradox", "name": "Paradox Olivia", "rx": "paradox", "url": "/blog/how-to-prepare-for-a-paradox-olivia-interview.html", "desc": "Paradox says Olivia screens candidates against the job's requirements over text and chat. What Paradox publishes, what it does not, and how to prepare."}, {"id": "sapia", "name": "Sapia.ai", "rx": "sapia|predictivehire", "url": "/blog/how-to-prepare-for-a-sapia-ai-interview.html", "desc": "A text based Chat Interview: 5 to 7 written questions, about 20 to 30 minutes, not timed."}, {"id": "mercor", "name": "Mercor", "rx": "mercor", "url": "/blog/how-to-prepare-for-a-mercor-ai-interview.html", "desc": "The AI interview is the only screening step. About 20 minutes, up to 3 retakes, and long silences make the AI jump in."}, {"id": "heymilo", "name": "HeyMilo", "rx": "heymilo|hey milo", "url": "/blog/how-to-prepare-for-a-heymilo-interview.html", "desc": "Records and scores every AI interview, and adds a trust score that checks for outside help."}, {"id": "ribbon", "name": "Ribbon AI", "rx": "ribbon\\.ai|ribbon ai", "url": "/blog/how-to-prepare-for-a-ribbon-ai-interview.html", "desc": "Roughly 15 to 25 minutes, recorded and scored, with a single use link."}, {"id": "eightfold", "name": "Eightfold AI Interviewer", "rx": "eightfold", "url": "/blog/how-to-prepare-for-an-eightfold-ai-interviewer.html", "desc": "Scores the content of your answers, not your accent, tone or facial expressions, but it needs your camera and microphone."}, {"id": "imocha", "name": "iMocha Tara", "rx": "imocha", "url": "/blog/how-to-prepare-for-an-imocha-tara-interview.html", "desc": "Live, adaptive voice or chat interviews in 30 languages, inside iMocha's skills platform."}, {"id": "alex", "name": "Alex (formerly Apriora)", "rx": "apriora|alex\\.com", "url": "/blog/how-to-prepare-for-an-apriora-alex-interview.html", "desc": "Interviews candidates by phone, video, SMS and WhatsApp. This is the employer product, not the practice interviewer on this site."}, {"id": "tenzo", "name": "Tenzo AI", "rx": "tenzo", "url": "/blog/how-to-prepare-for-a-tenzo-ai-interview.html", "desc": "Live voice screens by phone and video, scored against a rubric the employer sets for the role."}, {"id": "converzai", "name": "ConverzAI (Recruiter Jamie)", "rx": "converz", "url": "/blog/how-to-prepare-for-a-converzai-interview.html", "desc": "Calls, texts or emails within minutes of applying through a staffing agency."}, {"id": "nova", "name": "Nova (Peoplebox)", "rx": "peoplebox", "url": "/blog/how-to-prepare-for-a-nova-peoplebox-interview.html", "desc": "Starts the interview the instant you apply, and checks for deepfakes to verify you are really you."}, {"id": "purplefish", "name": "Purplefish", "rx": "purplefish", "url": "/blog/how-to-prepare-for-a-purplefish-interview.html", "desc": "Fast, high volume phone screens built for basic qualification questions."}, {"id": "greenhouse", "name": "Greenhouse", "rx": "greenhouse", "url": "/blog/how-to-prepare-for-a-greenhouse-interview.html", "desc": "How structured hiring works at thousands of companies and what interviewers score."}];
+    var box = document.getElementById('invite');
+    var out = document.getElementById('result');
+    function el(tag, cls, text) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text) n.textContent = text;
+      return n;
+    }
+    function msg(parts) {
+      out.textContent = '';
+      var p = el('p', 'result-msg');
+      parts.forEach(function (x) {
+        p.appendChild(x.b ? el('strong', null, x.t) : document.createTextNode(x.t));
+      });
+      out.appendChild(p);
+    }
+    function card(v) {
+      var a = el('a', 'result-card');
+      a.href = v.url;
+      a.appendChild(el('div', 'rc-name', v.name));
+      a.appendChild(el('div', 'rc-desc', v.desc));
+      a.appendChild(el('div', 'rc-go', 'Read the guide \u2192'));
+      return a;
+    }
+    function run() {
+      var t = box.value.toLowerCase();
+      if (!t.trim()) { msg([{t: 'Paste the sender, subject or a link from your invite first.'}]); return; }
+      var hits = VENDORS.filter(function (v) { return new RegExp(v.rx, 'i').test(t); });
+      out.textContent = '';
+      if (hits.length) {
+        out.appendChild(el('div', 'result-head', hits.length === 1 ? 'Match found' : hits.length + ' matches found'));
+        hits.forEach(function (v) { out.appendChild(card(v)); });
+        return;
+      }
+      if (/olivia/i.test(t)) {
+        var pv = VENDORS.filter(function (v) { return v.id === 'paradox'; })[0];
+        out.appendChild(el('div', 'result-head', 'Possible match'));
+        out.appendChild(el('p', 'result-msg', 'We did not find a platform name, but you mentioned Olivia. Olivia is the assistant made by Paradox. Check the sender address to confirm.'));
+        out.appendChild(card(pv));
+        return;
+      }
+      msg([{t: 'No match. ', b: true}, {t: 'We did not find a platform we have a guide for. Check the full sender address, the domain of the interview link, and any "powered by" line in the footer. Our '}]);
+      var a = el('a', null, 'general AI interview guide');
+      a.href = '/blog/how-to-prepare-for-an-ai-interview.html';
+      out.firstChild.appendChild(a);
+      out.firstChild.appendChild(document.createTextNode(' works for any of them.'));
+    }
+    document.getElementById('go').addEventListener('click', run);
+    document.getElementById('clear').addEventListener('click', function () { box.value = ''; out.textContent = ''; box.focus(); });
+  })();
+  </script>
+</body>
+</html>
