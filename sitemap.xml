@@ -106,7 +106,22 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-tenzo-ai-interview-portuguese.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
     <loc>https://www.plumlo.com/blog/how-to-prepare-for-an-apriora-alex-interview.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-an-apriora-alex-interview-spanish.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-an-apriora-alex-interview-portuguese.html</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
@@ -117,6 +132,11 @@
   </url>
   <url>
     <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-ribbon-ai-interview-spanish.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-ribbon-ai-interview-portuguese.html</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
@@ -136,6 +156,16 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-heymilo-interview-spanish.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-heymilo-interview-portuguese.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
     <loc>https://www.plumlo.com/blog/salary-negotiation-with-ai-screening.html</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
@@ -146,7 +176,27 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-an-imocha-tara-interview-spanish.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-an-imocha-tara-interview-portuguese.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
     <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-sapia-ai-interview.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-sapia-ai-interview-spanish.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-sapia-ai-interview-portuguese.html</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
@@ -182,6 +232,11 @@
   </url>
   <url>
     <loc>https://www.plumlo.com/blog/how-to-prepare-for-an-eightfold-ai-interviewer-spanish.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-an-eightfold-ai-interviewer-portuguese.html</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
