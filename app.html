@@ -280,6 +280,12 @@
 
     showSection('setup-card');
 
+    (function () {
+      const want = new URLSearchParams(window.location.search).get('lang');
+      const sel = document.getElementById('lang-select');
+      if (want && sel && Array.from(sel.options).some(o => o.value === want)) sel.value = want;
+    })();
+
     if (window.location.hash === '#code' || new URLSearchParams(window.location.search).get('paid') === 'true') {
       document.getElementById('code-row').style.display = 'block';
     }
