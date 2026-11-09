@@ -276,6 +276,11 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-heymilo-interview-french.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
     <loc>https://www.plumlo.com/blog/salary-negotiation-with-ai-screening.html</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
@@ -337,6 +342,11 @@
   </url>
   <url>
     <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-sapia-ai-interview-indonesian.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.plumlo.com/blog/how-to-prepare-for-a-sapia-ai-interview-french.html</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
