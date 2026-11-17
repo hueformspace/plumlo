@@ -361,6 +361,24 @@
     .article-wrap h3 { font-size: 1.15rem; font-weight: 700; margin: 40px 0 6px; }
     .vendor-note { color: var(--muted); font-size: 0.95rem; margin-bottom: 8px !important; }
     .vendor-note a, .article-wrap p a { color: var(--purple-light); }
+    .lookup { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px 24px; margin: 28px 0 36px; }
+    .lookup h2 { margin: 0 0 6px !important; font-size: 1.25rem; }
+    .lookup .lk-sub { color: var(--muted); font-size: 0.95rem; margin: 0 0 16px; }
+    .lookup input { width: 100%; padding: 14px 16px; font-size: 1.05rem; font-family: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 10px; outline: none; }
+    .lookup input:focus { border-color: var(--purple); }
+    .lk-out { margin-top: 16px; }
+    .lk-hit { border-top: 1px solid var(--border); padding: 14px 0 2px; }
+    .lk-hit:first-child { border-top: none; }
+    .lk-name { font-weight: 700; font-size: 1.05rem; }
+    .lk-tool { color: var(--purple-light); font-weight: 600; font-size: 0.9rem; margin-top: 2px; }
+    .lk-what { color: var(--text); font-size: 0.95rem; line-height: 1.5; margin-top: 6px; }
+    .lk-links { font-size: 0.9rem; margin-top: 8px; }
+    .lk-links a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; margin-right: 14px; }
+    .lk-none { color: var(--text); font-size: 0.97rem; line-height: 1.6; padding-top: 14px; border-top: 1px solid var(--border); }
+    .lk-none strong { color: var(--purple-light); }
+    .lk-chips { margin-top: 14px; font-size: 0.85rem; color: var(--muted); }
+    .lk-chips button { background: var(--subtle); color: var(--text); border: 1px solid var(--border); border-radius: 999px; padding: 6px 13px; margin: 0 6px 6px 0; font-size: 0.85rem; font-family: inherit; cursor: pointer; }
+    .lk-chips button:hover { border-color: var(--purple); }
     .co-table { width: 100%; border-collapse: collapse; margin: 8px 0 16px; font-size: 0.95rem; line-height: 1.5; }
     .co-table th { text-align: left; color: var(--muted); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--border); }
     .co-table td { padding: 14px 12px 14px 0; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
@@ -473,6 +491,15 @@
     </div>
 
     <p><strong>54 companies across eleven AI interview tools, every one sourced, last checked November 17, 2026.</strong> HireVue runs video interviews and assessments, Apriora interviews by live video, Paradox screens and schedules by chat, Sapia.ai interviews by text, HeyMilo, Ribbon and Ezra interview by voice, Classet and ConverzAI call candidates by phone, Hubert runs structured screening interviews, and Eightfold runs AI interviews inside its enterprise talent platform.</p>
+
+
+    <div class="lookup">
+      <h2>Does your employer use an AI interviewer?</h2>
+      <p class="lk-sub">Type a company name. Answers come from the sourced list below.</p>
+      <input id="lk-in" type="text" placeholder="Target, McDonald's, FedEx..." autocomplete="off" aria-label="Search for a company">
+      <div class="lk-out" id="lk-out"></div>
+      <div class="lk-chips" id="lk-chips"></div>
+    </div>
 
     <h2>How to read this list</h2>
     <p>A row means a public source ties that company to that tool for at least some of its hiring, at the time the source was published. It does not mean every role, location or country uses it today, and companies change vendors. If your company is not here, that tells you nothing either way. To check a specific invite, paste it into our <a href="https://www.plumlo.com/blog/which-ai-interviewer-is-this.html">invite checker</a>.</p>
@@ -682,5 +709,69 @@
     <div class="footer-copy">© 2026 Plumlo. All rights reserved.</div>
   </footer>
 
+
+<script>
+(function () {
+  var rows = [], out = document.getElementById('lk-out'), inp = document.getElementById('lk-in');
+  if (!inp) return;
+  document.querySelectorAll('.co-table').forEach(function (tbl) {
+    var tool = '', guide = '', n = tbl.previousElementSibling;
+    while (n) { if (n.tagName === 'H3') { tool = n.textContent.trim(); break; }
+      if (n.classList && n.classList.contains('vendor-note')) { var a = n.querySelector('a'); if (a) guide = a.getAttribute('href'); }
+      n = n.previousElementSibling; }
+    tbl.querySelectorAll('tbody tr').forEach(function (tr) {
+      var td = tr.querySelectorAll('td'); if (td.length < 3) return;
+      var link = td[0].querySelector('a');
+      rows.push({ name: td[0].textContent.trim(), page: link ? link.getAttribute('href') : '',
+        tool: tool, guide: guide, what: td[2 - 1].textContent.trim(),
+        src: td[2].querySelector('a') ? td[2].querySelector('a').getAttribute('href') : '',
+        srcName: td[2].textContent.trim() });
+    });
+  });
+  function norm(x) { return x.toLowerCase().replace(/[^a-z0-9]/g, ''); }
+  function esc(x) { var d = document.createElement('div'); d.textContent = x; return d.innerHTML; }
+  function render(q) {
+    var k = norm(q);
+    if (!k) { out.innerHTML = ''; return; }
+    var hits = rows.filter(function (r) { return norm(r.name).indexOf(k) > -1; });
+    if (!hits.length) {
+      out.innerHTML = '<div class="lk-none">We have <strong>no public source</strong> tying "' + esc(q) +
+        '" to an AI interviewer. That is not proof they do not use one, only that nobody has said so publicly. ' +
+        'Plenty of employers run AI screening without announcing it, so it is still worth practicing out loud. ' +
+        '<a href="https://www.plumlo.com/app.html?trial=true" style="color:var(--purple-light)">Try a free practice interview</a>.</div>';
+      return;
+    }
+    out.innerHTML = hits.slice(0, 6).map(function (r) {
+      var links = '';
+      if (r.guide) links += '<a href="' + r.guide + '">How to prepare for ' + esc(r.tool) + '</a>';
+      if (r.page) links += '<a href="' + r.page + '">' + esc(r.name) + ' guide</a>';
+      if (r.src) links += '<a href="' + r.src + '" rel="noopener">Source</a>';
+      return '<div class="lk-hit"><div class="lk-name">' + esc(r.name) + '</div>' +
+        '<div class="lk-tool">' + esc(r.tool) + '</div>' +
+        '<div class="lk-what">' + esc(r.what) + '</div>' +
+        (links ? '<div class="lk-links">' + links + '</div>' : '') + '</div>';
+    }).join('');
+  }
+  var t;
+  inp.addEventListener('input', function () {
+    render(inp.value);
+    clearTimeout(t);
+    t = setTimeout(function () {
+      if (inp.value.trim().length > 1 && typeof gtag === 'function')
+        gtag('event', 'company_lookup', { search_term: inp.value.trim().toLowerCase() });
+    }, 1200);
+  });
+  var chips = document.getElementById('lk-chips');
+  if (chips) {
+    chips.innerHTML = ['Target', "McDonald's", 'Chipotle', 'FedEx', 'IKEA', 'Pfizer'].map(function (c) {
+      return '<button type="button">' + c + '</button>'; }).join('');
+    chips.addEventListener('click', function (e) {
+      if (e.target.tagName !== 'BUTTON') return;
+      inp.value = e.target.textContent; render(inp.value); inp.focus();
+      if (typeof gtag === 'function') gtag('event', 'company_lookup', { search_term: e.target.textContent.toLowerCase() });
+    });
+  }
+})();
+</script>
 </body>
 </html>
