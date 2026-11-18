@@ -474,7 +474,7 @@
           onStatusChange: ({ status }) => {
             if (interviewEnding) return;
             const el = document.getElementById('status');
-            if (status === 'connected') el.textContent = 'Connected — Alex is listening.';
+            if (status === 'connected') el.textContent = 'Connected. Alex is listening.';
             else el.textContent = status;
           },
           onDisconnect: (details) => {
