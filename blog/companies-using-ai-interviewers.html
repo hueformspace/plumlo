@@ -720,15 +720,15 @@
   var rows = [], out = document.getElementById('lk-out'), inp = document.getElementById('lk-in');
   if (!inp) return;
   document.querySelectorAll('.co-table').forEach(function (tbl) {
-    var tool = '', guide = '', n = tbl.previousElementSibling;
+    var tool = '', guide = '', guideText = '', n = tbl.previousElementSibling;
     while (n) { if (n.tagName === 'H3') { tool = n.textContent.trim(); break; }
-      if (n.classList && n.classList.contains('vendor-note')) { var a = n.querySelector('a'); if (a) guide = a.getAttribute('href'); }
+      if (n.classList && n.classList.contains('vendor-note')) { var a = n.querySelector('a'); if (a) { guide = a.getAttribute('href'); guideText = a.textContent.replace(/[\u2192>]+\s*$/, '').trim(); } }
       n = n.previousElementSibling; }
     tbl.querySelectorAll('tbody tr').forEach(function (tr) {
       var td = tr.querySelectorAll('td'); if (td.length < 3) return;
       var link = td[0].querySelector('a');
       rows.push({ name: td[0].textContent.trim(), page: link ? link.getAttribute('href') : '',
-        tool: tool, guide: guide, what: td[2 - 1].textContent.trim(),
+        tool: tool, guide: guide, guideText: guideText, what: td[2 - 1].textContent.trim(),
         src: td[2].querySelector('a') ? td[2].querySelector('a').getAttribute('href') : '',
         srcName: td[2].textContent.trim() });
     });
@@ -748,7 +748,7 @@
     }
     out.innerHTML = hits.slice(0, 6).map(function (r) {
       var links = '';
-      if (r.guide) links += '<a href="' + r.guide + '">How to prepare for ' + esc(r.tool) + '</a>';
+      if (r.guide) links += '<a href="' + r.guide + '">' + esc(r.guideText || ('How to prepare for ' + r.tool)) + '</a>';
       if (r.page) links += '<a href="' + r.page + '">' + esc(r.name) + ' guide</a>';
       if (r.src) links += '<a href="' + r.src + '" rel="noopener">Source</a>';
       return '<div class="lk-hit"><div class="lk-name">' + esc(r.name) + '</div>' +
