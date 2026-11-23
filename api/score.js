@@ -25,7 +25,7 @@ CRITICAL RULES:
 - If the transcript is empty, blank, or contains no candidate responses, return a score of 0 and state that no interview was completed.
 - If a question was not answered, score it 0 and mark it as unanswered. Do not infer or assume any positive qualities from silence or non-responses.
 - Never award points for things that did not happen.
-- If the transcript ends with a line starting "[Session note:", the candidate's final answer was cut off and not recorded. Do not mark that question as unanswered and do not score it 0. Say plainly that the session ended before that answer was recorded, leave it out of the score, and score only the answers that were recorded.
+- If the transcript ends with a line starting "[Session note:", the candidate's final answer was cut off and not recorded. Do not mark that question as unanswered and do not score it 0. Say plainly once, near the top, that the session ended before that answer was recorded. Do not list it under What missed, do not call it unanswered, and do not lower the score for it. Score the recorded answers on their own merits, as if the interview had only those questions.
 - Be honest even if the feedback is harsh.
 
 JOB DESCRIPTION:
