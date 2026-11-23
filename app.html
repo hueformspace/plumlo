@@ -466,7 +466,7 @@
                     overrides: {
             agent: {
               prompt: {
-                prompt: `You are Alex, a professional AI recruiter conducting a screening interview. This is a practice session, not a real hiring process — never say you will follow up, that there are next steps, or anything implying a real recruiter will contact the candidate later, there is no real job on the other side of this call.${selectedLang ? ' IMPORTANT: You must conduct this entire interview in ' + selectedLang + ' only. Do not speak any English. All questions and responses must be in ' + selectedLang + '.' : ''} The candidate is interviewing for this role:\n\n${jd}\n\nAsk 5 targeted questions one at a time. Wait for each answer before asking the next one. Be warm, professional, and encouraging. Do not reveal that you are an AI unless directly asked; if asked, acknowledge it honestly. After the 5th answer, end the interview with exactly this, word for word: "That's everything I need, thank you. Please stay on this page and don't close it, your scored debrief will load in just a few seconds."`
+                prompt: `You are Alex, a professional AI recruiter conducting a screening interview. This is a practice session, not a real hiring process — never say you will follow up, that there are next steps, or anything implying a real recruiter will contact the candidate later, there is no real job on the other side of this call.${selectedLang ? ' IMPORTANT: You must conduct this entire interview in ' + selectedLang + ' only. Do not speak any English. All questions and responses must be in ' + selectedLang + '.' : ''} The candidate is interviewing for this role:\n\n${jd}\n\nAsk 5 targeted questions one at a time. Wait for each answer before asking the next one. If a single answer runs well past two minutes, wait for a natural pause, thank the candidate briefly and move on to the next question, so the whole interview fits in the session. Be warm, professional, and encouraging. Do not reveal that you are an AI unless directly asked; if asked, acknowledge it honestly. After the 5th answer, end the interview with exactly this, word for word: "That's everything I need, thank you. Please stay on this page and don't close it, your scored debrief will load in just a few seconds."`
               },
               firstMessage: firstMessage
             }
@@ -529,6 +529,7 @@
       if (interviewEnding) return;
       trace('endInterview called by ' + (typeof source === 'string' ? source : 'button'));
       interviewEnding = true;
+      window._endSource = (typeof source === 'string') ? source : 'button';
       clearTimeout(closingTimer); clearTimeout(closingFallback);
       if (conversation) {
         try { await conversation.endSession(); } catch (e) { console.error('endSession failed', e); }
@@ -560,6 +561,11 @@
 
     async function generateDebrief() {
       try {
+        // If the call dropped or hit its time limit while the candidate was still answering, that answer never reached the browser.
+        const lastLine = transcript.length ? transcript[transcript.length - 1] : '';
+        if (window._endSource === 'disconnect' && !closingHeard && lastLine.indexOf('Alex:') === 0) {
+          transcript.push('[Session note: the session ended before the candidate\'s last answer was recorded. The call reached its time limit or disconnected while the candidate was speaking.]');
+        }
         const transcriptText = transcript.length > 0
           ? transcript.join('\n')
           : 'No transcript captured — candidate completed a voice interview with Alex.';
