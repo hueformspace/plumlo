@@ -171,6 +171,10 @@
               .btn-row { flex-direction: column; }
               .btn-row .btn { width: 100%; }
       }
+      .expect-list { list-style: none; padding: 0; margin: 14px 0 18px; }
+      .expect-list li { color: #c4b5fd; font-size: 0.88rem; line-height: 1.5; padding-left: 16px; position: relative; margin-bottom: 6px; }
+      .expect-list li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 6px; height: 6px; border-radius: 50%; background: #9b5de5; }
+      .field-label { display: block; margin-top: 16px; color: #9d7ec9; font-size: 0.82rem; }
   </style>
 </head>
 <body>
@@ -181,6 +185,11 @@
   <div class="card" id="setup-card">
     <h2>Start Your Interview Prep</h2>
     <p>Paste the job description below. Alex, your AI recruiter, will interview you and score your answers.</p>
+    <ul class="expect-list">
+      <li>A spoken interview: about yourself, then five questions about the role. About 10 to 15 minutes.</li>
+      <li>Your browser will ask to use your microphone. Allow it so Alex can hear you.</li>
+      <li>Stop anytime with End Interview. You still get your scored debrief.</li>
+    </ul>
     <input type="email" id="email-input" placeholder="your@email.com" />
     <div class="code-toggle-row">
       <a id="code-toggle-link" onclick="toggleCodeField(event)">Have a code?</a>
@@ -197,7 +206,8 @@
     </div>
     <textarea id="jd-input" placeholder="Paste the full job description here..."></textarea>
     <div class="sample-row"><a id="sample-jd-link" onclick="useSampleJD(event)">No job posting handy? Use a sample →</a></div>
-    <select id="lang-select" style="width:100%;margin-top:16px;padding:12px 14px;background:#0f0a1a;border:1px solid #3b1f6a;border-radius:10px;color:#f0eaff;font-size:0.95rem;outline:none;cursor:pointer;">
+    <label for="lang-select" class="field-label">Interview language</label>
+    <select id="lang-select" style="width:100%;margin-top:6px;padding:12px 14px;background:#0f0a1a;border:1px solid #3b1f6a;border-radius:10px;color:#f0eaff;font-size:0.95rem;outline:none;cursor:pointer;">
   <option value="">English (default)</option>
   <option value="Arabic">Arabic</option>
   <option value="Dutch">Dutch</option>
@@ -220,7 +230,9 @@
   <div class="card" id="interview-section">
     <div class="pulse" id="pulse"></div>
     <h3 style="color:#e9d5ff; margin-bottom:12px;">Alex is ready. Speak when prompted.</h3>
-    <p style="color:#9d7ec9; font-size:0.9rem;">Your microphone is active. Alex will ask you 5 questions.</p>
+    <p style="color:#9d7ec9; font-size:0.9rem;">Your microphone is active. About yourself first, then five questions about the role.</p>
+    <p id="elapsed" style="color:#c4b5fd; font-size:0.95rem; margin-top:10px; font-variant-numeric:tabular-nums;"></p>
+    <p style="color:#7c6a9a; font-size:0.82rem; margin-top:6px;">A full session takes 10 to 15 minutes. End anytime and your debrief still loads.</p>
     <div id="status">Connecting to Alex...</div>
     <button class="btn" style="margin-top:24px; background:#3b1f6a;" onclick="endInterview()">End Interview</button>
   </div>
@@ -410,7 +422,7 @@
       const greetings = {
         'Arabic': 'مرحباً، أنا أليكس. سأجري معك مقابلة التوظيف اليوم. هل يمكنك أن تخبرني قليلاً عن نفسك ولماذا أنت مهتم بهذا الدور؟',
         'Dutch': 'Hallo, ik ben Alex. Ik zal vandaag je sollicitatiegesprek afnemen. Kun je me iets over jezelf vertellen en waarom je geïnteresseerd bent in deze functie?',
-        'French': 'Bonjour, je suis Alex. Je vais conduire votre entretien aujourd\'hui. Pouvez-vous me parler un peu de vous et de votre intérêt pour ce poste?',
+        'French': 'Bonjour, je suis Alex. C\'est un entraînement : je vais d\'abord vous demander de vous présenter, puis vous poser cinq questions sur le poste. Cela prend dix à quinze minutes, et vous recevrez un compte-rendu noté à la fin. Prenez votre temps. Pour commencer, pouvez-vous me parler un peu de vous et de votre intérêt pour ce poste ?',
         'German': 'Hallo, ich bin Alex. Ich führe heute Ihr Vorstellungsgespräch durch. Können Sie mir etwas über sich erzählen und warum Sie an dieser Stelle interessiert sind?',
         'Hindi': 'नमस्ते, मैं एलेक्स हूं। आज मैं आपका साक्षात्कार लूंगी। क्या आप मुझे अपने बारे में थोड़ा बताएंगे और इस भूमिका में आपकी रुचि क्यों है?',
         'Indonesian': 'Halo, saya Alex. Saya akan melakukan wawancara Anda hari ini. Bisakah Anda ceritakan sedikit tentang diri Anda dan mengapa Anda tertarik dengan posisi ini?',
@@ -419,12 +431,12 @@
         'Korean': '안녕하세요, 저는 알렉스입니다. 오늘 면접을 진행하겠습니다. 자기소개와 이 직무에 관심을 갖게 된 이유를 말씀해 주시겠어요?',
         'Chinese': '你好，我是Alex。我将主持您今天的面试。请问您能介绍一下自己，以及为什么对这个职位感兴趣吗？',
         'Polish': 'Cześć, jestem Alex. Przeprowadzę dziś Twój wywiad. Czy możesz mi powiedzieć coś o sobie i dlaczego jesteś zainteresowany tą rolą?',
-        'Portuguese': 'Olá, sou Alex. Vou conduzir sua entrevista hoje. Você pode me contar um pouco sobre você e por que está interessado nessa vaga?',
+        'Portuguese': 'Olá, sou Alex. Isto é um treino: primeiro vou pedir que você se apresente, depois farei cinco perguntas sobre a vaga. Leva de dez a quinze minutos, e no final você recebe uma avaliação com nota. Fique à vontade. Para começar, pode me contar um pouco sobre você e por que se interessou por essa vaga?',
         'Russian': 'Здравствуйте, я Алекс. Сегодня я проведу ваше собеседование. Расскажите немного о себе и почему вас интересует эта должность?',
-        'Spanish': 'Hola, soy Alex. Hoy voy a conducir tu entrevista. ¿Puedes contarme un poco sobre ti y por qué estás interesado en este puesto?',
+        'Spanish': 'Hola, soy Alex. Esto es una práctica: primero te pediré que te presentes y después te haré cinco preguntas sobre el puesto. Dura entre diez y quince minutos, y al final recibirás una evaluación con puntaje. Tómate tu tiempo. Para empezar, ¿puedes contarme un poco sobre ti y por qué te interesa este puesto?',
         'Turkish': 'Merhaba, ben Alex. Bugün mülakatınızı yapacağım. Kendinizden ve bu pozisyona neden ilgi duyduğunuzdan bahseder misiniz?'
       };
-      const firstMessage = greetings[selectedLang] || `Hi, I'm Alex. I'll be conducting your screening interview today. Let's get started — can you tell me a little about yourself and why you're interested in this role?`;
+      const firstMessage = greetings[selectedLang] || `Hi, I'm Alex. This is a practice run: I'll ask about you first, then five questions about the role. It takes about ten to fifteen minutes, and you'll get a scored debrief at the end. Take your time. To start, can you tell me a little about yourself and why you're interested in this role?`;
       transcript = [];
       interviewEnding = false;
       closingHeard = false;
@@ -474,7 +486,7 @@
           onStatusChange: ({ status }) => {
             if (interviewEnding) return;
             const el = document.getElementById('status');
-            if (status === 'connected') el.textContent = 'Connected. Alex is listening.';
+            if (status === 'connected') { el.textContent = 'Connected. Alex is listening.'; startElapsed(); }
             else el.textContent = status;
           },
           onDisconnect: (details) => {
@@ -529,6 +541,7 @@
       if (interviewEnding) return;
       trace('endInterview called by ' + (typeof source === 'string' ? source : 'button'));
       interviewEnding = true;
+      stopElapsed();
       window._endSource = (typeof source === 'string') ? source : 'button';
       clearTimeout(closingTimer); clearTimeout(closingFallback);
       if (conversation) {
@@ -597,7 +610,18 @@
       a.click();
     };
 
+    let elapsedTimer = null;
+    function startElapsed() {
+      const el = document.getElementById('elapsed'); if (!el) return;
+      const t0 = Date.now(); clearInterval(elapsedTimer);
+      const tick = () => { const s = Math.floor((Date.now() - t0) / 1000); el.textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+      tick(); elapsedTimer = setInterval(tick, 1000);
+    }
+    function stopElapsed() { clearInterval(elapsedTimer); elapsedTimer = null; }
+
     window.resetApp = function() {
+      stopElapsed();
+      const el = document.getElementById('elapsed'); if (el) el.textContent = '';
       transcript = [];
       currentJD = '';
       interviewEnding = false;
